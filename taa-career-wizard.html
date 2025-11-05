@@ -40,7 +40,7 @@
             overflow: hidden;
         }
 
-        /* Animated background */
+        /* Static background - animations removed */
         body::before {
             content: '';
             position: fixed;
@@ -50,13 +50,7 @@
             height: 200%;
             background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
             background-size: 50px 50px;
-            animation: backgroundMove 20s linear infinite;
             z-index: 0;
-        }
-
-        @keyframes backgroundMove {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(50px, 50px); }
         }
 
         .floating-shapes {
@@ -72,7 +66,6 @@
             background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
             border-radius: 50%;
             filter: blur(40px);
-            animation: float 15s infinite ease-in-out;
         }
 
         .shape:nth-child(1) {
@@ -80,7 +73,6 @@
             height: 300px;
             top: 10%;
             left: 10%;
-            animation-delay: 0s;
         }
 
         .shape:nth-child(2) {
@@ -88,7 +80,6 @@
             height: 200px;
             top: 60%;
             right: 10%;
-            animation-delay: 5s;
         }
 
         .shape:nth-child(3) {
@@ -96,14 +87,8 @@
             height: 250px;
             bottom: 10%;
             left: 30%;
-            animation-delay: 10s;
         }
 
-        @keyframes float {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            33% { transform: translate(30px, -30px) scale(1.05); }
-            66% { transform: translate(-20px, 20px) scale(0.95); }
-        }
 
         /* TAA Header Banner */
         .taa-header {
@@ -198,9 +183,10 @@
 
         .container {
             display: grid;
-            grid-template-columns: 65% 35%;
+            grid-template-columns: 1fr 300px 600px;
+            gap: 0;
             height: calc(100vh - 120px);
-            max-width: 1600px;
+            max-width: 100%;
             margin: 0 auto;
             position: relative;
             z-index: 10;
@@ -249,12 +235,6 @@
             width: 200%;
             height: 200%;
             background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
-            animation: pulse 3s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1) rotate(0deg); }
-            50% { transform: scale(1.05) rotate(180deg); }
         }
 
         .chat-header h1 {
@@ -298,18 +278,7 @@
         }
 
         .message {
-            animation: slideIn 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-        }
-
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px) scale(0.9);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
+            /* Animation removed */
         }
 
         .bot-message, .user-message {
@@ -534,12 +503,7 @@
         }
 
         .submit-btn.ready {
-            animation: pulseReady 1s ease-in-out;
-        }
-
-        @keyframes pulseReady {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.02); }
+            /* Animation removed */
         }
 
         /* Form Elements with Modern Styling */
@@ -551,18 +515,6 @@
             margin: 0.75rem 0;
             border: 1px solid var(--glass-border);
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            animation: fadeIn 0.5s ease;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: scale(0.95);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
         }
 
         .form-container h3 {
@@ -662,20 +614,8 @@
             align-items: center;
             gap: 0.6rem;
             font-size: 0.9rem;
-            animation: bounceIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
             box-shadow: 0 4px 10px rgba(8, 145, 178, 0.3);
             transition: transform 0.2s;
-        }
-
-        @keyframes bounceIn {
-            from {
-                transform: scale(0);
-                opacity: 0;
-            }
-            to {
-                transform: scale(1);
-                opacity: 1;
-            }
         }
 
         .skill-tag:hover {
@@ -792,12 +732,6 @@
             width: 200%;
             height: 200%;
             background: radial-gradient(circle, rgba(8,145,178,0.05) 0%, transparent 70%);
-            animation: rotate 20s linear infinite;
-        }
-
-        @keyframes rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
         }
 
         .panel-content h2 {
@@ -865,24 +799,13 @@
             margin: 0;
         }
 
-        /* Career Map Overlay with Modern Design */
+        /* Career Map Overlay with Modern Design - HIDDEN */
         .overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--dark-overlay);
-            backdrop-filter: blur(10px);
-            z-index: 1000;
-            animation: fadeIn 0.3s;
+            display: none !important;
         }
 
         .overlay.active {
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            display: none !important;
         }
 
         .overlay-content {
@@ -893,19 +816,7 @@
             max-height: 90%;
             overflow: auto;
             position: relative;
-            animation: slideUp 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
             box-shadow: 0 25px 50px rgba(0,0,0,0.2);
-        }
-
-        @keyframes slideUp {
-            from {
-                transform: translateY(50px) scale(0.95);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0) scale(1);
-                opacity: 1;
-            }
         }
 
         .close-btn {
@@ -952,41 +863,80 @@
             font-size: 1rem;
         }
 
+        /* Career Map Panel */
+        .career-map-panel {
+            background: white;
+            overflow: auto;
+            position: relative;
+            border-left: 2px solid rgba(30, 58, 95, 0.2);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .career-map-panel.fullscreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 2000;
+            border: none;
+        }
+
+        .career-map-header {
+            padding: 1.5rem;
+            background: linear-gradient(135deg, var(--taa-navy) 0%, var(--taa-blue) 100%);
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .career-map-header-text {
+            flex: 1;
+        }
+
+        .career-map-header h2 {
+            margin: 0;
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+
+        .career-map-header p {
+            margin: 0.3rem 0 0 0;
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+
+        .fullscreen-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .fullscreen-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .career-map-content {
+            flex: 1;
+            padding: 1.5rem;
+            overflow: auto;
+        }
+
         /* SVG Container Styling */
         #CareerMapSVG {
             max-width: 100%;
             height: auto;
             display: block;
             margin: 0 auto;
-        }
-
-        /* Map trigger button with animation */
-        .map-trigger {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            padding: 0.9rem 1.5rem;
-            background: var(--accent-gradient);
-            color: white;
-            border: none;
-            border-radius: 3rem;
-            cursor: pointer;
-            box-shadow: 0 10px 30px rgba(249, 115, 22, 0.4);
-            z-index: 100;
-            font-size: 0.9rem;
-            font-weight: 600;
-            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            animation: bounce 2s infinite;
-        }
-
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-5px); }
-        }
-
-        .map-trigger:hover {
-            transform: scale(1.1) translateY(-3px);
-            box-shadow: 0 15px 40px rgba(249, 115, 22, 0.5);
         }
 
         /* Summary styles with gradients */
@@ -1000,7 +950,6 @@
             font-size: 0.85rem;
             font-weight: 500;
             box-shadow: 0 4px 10px rgba(8, 145, 178, 0.3);
-            animation: fadeIn 0.5s ease;
         }
 
         .summary-list {
@@ -1096,10 +1045,7 @@
             }
 
             .map-trigger {
-                bottom: 1.2rem;
-                right: 1.2rem;
-                padding: 0.7rem 1.2rem;
-                font-size: 0.85rem;
+                display: none !important;
             }
 
             .styled-select {
@@ -1189,6 +1135,20 @@
                 </div>
             </div>
         </div>
+
+        <!-- Career Map Panel (Right Side) -->
+        <div class="career-map-panel" id="careerMapPanel">
+            <div class="career-map-header">
+                <div class="career-map-header-text">
+                    <h2>Career Progression Pathways</h2>
+                    <p>Explore interactive career paths and opportunities</p>
+                </div>
+                <button class="fullscreen-btn" id="fullscreenBtn">⛶ Fullscreen</button>
+            </div>
+            <div class="career-map-content" id="careerMapContent">
+                <!-- Career map SVG will be moved here -->
+            </div>
+        </div>
     </div>
 
     <!-- Career Map Overlay -->
@@ -1256,16 +1216,16 @@
       .st23 {
         /* Background colour for the large container. Add pointer-events none so it never intercepts hover
            and thus the outer glow rule will not apply. */
-        fill: #203456;
+        fill: #1e3a5f; /* TAA Navy */
         pointer-events: none;
       }
 
       .st24 {
-        fill: #f6f6f6;
+        fill: #ffffff; /* White for text */
       }
 
       .st5 {
-        stroke: #86679b;
+        stroke: #f97316; /* TAA Orange */
       }
 
       .st6 {
@@ -1305,19 +1265,19 @@
       }
 
       .st25, .st15 {
-        fill: #ab96ba;
+        fill: #f97316; /* TAA Orange */
       }
 
       .st15, .st16 {
-        stroke: #f6f6f6;
+        stroke: #ffffff;
       }
 
       .st26, .st16 {
-        fill: #6da4d9;
+        fill: #0891b2; /* TAA Teal */
       }
 
       .st27 {
-        fill: #fff;
+        fill: #ffffff;
       }
 
       .st17 {
@@ -1329,15 +1289,15 @@
       }
 
       .st28 {
-        fill: #86679b;
+        fill: #f97316; /* TAA Orange */
       }
 
       .st19 {
-        stroke: #4d9fa8;
+        stroke: #0891b2; /* TAA Teal */
       }
 
       .st20 {
-        stroke: #ab96ba;
+        stroke: #f97316; /* TAA Orange */
       }
 
       .st21 {
@@ -1346,57 +1306,57 @@
       }
 
       .st21, .st22 {
-        stroke: #fff;
+        stroke: #ffffff;
       }
 
       .st29 {
-        fill: #4c6aa5;
+        fill: #2563eb; /* TAA Blue */
       }
 
       .st30 {
-        fill: #4d9fa8;
+        fill: #0891b2; /* TAA Teal */
       }
     </style>
 <lineargradient gradientUnits="userSpaceOnUse" id="linear-gradient" x1="268.63" x2="204.76" y1="295.89" y2="295.89">
-<stop offset="0" stop-color="#6da4d9"></stop>
-<stop offset="1" stop-color="#86679b"></stop>
+<stop offset="0" stop-color="#2563eb"></stop>
+<stop offset="1" stop-color="#f97316"></stop>
 </lineargradient>
 <lineargradient id="linear-gradient1" x1="326.32" x2="326.32" xlink:href="#linear-gradient" y1="239.95" y2="239.95"></lineargradient>
 <lineargradient gradientUnits="userSpaceOnUse" id="linear-gradient2" x1="60.04" x2="60.04" y1="482.99" y2="178.88">
-<stop offset="0" stop-color="#4c6aa5"></stop>
-<stop offset="1" stop-color="#86679b"></stop>
+<stop offset="0" stop-color="#1e3a5f"></stop>
+<stop offset="1" stop-color="#f97316"></stop>
 </lineargradient>
 <lineargradient gradientUnits="userSpaceOnUse" id="linear-gradient3" x1="654.39" x2="195.02" y1="121.93" y2="121.93">
-<stop offset="0" stop-color="#4d9fa8"></stop>
-<stop offset="1" stop-color="#86679b"></stop>
+<stop offset="0" stop-color="#0891b2"></stop>
+<stop offset="1" stop-color="#f97316"></stop>
 </lineargradient>
 <lineargradient data-name="New Gradient Swatch 5" gradientUnits="userSpaceOnUse" id="New_Gradient_Swatch_5" x1="185.56" x2="808.07" y1="348.87" y2="348.87">
-<stop offset="0" stop-color="#4c6aa5"></stop>
-<stop offset="1" stop-color="#4d9fa8"></stop>
+<stop offset="0" stop-color="#1e3a5f"></stop>
+<stop offset="1" stop-color="#0891b2"></stop>
 </lineargradient>
 <lineargradient data-name="New Gradient Swatch 6" gradientUnits="userSpaceOnUse" id="New_Gradient_Swatch_6" x1="188.71" x2="583.1" y1="532.56" y2="532.56">
-<stop offset="0" stop-color="#4c6aa5"></stop>
-<stop offset="1" stop-color="#ab96ba"></stop>
+<stop offset="0" stop-color="#1e3a5f"></stop>
+<stop offset="1" stop-color="#f97316"></stop>
 </lineargradient>
 <lineargradient data-name="New Gradient Swatch 7" gradientUnits="userSpaceOnUse" id="New_Gradient_Swatch_7" x1="184.83" x2="268.63" y1="453.15" y2="453.15">
-<stop offset="0" stop-color="#4c6aa5"></stop>
-<stop offset="1" stop-color="#6da4d9"></stop>
+<stop offset="0" stop-color="#1e3a5f"></stop>
+<stop offset="1" stop-color="#2563eb"></stop>
 </lineargradient>
 <lineargradient data-name="New Gradient Swatch 8" gradientUnits="userSpaceOnUse" id="New_Gradient_Swatch_8" x1="762.73" x2="762.73" y1="534.28" y2="142.34">
-<stop offset="0" stop-color="#ab96ba"></stop>
-<stop offset="1" stop-color="#4d9fa8"></stop>
+<stop offset="0" stop-color="#f97316"></stop>
+<stop offset="1" stop-color="#0891b2"></stop>
 </lineargradient>
 <lineargradient data-name="New Gradient Swatch 8" id="New_Gradient_Swatch_81" x1="747.21" x2="747.21" xlink:href="#New_Gradient_Swatch_8" y1="414.12" y2="565.51"></lineargradient>
 <lineargradient data-name="New Gradient Swatch 8" id="New_Gradient_Swatch_82" x1="667.75" x2="667.75" xlink:href="#New_Gradient_Swatch_8" y1="393.65" y2="346.9"></lineargradient>
 <lineargradient data-name="New Gradient Swatch 9" gradientUnits="userSpaceOnUse" id="New_Gradient_Swatch_9" x1="475.83" x2="651.89" y1="130.03" y2="130.03">
-<stop offset="0" stop-color="#6da4d9"></stop>
-<stop offset="1" stop-color="#4d9fa8"></stop>
+<stop offset="0" stop-color="#2563eb"></stop>
+<stop offset="1" stop-color="#0891b2"></stop>
 </lineargradient>
 <lineargradient data-name="New Gradient Swatch 9" id="New_Gradient_Swatch_91" x1="548.85" x2="578.83" xlink:href="#New_Gradient_Swatch_9" y1="215.39" y2="215.39"></lineargradient>
 <lineargradient data-name="New Gradient Swatch 9" id="New_Gradient_Swatch_92" x1="549.29" x2="579.66" xlink:href="#New_Gradient_Swatch_9" y1="316.74" y2="316.74"></lineargradient>
 <lineargradient data-name="New Gradient Swatch 10" gradientUnits="userSpaceOnUse" id="New_Gradient_Swatch_10" x1="548.85" x2="579.25" y1="414.01" y2="414.01">
-<stop offset="0" stop-color="#6da4d9"></stop>
-<stop offset="1" stop-color="#ab96ba"></stop>
+<stop offset="0" stop-color="#2563eb"></stop>
+<stop offset="1" stop-color="#f97316"></stop>
 </lineargradient>
 <lineargradient data-name="New Gradient Swatch 10" id="New_Gradient_Swatch_101" x1="547.52" x2="583.42" xlink:href="#New_Gradient_Swatch_10" y1="495.8" y2="495.8"></lineargradient>
 <lineargradient id="linear-gradient4" x1="85.27" x2="85.27" xlink:href="#linear-gradient2" y1="482.57" y2="178.46"></lineargradient>
@@ -1470,18 +1430,7 @@
   /* Slow pulsing highlight for connectors triggered by hovering over the Accountancy Level&nbsp;2 box.
      This animation only adjusts stroke colour and opacity and does not apply an outer glow,
      ensuring the highlight does not appear beneath overlapping shapes. */
-  /* Pulse animation for connectors triggered by hovering the Accountancy
-     Level&nbsp;2 box.  We vary only the stroke opacity over time and leave
-     the stroke-width unchanged so the line never bleeds beyond its
-     original bounds. */
-  @keyframes pulseGlow {
-    0%, 100% {
-      stroke-opacity: 0.3;
-    }
-    50% {
-      stroke-opacity: 1;
-    }
-  }
+  /* Pulse animation removed */
 
   /* Applied by script to connectors when the Accountancy Level&nbsp;2 box is
      hovered.  Override the stroke colour to white and animate the
@@ -1489,8 +1438,7 @@
      the base class (2.37px) and avoids bleeding under overlapping
      elements. */
   .pulse-glow {
-    /* Animate the opacity to create a gentle pulse. */
-    animation: pulseGlow 2.5s infinite;
+    /* Animation removed - static glow */
     /* Highlight the connector stroke in white without changing
        the underlying geometry.  We do not increase stroke width here so
        the glow remains the same thickness as the original line and does
@@ -2903,6 +2851,34 @@
 
         // Initialize on page load
         init();
+    })();
+
+    // Career Map Panel Management
+    (function() {
+        'use strict';
+
+        const careerMapPanel = document.getElementById('careerMapPanel');
+        const careerMapContent = document.getElementById('careerMapContent');
+        const fullscreenBtn = document.getElementById('fullscreenBtn');
+        const careerMapSVG = document.getElementById('CareerMapSVG');
+
+        // Move the SVG from overlay to the new panel on page load
+        if (careerMapSVG && careerMapContent) {
+            careerMapContent.appendChild(careerMapSVG);
+        }
+
+        // Fullscreen toggle functionality
+        if (fullscreenBtn) {
+            fullscreenBtn.addEventListener('click', function() {
+                if (careerMapPanel.classList.contains('fullscreen')) {
+                    careerMapPanel.classList.remove('fullscreen');
+                    fullscreenBtn.textContent = '⛶ Fullscreen';
+                } else {
+                    careerMapPanel.classList.add('fullscreen');
+                    fullscreenBtn.textContent = '✕ Exit Fullscreen';
+                }
+            });
+        }
     })();
     </script>
 
