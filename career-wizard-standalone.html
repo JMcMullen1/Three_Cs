@@ -9,32 +9,39 @@
    CSS Variables - Color Scheme & Theme
    ========================================== */
 :root {
-    /* Primary Color Scheme */
-    --primary-color: #667eea;
-    --primary-dark: #5a67d8;
+    /* TAA Brand Colors - Official */
+    --taa-navy: #1f3455;
+    --taa-orange: #ef8005;
+    --taa-white: #ffffff;
+    --taa-light-gray: #f8f9fa;
+    --taa-medium-gray: #e0e0e0;
+    --taa-dark-gray: #343a40;
+
+    /* Primary Color Scheme - Using TAA Colors */
+    --primary-color: #ef8005;
+    --primary-dark: #be6704;
+    --primary-light: #fb9623;
+    --secondary-color: #1f3455;
+    --secondary-dark: #121e31;
+    --secondary-light: #2a4674;
+
     --success-color: #4ade80;
-    --warning-color: #ffa500;
+    --warning-color: #ef8005;
     --danger-color: #f87171;
     --light-gray: #f8f9fa;
     --medium-gray: #e0e0e0;
-    --dark-blue: #2b3d6d;
-    --text-color: #333;
+    --dark-blue: #1f3455;
+    --text-color: #343a40;
 
-    /* TAA Brand Colors */
-    --taa-navy: #1e3a5f;
-    --taa-blue: #2563eb;
-    --taa-teal: #0891b2;
-    --taa-orange: #f97316;
-
-    /* Gradient Themes */
-    --primary-gradient: linear-gradient(135deg, #2b3d6d 0%, #667eea 100%);
-    --secondary-gradient: linear-gradient(135deg, #667eea 0%, #4ade80 100%);
-    --accent-gradient: linear-gradient(135deg, #ffa500 0%, #f87171 100%);
+    /* Gradient Themes - TAA Branded */
+    --primary-gradient: linear-gradient(135deg, #1f3455 0%, #2a4674 100%);
+    --secondary-gradient: linear-gradient(135deg, #ef8005 0%, #fb9623 100%);
+    --accent-gradient: linear-gradient(135deg, #ef8005 0%, #fb9623 100%);
 
     /* Glass Morphism Effects */
-    --glass-bg: rgba(255, 255, 255, 0.9);
+    --glass-bg: rgba(255, 255, 255, 0.95);
     --glass-border: rgba(224, 224, 224, 0.3);
-    --dark-overlay: rgba(43, 61, 109, 0.95);
+    --dark-overlay: rgba(31, 52, 85, 0.95);
 }
 
 /* ==========================================
@@ -48,71 +55,42 @@
 
 body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    background: linear-gradient(135deg, var(--dark-blue) 0%, var(--primary-color) 100%);
+    background: #ffffff;
     position: relative;
     color: var(--text-color);
     height: 100vh;
     overflow: hidden;
 }
 
-        /* Static background - animations removed */
+        /* Clean background - no decorative elements for professional look */
         body::before {
             content: '';
             position: fixed;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
-            background-size: 50px 50px;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #ffffff;
             z-index: 0;
         }
 
         .floating-shapes {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1;
+            display: none; /* Hidden for clean professional look */
         }
 
         .shape {
-            position: absolute;
-            background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
-            border-radius: 50%;
-            filter: blur(40px);
-        }
-
-        .shape:nth-child(1) {
-            width: 300px;
-            height: 300px;
-            top: 10%;
-            left: 10%;
-        }
-
-        .shape:nth-child(2) {
-            width: 200px;
-            height: 200px;
-            top: 60%;
-            right: 10%;
-        }
-
-        .shape:nth-child(3) {
-            width: 250px;
-            height: 250px;
-            bottom: 10%;
-            left: 30%;
+            display: none;
         }
 
 
         /* TAA Header Banner */
         .taa-header {
-            background: linear-gradient(135deg, var(--dark-blue) 0%, var(--primary-color) 100%);
-            padding: 1rem 2rem;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            background: var(--taa-navy);
+            padding: 1.5rem 2rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             position: relative;
             z-index: 20;
-            border-bottom: 3px solid var(--warning-color);
+            border-bottom: 4px solid var(--taa-orange);
         }
 
         .taa-header-content {
@@ -131,57 +109,54 @@ body {
 
         .taa-logo-text {
             color: white;
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             font-weight: 700;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            letter-spacing: -0.5px;
         }
 
         .taa-tagline {
-            color: var(--light-gray);
-            font-size: 0.9rem;
-            font-style: italic;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.95rem;
+            font-weight: 400;
             text-align: right;
         }
 
         /* Three C's Banner */
         .three-cs-banner {
-            background: linear-gradient(to right,
-                rgba(255, 165, 0, 0.15) 0%,
-                rgba(102, 126, 234, 0.15) 50%,
-                rgba(43, 61, 109, 0.15) 100%);
-            padding: 0.8rem 2rem;
+            background: white;
+            padding: 1.2rem 2rem;
             display: flex;
             justify-content: center;
-            gap: 3rem;
+            gap: 4rem;
             position: relative;
             z-index: 20;
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(224, 224, 224, 0.3);
+            border-bottom: 1px solid var(--medium-gray);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
         }
 
         .three-c-item {
             display: flex;
             align-items: center;
-            gap: 0.8rem;
-            color: white;
-            font-weight: 600;
-            font-size: 0.95rem;
+            gap: 1rem;
+            color: var(--taa-navy);
+            font-weight: 700;
+            font-size: 1.1rem;
             transition: transform 0.3s;
         }
 
         .three-c-item:hover {
-            transform: translateY(-2px);
+            transform: translateY(-3px);
         }
 
         .three-c-icon {
-            width: 32px;
-            height: 32px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.1rem;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            font-size: 1.3rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
 
         .confidence-icon {
@@ -189,11 +164,11 @@ body {
         }
 
         .competence-icon {
-            background: var(--secondary-gradient);
+            background: var(--primary-gradient);
         }
 
         .career-icon {
-            background: var(--primary-gradient);
+            background: var(--taa-navy);
         }
 
         .container {
@@ -207,65 +182,51 @@ body {
             z-index: 10;
         }
 
-        /* Chat Area with Glassmorphism */
+        /* Chat Area - Clean Professional Style */
         .chat-area {
-            background: var(--glass-bg);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-right: 1px solid var(--glass-border);
+            background: white;
+            border-right: 1px solid var(--medium-gray);
             display: flex;
             flex-direction: column;
             height: 100%;
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            box-shadow: 2px 0 8px rgba(0, 0, 0, 0.05);
             position: relative;
             overflow: hidden;
         }
 
         .chat-area::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 200px;
-            background: linear-gradient(180deg, rgba(255,255,255,0.1) 0%, transparent 100%);
-            pointer-events: none;
+            display: none; /* Remove for clean look */
         }
 
         .chat-header {
-            padding: 1.5rem 2rem;
-            background: var(--primary-gradient);
-            color: white;
+            padding: 2rem 2rem 1.5rem;
+            background: white;
+            color: var(--taa-navy);
             position: relative;
             overflow: hidden;
             flex-shrink: 0;
-            box-shadow: 0 4px 30px rgba(0,0,0,0.1);
+            border-bottom: 3px solid var(--taa-orange);
         }
 
         .chat-header::after {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            display: none; /* Remove for clean look */
         }
 
         .chat-header h1 {
-            font-size: 1.6rem;
-            margin-bottom: 0.3rem;
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
             font-weight: 700;
             position: relative;
             z-index: 1;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            color: var(--taa-navy);
         }
 
         .chat-header p {
-            font-size: 0.95rem;
-            opacity: 0.95;
+            font-size: 1rem;
+            opacity: 0.8;
             position: relative;
             z-index: 1;
+            color: var(--taa-dark-gray);
         }
 
         .chat-messages {
@@ -284,11 +245,11 @@ body {
         }
 
         .chat-messages::-webkit-scrollbar-track {
-            background: rgba(255,255,255,0.1);
+            background: var(--light-gray);
         }
 
         .chat-messages::-webkit-scrollbar-thumb {
-            background: var(--primary-color);
+            background: var(--taa-orange);
             border-radius: 10px;
         }
 
@@ -326,11 +287,10 @@ body {
         }
 
         .user-message {
-            background: var(--secondary-gradient);
+            background: var(--taa-navy);
             color: white;
             align-self: flex-end;
             border-bottom-right-radius: 0.5rem;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
         }
 
         .quick-replies {
@@ -343,8 +303,8 @@ body {
         .quick-reply-btn {
             padding: 0.6rem 1.2rem;
             background: white;
-            border: 2px solid var(--medium-gray);
-            color: var(--primary-color);
+            border: 2px solid var(--taa-orange);
+            color: var(--taa-navy);
             border-radius: 2rem;
             cursor: pointer;
             font-size: 0.9rem;
@@ -354,11 +314,11 @@ body {
         }
 
         .quick-reply-btn:hover {
-            background: var(--primary-color);
+            background: var(--taa-orange);
             color: white;
-            border-color: var(--primary-color);
+            border-color: var(--taa-orange);
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+            box-shadow: 0 4px 12px rgba(239, 128, 5, 0.3);
         }
 
         .quick-reply-btn:active {
@@ -367,9 +327,8 @@ body {
 
         .chat-input-area {
             padding: 1.2rem 2rem;
-            background: var(--glass-bg);
-            backdrop-filter: blur(20px);
-            border-top: 1px solid var(--glass-border);
+            background: white;
+            border-top: 2px solid var(--medium-gray);
             flex-shrink: 0;
         }
 
@@ -392,47 +351,38 @@ body {
 
         .chat-input:focus {
             outline: none;
-            border-color: var(--primary-color);
+            border-color: var(--taa-orange);
             background: white;
-            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.15);
+            box-shadow: 0 0 0 4px rgba(239, 128, 5, 0.15);
         }
 
         .send-btn {
             padding: 0.9rem 1.8rem;
-            background: var(--secondary-gradient);
+            background: var(--taa-orange);
             color: white;
             border: none;
-            border-radius: 2rem;
+            border-radius: 0.5rem;
             cursor: pointer;
             font-size: 0.95rem;
             font-weight: 600;
-            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(239, 128, 5, 0.3);
             position: relative;
             overflow: hidden;
         }
 
         .send-btn::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.3);
-            transform: translate(-50%, -50%);
-            transition: width 0.5s, height 0.5s;
+            display: none; /* Remove effect for cleaner look */
         }
 
         .send-btn:hover::before {
-            width: 300px;
-            height: 300px;
+            display: none;
         }
 
         .send-btn:hover {
+            background: var(--primary-dark);
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(8, 145, 178, 0.5);
+            box-shadow: 0 6px 16px rgba(239, 128, 5, 0.4);
         }
 
         .send-btn:active {
@@ -443,17 +393,17 @@ body {
         .styled-select {
             width: 100%;
             padding: 0.9rem 1.2rem;
-            background: rgba(255,255,255,0.95);
-            border: 2px solid transparent;
-            border-radius: 0.8rem;
+            background: white;
+            border: 2px solid var(--medium-gray);
+            border-radius: 0.5rem;
             font-size: 0.95rem;
-            color: var(--text-primary);
+            color: var(--text-color);
             cursor: pointer;
             transition: all 0.3s;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
             appearance: none;
-            background-image: linear-gradient(45deg, transparent 50%, var(--taa-teal) 50%),
-                              linear-gradient(135deg, var(--taa-teal) 50%, transparent 50%);
+            background-image: linear-gradient(45deg, transparent 50%, var(--taa-navy) 50%),
+                              linear-gradient(135deg, var(--taa-navy) 50%, transparent 50%);
             background-position: calc(100% - 20px) calc(1rem + 5px),
                                 calc(100% - 15px) calc(1rem + 5px);
             background-size: 5px 5px, 5px 5px;
@@ -462,21 +412,21 @@ body {
         }
 
         .styled-select:hover {
-            border-color: var(--taa-teal);
+            border-color: var(--taa-orange);
             background-color: white;
-            box-shadow: 0 6px 20px rgba(8, 145, 178, 0.15);
+            box-shadow: 0 4px 12px rgba(239, 128, 5, 0.15);
         }
 
         .styled-select:focus {
             outline: none;
-            border-color: var(--taa-teal);
-            box-shadow: 0 0 0 4px rgba(8, 145, 178, 0.1);
+            border-color: var(--taa-orange);
+            box-shadow: 0 0 0 4px rgba(239, 128, 5, 0.1);
             background-color: white;
         }
 
         .styled-select:has(option:checked:not([value=""])) {
-            border-color: var(--taa-teal);
-            background: linear-gradient(to right, rgba(8, 145, 178, 0.05), rgba(255,255,255,0.95));
+            border-color: var(--taa-orange);
+            background: white;
         }
 
         .styled-select option {
@@ -706,13 +656,13 @@ body {
 
         /* Context Panel with Glassmorphism */
         .context-panel {
-            background: var(--glass-bg);
-            backdrop-filter: blur(20px);
+            background: var(--light-gray);
             padding: 2rem;
             overflow-y: auto;
             height: 100%;
             transition: all 0.4s ease;
             position: relative;
+            border-left: 1px solid var(--medium-gray);
         }
 
         .context-panel::-webkit-scrollbar {
@@ -720,11 +670,11 @@ body {
         }
 
         .context-panel::-webkit-scrollbar-track {
-            background: rgba(224, 224, 224, 0.3);
+            background: var(--light-gray);
         }
 
         .context-panel::-webkit-scrollbar-thumb {
-            background: var(--primary-color);
+            background: var(--taa-orange);
             border-radius: 10px;
         }
 
@@ -734,20 +684,17 @@ body {
 
         .panel-content {
             background: white;
-            border-radius: 1rem;
-            padding: 1.5rem;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border-radius: 0.5rem;
+            padding: 2rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
             height: 100%;
             position: relative;
         }
 
         .panel-content h2 {
-            background: var(--primary-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            color: var(--taa-navy);
             margin-bottom: 1rem;
-            font-size: 1.3rem;
+            font-size: 1.5rem;
             font-weight: 700;
             position: relative;
             z-index: 1;
@@ -767,42 +714,46 @@ body {
         }
 
         .c-card {
-            padding: 1.2rem;
-            border-radius: 0.8rem;
-            border-left: 4px solid;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            border-left: 5px solid;
             background: white;
             transition: all 0.3s ease;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
         }
 
         .c-card:hover {
-            transform: translateX(5px);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+            transform: translateX(8px);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
         }
 
         .c-card.confidence {
-            border-color: var(--warning-color);
+            border-color: var(--taa-orange);
         }
 
         .c-card.competence {
-            border-color: var(--success-color);
+            border-color: var(--taa-navy);
         }
 
         .c-card.career {
-            border-color: var(--primary-color);
+            border-color: var(--taa-navy);
         }
 
         .c-card h3 {
-            font-size: 1rem;
-            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+            margin-bottom: 0.7rem;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.7rem;
+            color: var(--taa-navy);
+            font-weight: 700;
         }
 
         .c-card p {
-            font-size: 0.85rem;
+            font-size: 0.95rem;
             margin: 0;
+            line-height: 1.6;
+            color: var(--taa-dark-gray);
         }
 
         /* Career Map Overlay with Modern Design - HIDDEN */
@@ -891,15 +842,15 @@ body {
         }
 
         .career-map-header {
-            padding: 1.5rem 2rem;
-            background: linear-gradient(135deg, var(--dark-blue) 0%, var(--primary-color) 100%);
+            padding: 2rem;
+            background: var(--taa-navy);
             color: white;
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
             gap: 1rem;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border-bottom: 4px solid var(--taa-orange);
         }
 
         .career-map-header-text {
@@ -908,21 +859,21 @@ body {
 
         .career-map-header h2 {
             margin: 0;
-            font-size: 1.3rem;
+            font-size: 1.5rem;
             font-weight: 700;
         }
 
         .career-map-header p {
-            margin: 0.3rem 0 0 0;
-            font-size: 0.85rem;
+            margin: 0.5rem 0 0 0;
+            font-size: 0.95rem;
             opacity: 0.9;
         }
 
         .fullscreen-btn {
-            background: white;
-            color: var(--dark-blue);
-            border: 2px solid white;
-            padding: 0.6rem 1.2rem;
+            background: var(--taa-orange);
+            color: white;
+            border: 2px solid var(--taa-orange);
+            padding: 0.7rem 1.5rem;
             border-radius: 0.5rem;
             cursor: pointer;
             font-size: 0.95rem;
@@ -935,9 +886,8 @@ body {
         }
 
         .fullscreen-btn:hover {
-            background: var(--warning-color);
-            color: white;
-            border-color: var(--warning-color);
+            background: var(--primary-dark);
+            border-color: var(--primary-dark);
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
         }
@@ -950,7 +900,7 @@ body {
             flex: 1;
             padding: 2rem;
             overflow: auto;
-            background: var(--light-gray);
+            background: white;
         }
 
         .career-map-content::-webkit-scrollbar {
@@ -958,11 +908,11 @@ body {
         }
 
         .career-map-content::-webkit-scrollbar-track {
-            background: var(--medium-gray);
+            background: var(--light-gray);
         }
 
         .career-map-content::-webkit-scrollbar-thumb {
-            background: var(--primary-color);
+            background: var(--taa-orange);
             border-radius: 5px;
         }
 
