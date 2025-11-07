@@ -1,0 +1,3393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Career Progression Wizard - The Apprentice Academy</title>
+    <style>
+/* ==========================================
+   CSS Variables - Color Scheme & Theme
+   ========================================== */
+:root {
+    /* Primary Color Scheme */
+    --primary-color: #667eea;
+    --primary-dark: #5a67d8;
+    --success-color: #4ade80;
+    --warning-color: #ffa500;
+    --danger-color: #f87171;
+    --light-gray: #f8f9fa;
+    --medium-gray: #e0e0e0;
+    --dark-blue: #2b3d6d;
+    --text-color: #333;
+
+    /* TAA Brand Colors */
+    --taa-navy: #1e3a5f;
+    --taa-blue: #2563eb;
+    --taa-teal: #0891b2;
+    --taa-orange: #f97316;
+
+    /* Gradient Themes */
+    --primary-gradient: linear-gradient(135deg, #2b3d6d 0%, #667eea 100%);
+    --secondary-gradient: linear-gradient(135deg, #667eea 0%, #4ade80 100%);
+    --accent-gradient: linear-gradient(135deg, #ffa500 0%, #f87171 100%);
+
+    /* Glass Morphism Effects */
+    --glass-bg: rgba(255, 255, 255, 0.9);
+    --glass-border: rgba(224, 224, 224, 0.3);
+    --dark-overlay: rgba(43, 61, 109, 0.95);
+}
+
+/* ==========================================
+   Global Styles & Reset
+   ========================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: linear-gradient(135deg, var(--dark-blue) 0%, var(--primary-color) 100%);
+    position: relative;
+    color: var(--text-color);
+    height: 100vh;
+    overflow: hidden;
+}
+
+        /* Static background - animations removed */
+        body::before {
+            content: '';
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: 0;
+        }
+
+        .floating-shapes {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .shape {
+            position: absolute;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+            border-radius: 50%;
+            filter: blur(40px);
+        }
+
+        .shape:nth-child(1) {
+            width: 300px;
+            height: 300px;
+            top: 10%;
+            left: 10%;
+        }
+
+        .shape:nth-child(2) {
+            width: 200px;
+            height: 200px;
+            top: 60%;
+            right: 10%;
+        }
+
+        .shape:nth-child(3) {
+            width: 250px;
+            height: 250px;
+            bottom: 10%;
+            left: 30%;
+        }
+
+
+        /* TAA Header Banner */
+        .taa-header {
+            background: linear-gradient(135deg, var(--dark-blue) 0%, var(--primary-color) 100%);
+            padding: 1rem 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            position: relative;
+            z-index: 20;
+            border-bottom: 3px solid var(--warning-color);
+        }
+
+        .taa-header-content {
+            max-width: 1600px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .taa-logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .taa-logo-text {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .taa-tagline {
+            color: var(--light-gray);
+            font-size: 0.9rem;
+            font-style: italic;
+            text-align: right;
+        }
+
+        /* Three C's Banner */
+        .three-cs-banner {
+            background: linear-gradient(to right,
+                rgba(255, 165, 0, 0.15) 0%,
+                rgba(102, 126, 234, 0.15) 50%,
+                rgba(43, 61, 109, 0.15) 100%);
+            padding: 0.8rem 2rem;
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            position: relative;
+            z-index: 20;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(224, 224, 224, 0.3);
+        }
+
+        .three-c-item {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            color: white;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: transform 0.3s;
+        }
+
+        .three-c-item:hover {
+            transform: translateY(-2px);
+        }
+
+        .three-c-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .confidence-icon {
+            background: var(--accent-gradient);
+        }
+
+        .competence-icon {
+            background: var(--secondary-gradient);
+        }
+
+        .career-icon {
+            background: var(--primary-gradient);
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 300px 600px;
+            gap: 0;
+            height: calc(100vh - 120px);
+            max-width: 100%;
+            margin: 0 auto;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Chat Area with Glassmorphism */
+        .chat-area {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-right: 1px solid var(--glass-border);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .chat-area::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 200px;
+            background: linear-gradient(180deg, rgba(255,255,255,0.1) 0%, transparent 100%);
+            pointer-events: none;
+        }
+
+        .chat-header {
+            padding: 1.5rem 2rem;
+            background: var(--primary-gradient);
+            color: white;
+            position: relative;
+            overflow: hidden;
+            flex-shrink: 0;
+            box-shadow: 0 4px 30px rgba(0,0,0,0.1);
+        }
+
+        .chat-header::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+        }
+
+        .chat-header h1 {
+            font-size: 1.6rem;
+            margin-bottom: 0.3rem;
+            font-weight: 700;
+            position: relative;
+            z-index: 1;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .chat-header p {
+            font-size: 0.95rem;
+            opacity: 0.95;
+            position: relative;
+            z-index: 1;
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1.5rem 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            min-height: 0;
+            scroll-behavior: smooth;
+        }
+
+        .chat-messages::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .chat-messages::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb {
+            background: var(--primary-color);
+            border-radius: 10px;
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-dark);
+        }
+
+        .message {
+            /* Animation removed */
+        }
+
+        .bot-message, .user-message {
+            max-width: 75%;
+            padding: 0.9rem 1.3rem;
+            border-radius: 1.5rem;
+            word-wrap: break-word;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            position: relative;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .bot-message:hover, .user-message:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
+
+        .bot-message {
+            background: white;
+            align-self: flex-start;
+            border-bottom-left-radius: 0.5rem;
+            border: 2px solid var(--light-gray);
+            color: var(--text-color);
+        }
+
+        .user-message {
+            background: var(--secondary-gradient);
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 0.5rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .quick-replies {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            margin-top: 1rem;
+        }
+
+        .quick-reply-btn {
+            padding: 0.6rem 1.2rem;
+            background: white;
+            border: 2px solid var(--medium-gray);
+            color: var(--primary-color);
+            border-radius: 2rem;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+        }
+
+        .quick-reply-btn:hover {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .quick-reply-btn:active {
+            transform: translateY(-1px) scale(0.98);
+        }
+
+        .chat-input-area {
+            padding: 1.2rem 2rem;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid var(--glass-border);
+            flex-shrink: 0;
+        }
+
+        .chat-input-row {
+            display: flex;
+            gap: 0.8rem;
+            align-items: center;
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 0.9rem 1.2rem;
+            background: rgba(255,255,255,0.9);
+            border: 2px solid transparent;
+            border-radius: 2rem;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.06);
+        }
+
+        .chat-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            background: white;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.15);
+        }
+
+        .send-btn {
+            padding: 0.9rem 1.8rem;
+            background: var(--secondary-gradient);
+            color: white;
+            border: none;
+            border-radius: 2rem;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 600;
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .send-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.5s, height 0.5s;
+        }
+
+        .send-btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .send-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(8, 145, 178, 0.5);
+        }
+
+        .send-btn:active {
+            transform: translateY(0);
+        }
+
+        /* Styled Dropdown */
+        .styled-select {
+            width: 100%;
+            padding: 0.9rem 1.2rem;
+            background: rgba(255,255,255,0.95);
+            border: 2px solid transparent;
+            border-radius: 0.8rem;
+            font-size: 0.95rem;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            appearance: none;
+            background-image: linear-gradient(45deg, transparent 50%, var(--taa-teal) 50%),
+                              linear-gradient(135deg, var(--taa-teal) 50%, transparent 50%);
+            background-position: calc(100% - 20px) calc(1rem + 5px),
+                                calc(100% - 15px) calc(1rem + 5px);
+            background-size: 5px 5px, 5px 5px;
+            background-repeat: no-repeat;
+            margin-bottom: 1rem;
+        }
+
+        .styled-select:hover {
+            border-color: var(--taa-teal);
+            background-color: white;
+            box-shadow: 0 6px 20px rgba(8, 145, 178, 0.15);
+        }
+
+        .styled-select:focus {
+            outline: none;
+            border-color: var(--taa-teal);
+            box-shadow: 0 0 0 4px rgba(8, 145, 178, 0.1);
+            background-color: white;
+        }
+
+        .styled-select:has(option:checked:not([value=""])) {
+            border-color: var(--taa-teal);
+            background: linear-gradient(to right, rgba(8, 145, 178, 0.05), rgba(255,255,255,0.95));
+        }
+
+        .styled-select option {
+            padding: 0.5rem;
+            background: white;
+            color: var(--text-primary);
+        }
+
+        .styled-select optgroup {
+            font-weight: 600;
+            color: var(--taa-blue);
+            background: rgba(37, 99, 235, 0.05);
+        }
+
+        .styled-select option:checked {
+            background: var(--secondary-gradient);
+            color: white;
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
+        }
+
+        .submit-btn.ready {
+            /* Animation removed */
+        }
+
+        /* Form Elements with Modern Styling */
+        .form-container {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            padding: 1.3rem;
+            border-radius: 1rem;
+            margin: 0.75rem 0;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .form-container h3 {
+            margin-bottom: 1rem;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 1.05rem;
+            font-weight: 600;
+        }
+
+        .checkbox-group, .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.7rem;
+        }
+
+        .checkbox-item, .radio-item {
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            transition: background 0.2s;
+        }
+
+        .checkbox-item:hover, .radio-item:hover {
+            background: rgba(8, 145, 178, 0.05);
+        }
+
+        .checkbox-item label, .radio-item label {
+            font-size: 0.95rem;
+            cursor: pointer;
+            flex: 1;
+        }
+
+        input[type="checkbox"], input[type="radio"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: var(--taa-teal);
+        }
+
+        /* Skill Widget with Animations */
+        .skill-widget {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 1rem;
+            padding: 1.3rem;
+            margin: 0.75rem 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .skill-input {
+            width: 100%;
+            padding: 0.7rem 1rem;
+            border: 2px solid transparent;
+            background: rgba(255,255,255,0.9);
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+        }
+
+        .skill-input:focus {
+            outline: none;
+            border-color: var(--taa-teal);
+            box-shadow: 0 0 0 4px rgba(8, 145, 178, 0.1);
+        }
+
+        #selectedSkills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            margin-bottom: 1rem;
+            min-height: 2.5rem;
+            padding: 0.5rem;
+            background: rgba(255,255,255,0.5);
+            border-radius: 0.5rem;
+        }
+
+        .skill-limit-notice {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            font-style: italic;
+        }
+
+        .skill-tag {
+            background: var(--secondary-gradient);
+            color: white;
+            padding: 0.4rem 1rem;
+            border-radius: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 10px rgba(8, 145, 178, 0.3);
+            transition: transform 0.2s;
+        }
+
+        .skill-tag:hover {
+            transform: scale(1.05);
+        }
+
+        .skill-tag .remove {
+            cursor: pointer;
+            font-weight: bold;
+            opacity: 0.9;
+            font-size: 1.2rem;
+            transition: transform 0.2s;
+        }
+
+        .skill-tag .remove:hover {
+            transform: rotate(90deg);
+        }
+
+        .suggested-skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .suggested-skill {
+            padding: 0.4rem 0.9rem;
+            background: rgba(255,255,255,0.9);
+            border: 2px solid transparent;
+            background-clip: padding-box;
+            border-radius: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.85rem;
+            font-weight: 500;
+            position: relative;
+        }
+
+        .suggested-skill::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 1rem;
+            padding: 2px;
+            background: var(--secondary-gradient);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .suggested-skill:hover:not(.disabled)::before {
+            opacity: 1;
+        }
+
+        .suggested-skill:hover:not(.disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .suggested-skill.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            background: rgba(200,200,200,0.3);
+        }
+
+        .submit-btn {
+            margin-top: 0.8rem;
+            padding: 0.8rem 1.6rem;
+            background: var(--accent-gradient);
+            color: white;
+            border: none;
+            border-radius: 0.6rem;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 165, 0, 0.4);
+            width: 100%;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 165, 0, 0.5);
+        }
+
+        /* Context Panel with Glassmorphism */
+        .context-panel {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            padding: 2rem;
+            overflow-y: auto;
+            height: 100%;
+            transition: all 0.4s ease;
+            position: relative;
+        }
+
+        .context-panel::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .context-panel::-webkit-scrollbar-track {
+            background: rgba(224, 224, 224, 0.3);
+        }
+
+        .context-panel::-webkit-scrollbar-thumb {
+            background: var(--primary-color);
+            border-radius: 10px;
+        }
+
+        .context-panel::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-dark);
+        }
+
+        .panel-content {
+            background: white;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            height: 100%;
+            position: relative;
+        }
+
+        .panel-content h2 {
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+            font-weight: 700;
+            position: relative;
+            z-index: 1;
+        }
+
+        .panel-content p, .panel-content li {
+            font-size: 0.95rem;
+            line-height: 1.7;
+            color: var(--text-color);
+        }
+
+        .three-cs-info {
+            margin-top: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .c-card {
+            padding: 1.2rem;
+            border-radius: 0.8rem;
+            border-left: 4px solid;
+            background: white;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .c-card:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        .c-card.confidence {
+            border-color: var(--warning-color);
+        }
+
+        .c-card.competence {
+            border-color: var(--success-color);
+        }
+
+        .c-card.career {
+            border-color: var(--primary-color);
+        }
+
+        .c-card h3 {
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .c-card p {
+            font-size: 0.85rem;
+            margin: 0;
+        }
+
+        /* Career Map Overlay with Modern Design - HIDDEN */
+        .overlay {
+            display: none !important;
+        }
+
+        .overlay.active {
+            display: none !important;
+        }
+
+        .overlay-content {
+            background: linear-gradient(135deg, rgba(255,255,255,0.98), rgba(248,250,252,0.95));
+            border-radius: 1.5rem;
+            padding: 2.5rem;
+            max-width: 95%;
+            max-height: 90%;
+            overflow: auto;
+            position: relative;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.2);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            width: 2.5rem;
+            height: 2.5rem;
+            background: var(--accent-gradient);
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(249, 115, 22, 0.4);
+            z-index: 10;
+        }
+
+        .close-btn:hover {
+            transform: rotate(90deg) scale(1.1);
+        }
+
+        .overlay-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .overlay-header h2 {
+            background: linear-gradient(135deg, var(--taa-navy), var(--taa-blue), var(--taa-teal));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .overlay-header p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+
+        /* Career Map Panel */
+        .career-map-panel {
+            background: white;
+            overflow: auto;
+            position: relative;
+            border-left: 2px solid var(--medium-gray);
+            display: flex;
+            flex-direction: column;
+            box-shadow: -2px 0 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .career-map-panel.fullscreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 2000;
+            border: none;
+        }
+
+        .career-map-header {
+            padding: 1.5rem 2rem;
+            background: linear-gradient(135deg, var(--dark-blue) 0%, var(--primary-color) 100%);
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .career-map-header-text {
+            flex: 1;
+        }
+
+        .career-map-header h2 {
+            margin: 0;
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+
+        .career-map-header p {
+            margin: 0.3rem 0 0 0;
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+
+        .fullscreen-btn {
+            background: white;
+            color: var(--dark-blue);
+            border: 2px solid white;
+            padding: 0.6rem 1.2rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .fullscreen-btn:hover {
+            background: var(--warning-color);
+            color: white;
+            border-color: var(--warning-color);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .fullscreen-btn:active {
+            transform: translateY(0);
+        }
+
+        .career-map-content {
+            flex: 1;
+            padding: 2rem;
+            overflow: auto;
+            background: var(--light-gray);
+        }
+
+        .career-map-content::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        .career-map-content::-webkit-scrollbar-track {
+            background: var(--medium-gray);
+        }
+
+        .career-map-content::-webkit-scrollbar-thumb {
+            background: var(--primary-color);
+            border-radius: 5px;
+        }
+
+        .career-map-content::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-dark);
+        }
+
+        /* SVG Container Styling */
+        #CareerMapSVG {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            padding: 1rem;
+        }
+
+        /* Summary styles with gradients */
+        .skill-badge {
+            display: inline-block;
+            background: var(--secondary-gradient);
+            color: white;
+            padding: 0.4rem 1rem;
+            border-radius: 1.5rem;
+            margin: 0.3rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+            transition: transform 0.2s ease;
+        }
+
+        .skill-badge:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .summary-list {
+            list-style-position: inside;
+            padding-left: 0;
+            margin-top: 0.7rem;
+        }
+
+        /* Mobile responsive */
+        @media (max-width: 1200px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+
+            .context-panel {
+                position: fixed;
+                right: -100%;
+                top: 120px;
+                width: 350px;
+                height: calc(100vh - 120px);
+                box-shadow: -5px 0 20px rgba(0,0,0,0.2);
+            }
+
+            .context-panel.active {
+                right: 0;
+            }
+
+            .three-cs-banner {
+                gap: 1.5rem;
+            }
+
+            .three-c-item {
+                font-size: 0.85rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .floating-shapes { display: none; }
+
+            .taa-header {
+                padding: 0.8rem 1rem;
+            }
+
+            .taa-header-content {
+                flex-direction: column;
+                gap: 0.5rem;
+                text-align: center;
+            }
+
+            .taa-logo-text {
+                font-size: 1.2rem;
+            }
+
+            .three-cs-banner {
+                flex-direction: column;
+                gap: 0.5rem;
+                padding: 0.5rem 1rem;
+            }
+
+            .three-c-item {
+                font-size: 0.8rem;
+            }
+
+            .chat-header {
+                padding: 1.2rem 1.5rem;
+            }
+
+            .chat-header h1 {
+                font-size: 1.3rem;
+            }
+
+            .chat-messages {
+                padding: 1rem 1.2rem;
+            }
+
+            .bot-message, .user-message {
+                max-width: 85%;
+                font-size: 0.9rem;
+            }
+
+            .context-panel {
+                display: none;
+            }
+
+            .overlay-content {
+                padding: 2rem;
+                max-width: 95%;
+                max-height: 95%;
+            }
+
+            .overlay-header h2 {
+                font-size: 1.5rem;
+            }
+
+            .map-trigger {
+                display: none !important;
+            }
+
+            .styled-select {
+                font-size: 16px; /* Prevents zoom on iOS */
+                padding: 1rem 1.2rem;
+            }
+
+            select, input, textarea {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="floating-shapes">
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+
+    <!-- TAA Header -->
+    <div class="taa-header">
+        <div class="taa-header-content">
+            <div class="taa-logo">
+                <div class="taa-logo-text">The Apprentice Academy</div>
+            </div>
+            <div class="taa-tagline">Empowering Futures Through Learning</div>
+        </div>
+    </div>
+
+    <!-- Three C's Banner -->
+    <div class="three-cs-banner">
+        <div class="three-c-item confidence">
+            <div class="three-c-icon confidence-icon">💪</div>
+            <span>Confidence</span>
+        </div>
+        <div class="three-c-item competence">
+            <div class="three-c-icon competence-icon">🎯</div>
+            <span>Competence</span>
+        </div>
+        <div class="three-c-item career">
+            <div class="three-c-icon career-icon">🚀</div>
+            <span>Career Capability</span>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <div class="chat-area">
+            <div class="chat-header">
+                <h1>Career Progression Wizard</h1>
+                <p>Your personalized guide to internal career development</p>
+            </div>
+
+            <div class="chat-messages" id="chatMessages">
+            </div>
+
+            <div class="chat-input-area">
+                <div class="chat-input-row">
+                    <input type="text" class="chat-input" id="chatInput" placeholder="Type your message..." disabled>
+                    <button class="send-btn" id="sendBtn" disabled>Send</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="context-panel" id="contextPanel">
+            <div class="panel-content" id="panelContent">
+                <h2>Welcome to TAA!</h2>
+                <p>I'm here to help you plan your next career steps within our organization.</p>
+                <br>
+                <p>We'll explore your interests, skills, and goals to find the perfect progression path for you through The Apprentice Academy.</p>
+
+                <div class="three-cs-info">
+                    <div class="c-card confidence">
+                        <h3>🔥 Confidence</h3>
+                        <p>Build self-assurance in your career choices and professional abilities.</p>
+                    </div>
+                    <div class="c-card competence">
+                        <h3>📚 Competence</h3>
+                        <p>Develop the skills and expertise needed for your chosen career path.</p>
+                    </div>
+                    <div class="c-card career">
+                        <h3>🎯 Career Capability</h3>
+                        <p>Create clear pathways for professional progression and growth.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Career Map Panel (Right Side) -->
+        <div class="career-map-panel" id="careerMapPanel">
+            <div class="career-map-header">
+                <div class="career-map-header-text">
+                    <h2>Career Progression Pathways</h2>
+                    <p>Explore interactive career paths and opportunities</p>
+                </div>
+                <button class="fullscreen-btn" id="fullscreenBtn">⛶ Fullscreen</button>
+            </div>
+            <div class="career-map-content" id="careerMapContent">
+                <!-- Career map SVG will be moved here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Career Map Overlay -->
+    <div class="overlay" id="careerMapOverlay">
+        <div class="overlay-content">
+            <button class="close-btn" id="closeMapBtn">&times;</button>
+            <div class="overlay-header">
+                <h2>Career Progression Pathways</h2>
+                <p>Explore interactive career paths and progression opportunities</p>
+            </div>
+
+            <!-- INTEGRATED SVG STARTS HERE - DO NOT MODIFY -->
+            <svg id="CareerMapSVG" version="1.1" viewBox="0 0 841.89 595.28" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<!-- Generator: Adobe Illustrator 29.8.1, SVG Export Plug-In . SVG Version: 2.1.1 Build 2)  -->
+<defs>
+<!-- Outer halo glow: bright rim + soft halo -->
+<filter height="340%" id="outer-glow" width="340%" x="-120%" y="-120%">
+<!-- tight rim -->
+<femorphology in="SourceAlpha" operator="dilate" radius="1.6" result="spreadInner"></femorphology>
+<fegaussianblur in="spreadInner" result="blurInner" stdDeviation="2.2"></fegaussianblur>
+<fecolormatrix in="blurInner" result="rim" type="matrix" values="       0 0 0 0 1       0 0 0 0 1       0 0 0 0 1       0 0 0 1 0"></fecolormatrix>
+<!-- soft halo -->
+<femorphology in="SourceAlpha" operator="dilate" radius="4.2" result="spreadOuter"></femorphology>
+<fegaussianblur in="spreadOuter" result="blurOuter" stdDeviation="7"></fegaussianblur>
+<fecolormatrix in="blurOuter" result="halo" type="matrix" values="       0 0 0 0 1       0 0 0 0 1       0 0 0 0 1       0 0 0 0.55 0"></fecolormatrix>
+<femerge>
+<femergenode in="halo"></femergenode>
+<femergenode in="rim"></femergenode>
+<femergenode in="SourceGraphic"></femergenode>
+</femerge>
+</filter>
+<style>
+      .st0 {
+        stroke: url(#New_Gradient_Swatch_8);
+      }
+
+      .st0, .st1, .st2, .st3, .st4, .st5, .st6, .st7, .st8, .st9, .st10, .st11, .st12, .st13, .st14, .st15, .st16, .st17, .st18, .st19, .st20, .st21, .st22 {
+        stroke-miterlimit: 10;
+      }
+
+      .st0, .st1, .st2, .st3, .st4, .st5, .st6, .st7, .st8, .st9, .st10, .st11, .st12, .st13, .st14, .st17, .st18, .st19, .st20, .st21, .st22 {
+        fill: none;
+      }
+
+      .st0, .st1, .st2, .st3, .st4, .st5, .st6, .st7, .st8, .st9, .st10, .st11, .st12, .st13, .st14, .st17, .st18, .st19, .st20, .st22 {
+        stroke-width: 2.37px;
+      }
+
+      .st1 {
+        stroke: url(#New_Gradient_Swatch_9);
+      }
+
+      .st2 {
+        stroke: url(#New_Gradient_Swatch_5);
+      }
+
+      .st3 {
+        stroke: url(#New_Gradient_Swatch_6);
+      }
+
+      .st4 {
+        stroke: url(#New_Gradient_Swatch_7);
+      }
+
+      .st23 {
+        /* Background colour for the large container. Add pointer-events none so it never intercepts hover
+           and thus the outer glow rule will not apply. */
+        fill: #1e3a5f; /* TAA Navy */
+        pointer-events: none;
+      }
+
+      .st24 {
+        fill: #ffffff; /* White for text */
+      }
+
+      .st5 {
+        stroke: #f97316; /* TAA Orange */
+      }
+
+      .st6 {
+        stroke: url(#linear-gradient1);
+      }
+
+      .st7 {
+        stroke: url(#linear-gradient2);
+      }
+
+      .st8 {
+        stroke: url(#linear-gradient4);
+      }
+
+      .st9 {
+        stroke: url(#linear-gradient3);
+      }
+
+      .st10 {
+        stroke: url(#New_Gradient_Swatch_82);
+      }
+
+      .st11 {
+        stroke: url(#New_Gradient_Swatch_91);
+      }
+
+      .st12 {
+        stroke: url(#New_Gradient_Swatch_81);
+      }
+
+      .st13 {
+        stroke: url(#New_Gradient_Swatch_92);
+      }
+
+      .st14 {
+        stroke: url(#New_Gradient_Swatch_10);
+      }
+
+      .st25, .st15 {
+        fill: #f97316; /* TAA Orange */
+      }
+
+      .st15, .st16 {
+        stroke: #ffffff;
+      }
+
+      .st26, .st16 {
+        fill: #0891b2; /* TAA Teal */
+      }
+
+      .st27 {
+        fill: #ffffff;
+      }
+
+      .st17 {
+        stroke: url(#linear-gradient);
+      }
+
+      .st18 {
+        stroke: url(#New_Gradient_Swatch_101);
+      }
+
+      .st28 {
+        fill: #f97316; /* TAA Orange */
+      }
+
+      .st19 {
+        stroke: #0891b2; /* TAA Teal */
+      }
+
+      .st20 {
+        stroke: #f97316; /* TAA Orange */
+      }
+
+      .st21 {
+        stroke-dasharray: 6.45 6.45;
+        stroke-width: 1.62px;
+      }
+
+      .st21, .st22 {
+        stroke: #ffffff;
+      }
+
+      .st29 {
+        fill: #2563eb; /* TAA Blue */
+      }
+
+      .st30 {
+        fill: #0891b2; /* TAA Teal */
+      }
+    </style>
+<lineargradient gradientUnits="userSpaceOnUse" id="linear-gradient" x1="268.63" x2="204.76" y1="295.89" y2="295.89">
+<stop offset="0" stop-color="#2563eb"></stop>
+<stop offset="1" stop-color="#f97316"></stop>
+</lineargradient>
+<lineargradient id="linear-gradient1" x1="326.32" x2="326.32" xlink:href="#linear-gradient" y1="239.95" y2="239.95"></lineargradient>
+<lineargradient gradientUnits="userSpaceOnUse" id="linear-gradient2" x1="60.04" x2="60.04" y1="482.99" y2="178.88">
+<stop offset="0" stop-color="#1e3a5f"></stop>
+<stop offset="1" stop-color="#f97316"></stop>
+</lineargradient>
+<lineargradient gradientUnits="userSpaceOnUse" id="linear-gradient3" x1="654.39" x2="195.02" y1="121.93" y2="121.93">
+<stop offset="0" stop-color="#0891b2"></stop>
+<stop offset="1" stop-color="#f97316"></stop>
+</lineargradient>
+<lineargradient data-name="New Gradient Swatch 5" gradientUnits="userSpaceOnUse" id="New_Gradient_Swatch_5" x1="185.56" x2="808.07" y1="348.87" y2="348.87">
+<stop offset="0" stop-color="#1e3a5f"></stop>
+<stop offset="1" stop-color="#0891b2"></stop>
+</lineargradient>
+<lineargradient data-name="New Gradient Swatch 6" gradientUnits="userSpaceOnUse" id="New_Gradient_Swatch_6" x1="188.71" x2="583.1" y1="532.56" y2="532.56">
+<stop offset="0" stop-color="#1e3a5f"></stop>
+<stop offset="1" stop-color="#f97316"></stop>
+</lineargradient>
+<lineargradient data-name="New Gradient Swatch 7" gradientUnits="userSpaceOnUse" id="New_Gradient_Swatch_7" x1="184.83" x2="268.63" y1="453.15" y2="453.15">
+<stop offset="0" stop-color="#1e3a5f"></stop>
+<stop offset="1" stop-color="#2563eb"></stop>
+</lineargradient>
+<lineargradient data-name="New Gradient Swatch 8" gradientUnits="userSpaceOnUse" id="New_Gradient_Swatch_8" x1="762.73" x2="762.73" y1="534.28" y2="142.34">
+<stop offset="0" stop-color="#f97316"></stop>
+<stop offset="1" stop-color="#0891b2"></stop>
+</lineargradient>
+<lineargradient data-name="New Gradient Swatch 8" id="New_Gradient_Swatch_81" x1="747.21" x2="747.21" xlink:href="#New_Gradient_Swatch_8" y1="414.12" y2="565.51"></lineargradient>
+<lineargradient data-name="New Gradient Swatch 8" id="New_Gradient_Swatch_82" x1="667.75" x2="667.75" xlink:href="#New_Gradient_Swatch_8" y1="393.65" y2="346.9"></lineargradient>
+<lineargradient data-name="New Gradient Swatch 9" gradientUnits="userSpaceOnUse" id="New_Gradient_Swatch_9" x1="475.83" x2="651.89" y1="130.03" y2="130.03">
+<stop offset="0" stop-color="#2563eb"></stop>
+<stop offset="1" stop-color="#0891b2"></stop>
+</lineargradient>
+<lineargradient data-name="New Gradient Swatch 9" id="New_Gradient_Swatch_91" x1="548.85" x2="578.83" xlink:href="#New_Gradient_Swatch_9" y1="215.39" y2="215.39"></lineargradient>
+<lineargradient data-name="New Gradient Swatch 9" id="New_Gradient_Swatch_92" x1="549.29" x2="579.66" xlink:href="#New_Gradient_Swatch_9" y1="316.74" y2="316.74"></lineargradient>
+<lineargradient data-name="New Gradient Swatch 10" gradientUnits="userSpaceOnUse" id="New_Gradient_Swatch_10" x1="548.85" x2="579.25" y1="414.01" y2="414.01">
+<stop offset="0" stop-color="#2563eb"></stop>
+<stop offset="1" stop-color="#f97316"></stop>
+</lineargradient>
+<lineargradient data-name="New Gradient Swatch 10" id="New_Gradient_Swatch_101" x1="547.52" x2="583.42" xlink:href="#New_Gradient_Swatch_10" y1="495.8" y2="495.8"></lineargradient>
+<lineargradient id="linear-gradient4" x1="85.27" x2="85.27" xlink:href="#linear-gradient2" y1="482.57" y2="178.46"></lineargradient>
+</defs>
+<style>
+  text { pointer-events: none; }
+
+  /* Disable pointer events for letter glyph paths so that hovering over text does not trigger glow */
+  path.st24, path.st27 {
+    pointer-events: none;
+  }
+
+  /* Hover glow on likely node shapes, excluding dashed outlines/connectors */
+  /* Apply the glow filter only to node shapes, not the letter glyphs.  */
+  /* Exclude the background rectangle (class st23) from the hover glow rule */
+  rect:not([stroke-dasharray]):not(.st23):hover,
+  circle:not([stroke-dasharray]):hover,
+  ellipse:not([stroke-dasharray]):hover,
+  /* For paths and polygons, exclude classes used for text (st24 and st27) so letters don't glow */
+  /* When hovering over arbitrary paths and polygons (likely connector shapes),
+     we want to avoid applying the outer glow to elements that also serve as
+     connectors.  Without this exclusion the glow filter creates a new
+     stacking context and visually lifts the connector above overlapping
+     shapes.  Therefore, exclude any elements with the pulse-target class
+     from this generic hover rule. */
+  path:not([stroke-dasharray]):not(.st24):not(.st27):hover:not(.pulse-target),
+  polygon:not([stroke-dasharray]):not(.st24):not(.st27):hover:not(.pulse-target) {
+    filter: url(#outer-glow);
+    stroke: #FFFFFF;
+    stroke-width: 4;
+    cursor: pointer;
+  }
+
+  /* Explicitly prevent connectors (pulse-target) from picking up the outer glow
+     on direct hover.  When these elements are hovered, rely solely on the
+     scripted pulse animation instead of the glow filter. */
+  .pulse-target:hover {
+    filter: none !important;
+    stroke-width: inherit;
+  }
+
+  /* Disable pointer events on all pulse-target connectors.  Without this
+     rule, connectors that overlap boxes (e.g. the arrow from Accountancy
+     Level&nbsp;2 to Accountancy Level&nbsp;3 and&nbsp;4) intercept hover events and
+     prevent the underlying box from receiving mouseenter/mouseleave
+     events.  By turning off pointer events, the hover logic for boxes
+     triggers correctly. */
+  .pulse-target {
+    pointer-events: none;
+  }
+
+  /* Disable pointer events on other connector classes as well.  These
+     classes correspond to the various line and arrow shapes used to
+     draw connections between nodes.  Setting pointer-events to none
+     prevents these connectors from triggering the generic hover rule
+     and ensures that only hovering over nodes triggers glows. */
+  path.st5,
+  path.st6,
+  line.st7,
+  path.st8,
+  path.st9,
+  path.st17,
+  line.st20,
+  line.st22,
+  path.st26,
+  path.st29,
+  path.st30 {
+    pointer-events: none;
+  }
+
+  /* Slow pulsing highlight for connectors triggered by hovering over the Accountancy Level&nbsp;2 box.
+     This animation only adjusts stroke colour and opacity and does not apply an outer glow,
+     ensuring the highlight does not appear beneath overlapping shapes. */
+  /* Pulse animation removed */
+
+  /* Applied by script to connectors when the Accountancy Level&nbsp;2 box is
+     hovered.  Override the stroke colour to white and animate the
+     opacity.  Do not override the stroke width so it inherits from
+     the base class (2.37px) and avoids bleeding under overlapping
+     elements. */
+  .pulse-glow {
+    /* Animation removed - static glow */
+    /* Highlight the connector stroke in white without changing
+       the underlying geometry.  We do not increase stroke width here so
+       the glow remains the same thickness as the original line and does
+       not bleed over overlapping boxes. */
+    stroke: #FFFFFF !important;
+    /* Inherit the original stroke-width and cap/join settings from the
+       base class so the pulsing line matches the underlying geometry. */
+    stroke-width: inherit;
+    stroke-linecap: inherit;
+    stroke-linejoin: inherit;
+    /* Ensure the duplicate connector is visible by overriding any
+       inherited stroke-opacity set to 0. */
+    stroke-opacity: 1;
+    /* Do not override fill or apply a halo. */
+    fill: none;
+  }
+
+  /* Hide original connectors when pulsing so that only the
+     behind-the-scenes duplicates are visible.  Hiding the originals
+     prevents the pulsing line from being drawn on top of any nodes
+     because the duplicates live in a lower stacking order. */
+  .pulse-hidden {
+    /* Hide by removing stroke opacity rather than display:none so the geometry remains */
+    stroke-opacity: 0 !important;
+  }
+
+  /* Duplicated connectors start fully transparent so they do not appear
+     until the pulsing animation is triggered.  They do not intercept
+     pointer events. */
+  .connector-duplicate-l2,
+  .connector-duplicate-l3-4,
+  .connector-duplicate-ba,
+  .connector-duplicate-dt3 {
+    /* Duplicated connectors start fully transparent so they do not appear
+       until the pulsing animation is triggered.  They do not intercept
+       pointer events. */
+    stroke-opacity: 0;
+    pointer-events: none;
+  }
+
+  /* Prevent original connectors from intercepting pointer events so that
+     hovering over the boxes will always trigger the desired pulsing effect.
+     The connectors themselves have no hover behaviour, so disabling
+     pointer events here does not affect interactivity. */
+  path.pulse-target,
+  line.pulse-target {
+    pointer-events: none;
+  }
+
+  /* Highlight the dashed container around the central circles when
+     hovering over Accountancy Level&nbsp;2.  This class applies the
+     outer glow filter and a thicker white stroke to the dashed
+     rectangle.  Because the rectangle itself is dashed, increasing
+     the stroke width slightly and applying the glow filter
+     produces a soft halo around the container without altering
+     the underlying geometry. */
+  .glow-dash-container {
+    filter: url(#outer-glow);
+    stroke: #FFFFFF;
+    stroke-width: 3;
+  }
+
+  .connector-duplicate-pl4 { stroke-opacity: 0; pointer-events: none; }
+
+  .connector-duplicate-pl3 { stroke-opacity: 0; pointer-events: none; }
+    </style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="floating-shapes">
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+
+    <!-- TAA Header -->
+    <div class="taa-header">
+        <div class="taa-header-content">
+            <div class="taa-logo">
+                <div class="taa-logo-text">The Apprentice Academy</div>
+            </div>
+            <div class="taa-tagline">Empowering Futures Through Learning</div>
+        </div>
+    </div>
+
+    <!-- Three C's Banner -->
+    <div class="three-cs-banner">
+        <div class="three-c-item confidence">
+            <div class="three-c-icon confidence-icon">💪</div>
+            <span>Confidence</span>
+        </div>
+        <div class="three-c-item competence">
+            <div class="three-c-icon competence-icon">🎯</div>
+            <span>Competence</span>
+        </div>
+        <div class="three-c-item career">
+            <div class="three-c-icon career-icon">🚀</div>
+            <span>Career Capability</span>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <div class="chat-area">
+            <div class="chat-header">
+                <h1>Career Progression Wizard</h1>
+                <p>Your personalized guide to internal career development</p>
+            </div>
+
+            <div class="chat-messages" id="chatMessages">
+            </div>
+
+            <div class="chat-input-area">
+                <div class="chat-input-row">
+                    <input type="text" class="chat-input" id="chatInput" placeholder="Type your message..." disabled>
+                    <button class="send-btn" id="sendBtn" disabled>Send</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="context-panel" id="contextPanel">
+            <div class="panel-content" id="panelContent">
+                <h2>Welcome to TAA!</h2>
+                <p>I'm here to help you plan your next career steps within our organization.</p>
+                <br>
+                <p>We'll explore your interests, skills, and goals to find the perfect progression path for you through The Apprentice Academy.</p>
+
+                <div class="three-cs-info">
+                    <div class="c-card confidence">
+                        <h3>🔥 Confidence</h3>
+                        <p>Build self-assurance in your career choices and professional abilities.</p>
+                    </div>
+                    <div class="c-card competence">
+                        <h3>📚 Competence</h3>
+                        <p>Develop the skills and expertise needed for your chosen career path.</p>
+                    </div>
+                    <div class="c-card career">
+                        <h3>🎯 Career Capability</h3>
+                        <p>Create clear pathways for professional progression and growth.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Career Map Panel (Right Side) -->
+        <div class="career-map-panel" id="careerMapPanel">
+            <div class="career-map-header">
+                <div class="career-map-header-text">
+                    <h2>Career Progression Pathways</h2>
+                    <p>Explore interactive career paths and opportunities</p>
+                </div>
+                <button class="fullscreen-btn" id="fullscreenBtn">⛶ Fullscreen</button>
+            </div>
+            <div class="career-map-content" id="careerMapContent">
+                <!-- Career map SVG embedded below -->
+            <svg id="CareerMapSVG" version="1.1" viewBox="0 0 841.89 595.28" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<!-- Generator: Adobe Illustrator 29.8.1, SVG Export Plug-In . SVG Version: 2.1.1 Build 2)  -->
+<defs>
+<!-- Outer halo glow: bright rim + soft halo -->
+<filter height="340%" id="outer-glow" width="340%" x="-120%" y="-120%">
+<!-- tight rim -->
+<femorphology in="SourceAlpha" operator="dilate" radius="1.6" result="spreadInner"></femorphology>
+<fegaussianblur in="spreadInner" result="blurInner" stdDeviation="2.2"></fegaussianblur>
+<fecolormatrix in="blurInner" result="rim" type="matrix" values="       0 0 0 0 1       0 0 0 0 1       0 0 0 0 1       0 0 0 1 0"></fecolormatrix>
+<!-- soft halo -->
+<femorphology in="SourceAlpha" operator="dilate" radius="4.2" result="spreadOuter"></femorphology>
+<fegaussianblur in="spreadOuter" result="blurOuter" stdDeviation="7"></fegaussianblur>
+<fecolormatrix in="blurOuter" result="halo" type="matrix" values="       0 0 0 0 1       0 0 0 0 1       0 0 0 0 1       0 0 0 0.55 0"></fecolormatrix>
+<femerge>
+<femergenode in="halo"></femergenode>
+<femergenode in="rim"></femergenode>
+<femergenode in="SourceGraphic"></femergenode>
+</femerge>
+</filter>
+<style>
+      .st0 {
+        stroke: url(#New_Gradient_Swatch_8);
+      }
+
+      .st0, .st1, .st2, .st3, .st4, .st5, .st6, .st7, .st8, .st9, .st10, .st11, .st12, .st13, .st14, .st15, .st16, .st17, .st18, .st19, .st20, .st21, .st22 {
+        stroke-miterlimit: 10;
+      }
+
+      .st0, .st1, .st2, .st3, .st4, .st5, .st6, .st7, .st8, .st9, .st10, .st11, .st12, .st13, .st14, .st17, .st18, .st19, .st20, .st21, .st22 {
+        fill: none;
+      }
+
+      .st0, .st1, .st2, .st3, .st4, .st5, .st6, .st7, .st8, .st9, .st10, .st11, .st12, .st13, .st14, .st17, .st18, .st19, .st20, .st22 {
+        stroke-width: 2.37px;
+      }
+
+      .st1 {
+        stroke: url(#New_Gradient_Swatch_9);
+      }
+
+      .st2 {
+        stroke: url(#New_Gradient_Swatch_5);
+      }
+
+      .st3 {
+        stroke: url(#New_Gradient_Swatch_6);
+      }
+
+      .st4 {
+        stroke: url(#New_Gradient_Swatch_7);
+      }
+
+      .st23 {
+        /* Background colour for the large container. Add pointer-events none so it never intercepts hover
+           and thus the outer glow rule will not apply. */
+        fill: #1e3a5f; /* TAA Navy */
+        pointer-events: none;
+      }
+
+      .st24 {
+        fill: #ffffff; /* White for text */
+      }
+
+      .st5 {
+        stroke: #f97316; /* TAA Orange */
+      }
+
+      .st6 {
+        stroke: url(#linear-gradient1);
+      }
+
+      .st7 {
+        stroke: url(#linear-gradient2);
+      }
+
+      .st8 {
+        stroke: url(#linear-gradient4);
+      }
+
+      .st9 {
+        stroke: url(#linear-gradient3);
+      }
+
+      .st10 {
+        stroke: url(#New_Gradient_Swatch_82);
+      }
+
+      .st11 {
+        stroke: url(#New_Gradient_Swatch_91);
+      }
+
+      .st12 {
+        stroke: url(#New_Gradient_Swatch_81);
+      }
+
+      .st13 {
+        stroke: url(#New_Gradient_Swatch_92);
+      }
+
+      .st14 {
+        stroke: url(#New_Gradient_Swatch_10);
+      }
+
+      .st25, .st15 {
+        fill: #f97316; /* TAA Orange */
+      }
+
+      .st15, .st16 {
+        stroke: #ffffff;
+      }
+
+      .st26, .st16 {
+        fill: #0891b2; /* TAA Teal */
+      }
+
+      .st27 {
+        fill: #ffffff;
+      }
+
+      .st17 {
+        stroke: url(#linear-gradient);
+      }
+
+      .st18 {
+        stroke: url(#New_Gradient_Swatch_101);
+      }
+
+      .st28 {
+        fill: #f97316; /* TAA Orange */
+      }
+
+      .st19 {
+        stroke: #0891b2; /* TAA Teal */
+      }
+
+      .st20 {
+        stroke: #f97316; /* TAA Orange */
+      }
+
+      .st21 {
+        stroke-dasharray: 6.45 6.45;
+        stroke-width: 1.62px;
+      }
+
+      .st21, .st22 {
+        stroke: #ffffff;
+      }
+
+      .st29 {
+        fill: #2563eb; /* TAA Blue */
+      }
+
+      .st30 {
+        fill: #0891b2; /* TAA Teal */
+      }
+    </style>
+<lineargradient gradientUnits="userSpaceOnUse" id="linear-gradient" x1="268.63" x2="204.76" y1="295.89" y2="295.89">
+<stop offset="0" stop-color="#2563eb"></stop>
+<stop offset="1" stop-color="#f97316"></stop>
+</lineargradient>
+<lineargradient id="linear-gradient1" x1="326.32" x2="326.32" xlink:href="#linear-gradient" y1="239.95" y2="239.95"></lineargradient>
+<lineargradient gradientUnits="userSpaceOnUse" id="linear-gradient2" x1="60.04" x2="60.04" y1="482.99" y2="178.88">
+<stop offset="0" stop-color="#1e3a5f"></stop>
+<stop offset="1" stop-color="#f97316"></stop>
+</lineargradient>
+<lineargradient gradientUnits="userSpaceOnUse" id="linear-gradient3" x1="654.39" x2="195.02" y1="121.93" y2="121.93">
+<stop offset="0" stop-color="#0891b2"></stop>
+<stop offset="1" stop-color="#f97316"></stop>
+</lineargradient>
+<lineargradient data-name="New Gradient Swatch 5" gradientUnits="userSpaceOnUse" id="New_Gradient_Swatch_5" x1="185.56" x2="808.07" y1="348.87" y2="348.87">
+<stop offset="0" stop-color="#1e3a5f"></stop>
+<stop offset="1" stop-color="#0891b2"></stop>
+</lineargradient>
+<lineargradient data-name="New Gradient Swatch 6" gradientUnits="userSpaceOnUse" id="New_Gradient_Swatch_6" x1="188.71" x2="583.1" y1="532.56" y2="532.56">
+<stop offset="0" stop-color="#1e3a5f"></stop>
+<stop offset="1" stop-color="#f97316"></stop>
+</lineargradient>
+<lineargradient data-name="New Gradient Swatch 7" gradientUnits="userSpaceOnUse" id="New_Gradient_Swatch_7" x1="184.83" x2="268.63" y1="453.15" y2="453.15">
+<stop offset="0" stop-color="#1e3a5f"></stop>
+<stop offset="1" stop-color="#2563eb"></stop>
+</lineargradient>
+<lineargradient data-name="New Gradient Swatch 8" gradientUnits="userSpaceOnUse" id="New_Gradient_Swatch_8" x1="762.73" x2="762.73" y1="534.28" y2="142.34">
+<stop offset="0" stop-color="#f97316"></stop>
+<stop offset="1" stop-color="#0891b2"></stop>
+</lineargradient>
+<lineargradient data-name="New Gradient Swatch 8" id="New_Gradient_Swatch_81" x1="747.21" x2="747.21" xlink:href="#New_Gradient_Swatch_8" y1="414.12" y2="565.51"></lineargradient>
+<lineargradient data-name="New Gradient Swatch 8" id="New_Gradient_Swatch_82" x1="667.75" x2="667.75" xlink:href="#New_Gradient_Swatch_8" y1="393.65" y2="346.9"></lineargradient>
+<lineargradient data-name="New Gradient Swatch 9" gradientUnits="userSpaceOnUse" id="New_Gradient_Swatch_9" x1="475.83" x2="651.89" y1="130.03" y2="130.03">
+<stop offset="0" stop-color="#2563eb"></stop>
+<stop offset="1" stop-color="#0891b2"></stop>
+</lineargradient>
+<lineargradient data-name="New Gradient Swatch 9" id="New_Gradient_Swatch_91" x1="548.85" x2="578.83" xlink:href="#New_Gradient_Swatch_9" y1="215.39" y2="215.39"></lineargradient>
+<lineargradient data-name="New Gradient Swatch 9" id="New_Gradient_Swatch_92" x1="549.29" x2="579.66" xlink:href="#New_Gradient_Swatch_9" y1="316.74" y2="316.74"></lineargradient>
+<lineargradient data-name="New Gradient Swatch 10" gradientUnits="userSpaceOnUse" id="New_Gradient_Swatch_10" x1="548.85" x2="579.25" y1="414.01" y2="414.01">
+<stop offset="0" stop-color="#2563eb"></stop>
+<stop offset="1" stop-color="#f97316"></stop>
+</lineargradient>
+<lineargradient data-name="New Gradient Swatch 10" id="New_Gradient_Swatch_101" x1="547.52" x2="583.42" xlink:href="#New_Gradient_Swatch_10" y1="495.8" y2="495.8"></lineargradient>
+<lineargradient id="linear-gradient4" x1="85.27" x2="85.27" xlink:href="#linear-gradient2" y1="482.57" y2="178.46"></lineargradient>
+</defs>
+<style>
+  text { pointer-events: none; }
+
+  /* Disable pointer events for letter glyph paths so that hovering over text does not trigger glow */
+  path.st24, path.st27 {
+    pointer-events: none;
+  }
+
+  /* Hover glow on likely node shapes, excluding dashed outlines/connectors */
+  /* Apply the glow filter only to node shapes, not the letter glyphs.  */
+  /* Exclude the background rectangle (class st23) from the hover glow rule */
+  rect:not([stroke-dasharray]):not(.st23):hover,
+  circle:not([stroke-dasharray]):hover,
+  ellipse:not([stroke-dasharray]):hover,
+  /* For paths and polygons, exclude classes used for text (st24 and st27) so letters don't glow */
+  /* When hovering over arbitrary paths and polygons (likely connector shapes),
+     we want to avoid applying the outer glow to elements that also serve as
+     connectors.  Without this exclusion the glow filter creates a new
+     stacking context and visually lifts the connector above overlapping
+     shapes.  Therefore, exclude any elements with the pulse-target class
+     from this generic hover rule. */
+  path:not([stroke-dasharray]):not(.st24):not(.st27):hover:not(.pulse-target),
+  polygon:not([stroke-dasharray]):not(.st24):not(.st27):hover:not(.pulse-target) {
+    filter: url(#outer-glow);
+    stroke: #FFFFFF;
+    stroke-width: 4;
+    cursor: pointer;
+  }
+
+  /* Explicitly prevent connectors (pulse-target) from picking up the outer glow
+     on direct hover.  When these elements are hovered, rely solely on the
+     scripted pulse animation instead of the glow filter. */
+  .pulse-target:hover {
+    filter: none !important;
+    stroke-width: inherit;
+  }
+
+  /* Disable pointer events on all pulse-target connectors.  Without this
+     rule, connectors that overlap boxes (e.g. the arrow from Accountancy
+     Level&nbsp;2 to Accountancy Level&nbsp;3 and&nbsp;4) intercept hover events and
+     prevent the underlying box from receiving mouseenter/mouseleave
+     events.  By turning off pointer events, the hover logic for boxes
+     triggers correctly. */
+  .pulse-target {
+    pointer-events: none;
+  }
+
+  /* Disable pointer events on other connector classes as well.  These
+     classes correspond to the various line and arrow shapes used to
+     draw connections between nodes.  Setting pointer-events to none
+     prevents these connectors from triggering the generic hover rule
+     and ensures that only hovering over nodes triggers glows. */
+  path.st5,
+  path.st6,
+  line.st7,
+  path.st8,
+  path.st9,
+  path.st17,
+  line.st20,
+  line.st22,
+  path.st26,
+  path.st29,
+  path.st30 {
+    pointer-events: none;
+  }
+
+  /* Slow pulsing highlight for connectors triggered by hovering over the Accountancy Level&nbsp;2 box.
+     This animation only adjusts stroke colour and opacity and does not apply an outer glow,
+     ensuring the highlight does not appear beneath overlapping shapes. */
+  /* Pulse animation removed */
+
+  /* Applied by script to connectors when the Accountancy Level&nbsp;2 box is
+     hovered.  Override the stroke colour to white and animate the
+     opacity.  Do not override the stroke width so it inherits from
+     the base class (2.37px) and avoids bleeding under overlapping
+     elements. */
+  .pulse-glow {
+    /* Animation removed - static glow */
+    /* Highlight the connector stroke in white without changing
+       the underlying geometry.  We do not increase stroke width here so
+       the glow remains the same thickness as the original line and does
+       not bleed over overlapping boxes. */
+    stroke: #FFFFFF !important;
+    /* Inherit the original stroke-width and cap/join settings from the
+       base class so the pulsing line matches the underlying geometry. */
+    stroke-width: inherit;
+    stroke-linecap: inherit;
+    stroke-linejoin: inherit;
+    /* Ensure the duplicate connector is visible by overriding any
+       inherited stroke-opacity set to 0. */
+    stroke-opacity: 1;
+    /* Do not override fill or apply a halo. */
+    fill: none;
+  }
+
+  /* Hide original connectors when pulsing so that only the
+     behind-the-scenes duplicates are visible.  Hiding the originals
+     prevents the pulsing line from being drawn on top of any nodes
+     because the duplicates live in a lower stacking order. */
+  .pulse-hidden {
+    /* Hide by removing stroke opacity rather than display:none so the geometry remains */
+    stroke-opacity: 0 !important;
+  }
+
+  /* Duplicated connectors start fully transparent so they do not appear
+     until the pulsing animation is triggered.  They do not intercept
+     pointer events. */
+  .connector-duplicate-l2,
+  .connector-duplicate-l3-4,
+  .connector-duplicate-ba,
+  .connector-duplicate-dt3 {
+    /* Duplicated connectors start fully transparent so they do not appear
+       until the pulsing animation is triggered.  They do not intercept
+       pointer events. */
+    stroke-opacity: 0;
+    pointer-events: none;
+  }
+
+  /* Prevent original connectors from intercepting pointer events so that
+     hovering over the boxes will always trigger the desired pulsing effect.
+     The connectors themselves have no hover behaviour, so disabling
+     pointer events here does not affect interactivity. */
+  path.pulse-target,
+  line.pulse-target {
+    pointer-events: none;
+  }
+
+  /* Highlight the dashed container around the central circles when
+     hovering over Accountancy Level&nbsp;2.  This class applies the
+     outer glow filter and a thicker white stroke to the dashed
+     rectangle.  Because the rectangle itself is dashed, increasing
+     the stroke width slightly and applying the glow filter
+     produces a soft halo around the container without altering
+     the underlying geometry. */
+  .glow-dash-container {
+    filter: url(#outer-glow);
+    stroke: #FFFFFF;
+    stroke-width: 3;
+  }
+
+  .connector-duplicate-pl4 { stroke-opacity: 0; pointer-events: none; }
+
+  .connector-duplicate-pl3 { stroke-opacity: 0; pointer-events: none; }
+</style>
+<rect class="st23" height="595.28" width="841.89"></rect>
+<!-- Duplicate copies of connectors associated with Accountancy Level 2.
+       These are inserted before the main content so they sit behind all
+       other shapes.  They are hidden by default (stroke-opacity:0) and will
+       pulse when the Accountancy Level 2 box is hovered. -->
+<g id="accountancy-level-2-duplicates" pointer-events="none">
+<!-- Duplicate of the curved connector -->
+<path class="st5 connector-duplicate-l2" d="M173.38,165.12h11.77c11.74,0,21.35,9.61,21.35,21.35v27.07c0,11.74-9.61,21.35-21.35,21.35h-12.4"></path>
+<!-- Duplicate of the vertical connector -->
+<line class="st7 connector-duplicate-l2" x1="60.04" x2="60.04" y1="178.88" y2="482.99"></line>
+<!-- Duplicate of the long horizontal connector -->
+<path class="st9 connector-duplicate-l2" d="M654.39,96.24h-356.68c-11.74,0-21.35,9.61-21.35,21.35l.2,8.68c0,11.74-9.61,21.35-21.35,21.35h-60.19"></path>
+<!-- Duplicate of the bottom arrowhead -->
+<path class="st29 connector-duplicate-l2" d="M47,457.07h26.09c1.72,1.72,1.72,4.54,0,6.27l-9.91,9.91c-1.72,1.72-4.54,1.72-6.27,0l-9.91-9.91c-1.72-1.72-1.72-4.54,0-6.27Z" fill="none"></path>
+<!-- Duplicate of the top arrowhead -->
+<path class="st30 connector-duplicate-l2" d="M618.93,109.04v-26.09c1.72-1.72,4.54-1.72,6.27,0l9.91,9.91c1.72,1.72,1.72,4.54,0,6.27l-9.91,9.91c-1.72,1.72-4.54,1.72-6.27,0Z" fill="none"></path>
+<!-- Duplicate of the arrow to Accountancy Level 3 and 4 -->
+<path class="st28 connector-duplicate-l2" d="M193.84,190.92h26.09c1.72,1.72,1.72,4.54,0,6.27l-9.91,9.91c-1.72,1.72-4.54,1.72-6.27,0l-9.91-9.91c-1.72-1.72-1.72-4.54,0-6.27Z" fill="none"></path>
+</g>
+<!-- Duplicate copies of connectors associated with Accountancy Level 3 and 4.
+       These are inserted before the main content so they sit behind all
+       other shapes.  They are hidden by default and will pulse when the
+       Accountancy Level 3 and 4 box is hovered. -->
+<g id="accountancy-level-3-4-duplicates" pointer-events="none">
+<!-- Duplicate of the st26 connector -->
+<path class="st26 connector-duplicate-l3-4" d="M267.43,324.5v-26.09c1.72-1.72,4.54-1.72,6.27,0l9.91,9.91c1.72,1.72,1.72,4.54,0,6.27l-9.91,9.91c-1.72,1.72-4.54,1.72-6.27,0Z" fill="none"></path>
+<!-- Duplicate of the st17 connector -->
+<path class="st17 connector-duplicate-l3-4" d="M268.63,310.95h-41.33c-11.74,0-21.35-9.61-21.35-21.35v-9.96"></path>
+</g>
+<!-- Duplicate copies of connectors associated with Business Admin Level 3.
+       These are inserted before the main content so they sit behind all
+       other shapes.  They are hidden by default and will pulse when the
+       Business Admin Level 3 box is hovered. -->
+<g id="business-admin-level-3-duplicates" pointer-events="none">
+<!-- Duplicate of the st25 connector leading down and right -->
+<path class="st25 connector-duplicate-ba" d="M552.55,546.13v-26.09c1.72-1.72,4.54-1.72,6.27,0l9.91,9.91c1.72,1.72,1.72,4.54,0,6.27l-9.91,9.91c-1.72,1.72-4.54,1.72-6.27,0Z" fill="none"></path>
+<!-- Duplicate of the st4 connector leading left and up -->
+<path class="st4 connector-duplicate-ba" d="M268.63,408.76h-41.1c-11.74,0-21.35,9.61-21.35,21.35v32.63s0,13.44,0,13.44c0,11.74-9.61,21.35-21.35,21.35"></path>
+<!-- Duplicate of the st26 arrow connector near the bottom -->
+<path class="st26 connector-duplicate-ba" d="M267.43,422.56v-26.09c1.72-1.72,4.54-1.72,6.27,0l9.91,9.91c1.72,1.72,1.72,4.54,0,6.27l-9.91,9.91c-1.72,1.72-4.54,1.72-6.27,0Z" fill="none"></path>
+<!-- Duplicate of the long st12 connector on the right side -->
+<path class="st12 connector-duplicate-ba" d="M734.11,415.3h8.03c11.74,0,21.35,9.61,21.35,21.35v106.32c0,11.74-9.61,21.35-21.35,21.35h-12.4"></path>
+<!-- Duplicate of the st25 arrowhead on the far right -->
+<path class="st25 connector-duplicate-ba" d="M775.98,448.73h-26.09c-1.72-1.72-1.72-4.54,0-6.27l9.91-9.91c1.72-1.72,4.54-1.72,6.27,0l9.91,9.91c1.72,1.72,1.72,4.54,0,6.27Z" fill="none"></path>
+<!-- Duplicate of the st28 arrowhead on the left side -->
+<path class="st28 connector-duplicate-ba" d="M98.31,205.57h-26.09c-1.72-1.72-1.72-4.54,0-6.27l9.91-9.91c1.72-1.72,4.54-1.72,6.27,0l9.91,9.91c1.72,1.72,1.72,4.54,0,6.27Z" fill="none"></path>
+<!-- Duplicate of the st8 vertical line -->
+<line class="st8 connector-duplicate-ba" x1="85.27" x2="85.27" y1="178.46" y2="482.57"></line>
+<!-- Duplicate of the st2 container line on the far right -->
+<path class="st2 connector-duplicate-ba" d="M806.88,132.32v410.57c0,11.74-9.61,21.35-21.35,21.35H208.1c-11.74,0-21.35-9.61-21.35-21.35v-9.96"></path>
+<line class="st3 connector-duplicate-ba" x1="188.71" x2="583.1" y1="532.56" y2="532.56"></line></g><g id="data-technician-level-3-duplicates" pointer-events="none"><path class="st19 connector-duplicate-dt3" d="M617.93,206.49v-53.99c0-11.74,9.61-21.35,21.35-21.35h12.4"></path><path class="st30 connector-duplicate-dt3" d="M604.82,157.6h26.09c1.72,1.72,1.72,4.54,0,6.27l-9.91,9.91c-1.72,1.72-4.54,1.72-6.27,0l-9.91-9.91c-1.72-1.72-1.72-4.54,0-6.27Z"></path><path class="st30 connector-duplicate-dt3" d="M747.6,279.5h26.09c1.72,1.72,1.72,4.54,0,6.27l-9.91,9.91c-1.72,1.72-4.54,1.72-6.27,0l-9.91-9.91c-1.72-1.72-1.72-4.54,0-6.27Z"></path><path class="st19 connector-duplicate-dt3" d="M760.58,144.84v152.21c0,11.74-9.61,21.35-21.35,21.35h-9.96"></path><path class="st1 connector-duplicate-dt3" d="M477.02,145.26v-7.93c0-11.74,9.61-21.35,21.35-21.35h153.52"></path><path class="st26 connector-duplicate-dt3" d="M463.23,134.98h26.09c1.72,1.72,1.72,4.54,0,6.27l-9.91,9.91c-1.72,1.72-4.54,1.72-6.27,0l-9.91-9.91c-1.72-1.72-1.72-4.54,0-6.27Z"></path><rect class="st21 connector-duplicate-dt3" height="363.12" id="dash-container-dt3-dup" rx="28.35" ry="28.35" width="235.7" x="289.82" y="157.75"></rect></g><g id="data-engineer-level-5-duplicates" pointer-events="none"><line class="st11 connector-duplicate-de5" x1="578.83" x2="548.85" y1="215.39" y2="215.39"></line><path class="st26 connector-duplicate-de5" d="M549.83,202.46v26.09c-1.72,1.72-4.54,1.72-6.27,0l-9.91-9.91c-1.72-1.72-1.72-4.54,0-6.27l9.91-9.91c1.72-1.72,4.54-1.72,6.27,0Z"></path><rect class="st21 connector-duplicate-de5" height="363.12" id="dash-container-de5-dup" rx="28.35" ry="28.35" width="235.7" x="289.82" y="157.75"></rect></g><g id="data-analyst-level-4-duplicates" pointer-events="none"><line class="st19 connector-duplicate-da4" x1="668.17" x2="668.17" y1="247.96" y2="294.71"></line><path class="st30 connector-duplicate-da4" d="M681.01,271.11h-26.09c-1.72-1.72-1.72-4.54,0-6.27l9.91-9.91c1.72-1.72,4.54-1.72,6.27,0l9.91,9.91c1.72,1.72,1.72,4.54,0,6.27Z"></path><line class="st13 connector-duplicate-da4" x1="579.66" x2="549.29" y1="316.74" y2="316.74"></line><path class="st26 connector-duplicate-da4" d="M549.83,303.8v26.09c-1.72,1.72-4.54,1.72-6.27,0l-9.91-9.91c-1.72-1.72-1.72-4.54,0-6.27l9.91-9.91c1.72-1.72,4.54-1.72,6.27,0Z"></path><rect class="st21 connector-duplicate-da4" height="363.12" id="dash-container-dup-da4" rx="28.35" ry="28.35" width="235.7" x="289.82" y="157.75"></rect></g><g id="procurement-level-4-duplicates" pointer-events="none"><line class="st10 connector-duplicate-pl4" x1="667.75" x2="667.75" y1="346.9" y2="393.65"></line><path class="st30 connector-duplicate-pl4" d="M680.59,370.05h-26.09c-1.72-1.72-1.72-4.54,0-6.27l9.91-9.91c1.72-1.72,4.54-1.72,6.27,0l9.91,9.91c1.72,1.72,1.72,4.54,0,6.27Z"></path><line class="st14 connector-duplicate-pl4" x1="579.25" x2="548.85" y1="414.01" y2="414.01"></line><path class="st26 connector-duplicate-pl4" d="M549.83,401.07v26.09c-1.72,1.72-4.54,1.72-6.27,0l-9.91-9.91c-1.72-1.72-1.72-4.54,0-6.27l9.91-9.91c1.72-1.72,4.54-1.72,6.27,0Z"></path><rect class="st21 connector-duplicate-pl4" height="363.12" id="dash-container-dup-pl4" rx="28.35" ry="28.35" width="235.7" x="289.82" y="157.75"></rect></g><g id="procurement-level-3-duplicates" pointer-events="none"><path class="st0 connector-duplicate-pl3" d="M785.97,142.34v369.4c0,11.74-9.61,21.35-21.35,21.35h-26.31"></path><path class="st30 connector-duplicate-pl3" d="M798.94,191.98h-26.09c-1.72-1.72-1.72-4.54,0-6.27l9.91-9.91c1.72-1.72,4.54-1.72,6.27,0l9.91,9.91c1.72,1.72,1.72,4.54,0,6.27Z"></path><line class="st20 connector-duplicate-pl3" x1="666.92" x2="666.92" y1="419.22" y2="490.61"></line><path class="st25 connector-duplicate-pl3" d="M679.96,470.14h-26.09c-1.72-1.72-1.72-4.54,0-6.27l9.91-9.91c1.72-1.72,4.54-1.72,6.27,0l9.91,9.91c1.72,1.72,1.72,4.54,0,6.27Z"></path><line class="st18 connector-duplicate-pl3" x1="583.42" x2="547.52" y1="495.8" y2="495.8"></line><path class="st26 connector-duplicate-pl3" d="M549.83,482.93v26.09c-1.72,1.72-4.54,1.72-6.27,0l-9.91-9.91c-1.72-1.72-1.72-4.54,0-6.27l9.91-9.91c1.72-1.72,4.54-1.72,6.27,0Z"></path><rect class="st21 connector-duplicate-pl3" height="363.12" id="dash-container-dup-pl3" rx="28.35" ry="28.35" width="235.7" x="289.82" y="157.75"></rect></g>
+<circle class="st16" cx="363.91" cy="231" r="61.16"></circle>
+<!-- Add an id for Accountancy Level 2 so we can attach hover handlers -->
+<rect class="st28" height="66.72" id="accountancy-level-2" rx="28.35" ry="28.35" width="167.82" x="28.35" y="113.39"></rect>
+<g>
+<path class="st24" d="M27.86,27.9h9.63c6.94,0,11.69,4.18,11.69,10.6s-4.75,10.6-11.69,10.6h-9.63v-21.2ZM37.25,45.07c4.21,0,6.97-2.51,6.97-6.57s-2.76-6.57-6.97-6.57h-4.48v13.15h4.48Z"></path>
+<path class="st24" d="M69.3,45.16v3.94h-16.42v-21.2h16.02v3.94h-11.15v4.6h9.84v3.82h-9.84v4.91h11.54Z"></path>
+<path class="st24" d="M93.29,27.9l-9.18,21.2h-4.85l-9.15-21.2h5.3l6.45,15.14,6.54-15.14h4.88Z"></path>
+<path class="st24" d="M111.47,45.16v3.94h-16.42v-21.2h16.02v3.94h-11.15v4.6h9.84v3.82h-9.84v4.91h11.54Z"></path>
+<path class="st24" d="M115.38,27.9h4.91v17.2h10.63v4h-15.54v-21.2Z"></path>
+<path class="st24" d="M131.99,38.5c0-6.3,4.91-10.96,11.6-10.96s11.6,4.63,11.6,10.96-4.94,10.96-11.6,10.96-11.6-4.66-11.6-10.96ZM150.22,38.5c0-4.03-2.85-6.78-6.63-6.78s-6.63,2.76-6.63,6.78,2.85,6.78,6.63,6.78,6.63-2.76,6.63-6.78Z"></path>
+<path class="st24" d="M177.27,35.59c0,4.73-3.54,7.66-9.21,7.66h-4.27v5.85h-4.91v-21.2h9.18c5.66,0,9.21,2.94,9.21,7.69ZM172.31,35.59c0-2.33-1.51-3.7-4.51-3.7h-4v7.36h4c3,0,4.51-1.36,4.51-3.67Z"></path>
+<path class="st24" d="M180.76,27.9h4.91v21.2h-4.91v-21.2Z"></path>
+<path class="st24" d="M210.14,27.9v21.2h-4.03l-10.57-12.87v12.87h-4.85v-21.2h4.06l10.54,12.87v-12.87h4.85Z"></path>
+<path class="st24" d="M229.5,38.16h4.48v8.6c-2.33,1.76-5.54,2.7-8.57,2.7-6.66,0-11.57-4.57-11.57-10.96s4.91-10.96,11.66-10.96c3.73,0,6.81,1.27,8.87,3.67l-3.15,2.91c-1.54-1.64-3.33-2.39-5.48-2.39-4.12,0-6.94,2.76-6.94,6.78s2.82,6.78,6.88,6.78c1.33,0,2.57-.24,3.82-.91v-6.21Z"></path>
+<path class="st24" d="M251.5,31.89h-6.79v-4h18.48v4h-6.79v17.2h-4.91v-17.2Z"></path>
+<path class="st24" d="M285.28,27.9v21.2h-4.91v-8.69h-9.63v8.69h-4.91v-21.2h4.91v8.36h9.63v-8.36h4.91Z"></path>
+<path class="st24" d="M306.73,45.16v3.94h-16.42v-21.2h16.02v3.94h-11.15v4.6h9.84v3.82h-9.84v4.91h11.54Z"></path>
+<path class="st24" d="M333.54,42.62c0,3.57-2.76,6.85-8.78,6.85-2.97,0-6.03-.82-8.09-2.27l1.91-3.76c1.61,1.21,3.85,1.91,6.06,1.91,2.45,0,3.97-1,3.97-2.73,0-1.6-1.18-2.6-3.97-2.6h-2.24v-3.24l4.36-4.94h-9.03v-3.94h14.84v3.18l-4.79,5.45c3.82.61,5.75,2.97,5.75,6.09Z"></path>
+<path class="st24" d="M344.39,38.5c0-6.39,4.91-10.96,11.51-10.96,3.66,0,6.72,1.33,8.72,3.76l-3.15,2.91c-1.42-1.64-3.21-2.48-5.33-2.48-3.97,0-6.79,2.79-6.79,6.78s2.82,6.78,6.79,6.78c2.12,0,3.91-.85,5.33-2.51l3.15,2.91c-2,2.45-5.06,3.79-8.75,3.79-6.57,0-11.48-4.57-11.48-10.96Z"></path>
+<path class="st24" d="M372.62,29.29c0,.79-.12,1.36-.79,3.03l-1.76,4.36h-3l1.3-4.79c-.97-.42-1.6-1.33-1.6-2.6,0-1.76,1.27-2.91,2.94-2.91s2.91,1.18,2.91,2.91Z"></path>
+<path class="st24" d="M373.71,47.58l1.58-3.39c1.45.94,3.67,1.58,5.66,1.58,2.18,0,3-.58,3-1.48,0-2.67-9.84.06-9.84-6.45,0-3.09,2.79-5.27,7.54-5.27,2.24,0,4.73.51,6.27,1.42l-1.58,3.36c-1.61-.91-3.21-1.21-4.7-1.21-2.12,0-3.03.67-3.03,1.51,0,2.79,9.84.09,9.84,6.51,0,3.03-2.82,5.18-7.69,5.18-2.76,0-5.54-.76-7.06-1.76Z"></path>
+</g>
+<g>
+<path class="st24" d="M339.85,202.45h-4.02v-2.37h10.95v2.37h-4.02v10.19h-2.91v-10.19Z"></path>
+<path class="st24" d="M358.07,210.31v2.33h-9.73v-12.56h9.49v2.33h-6.6v2.73h5.83v2.26h-5.83v2.91h6.84Z"></path>
+<path class="st24" d="M368.66,209.95h-5.83l-1.11,2.69h-2.98l5.6-12.56h2.87l5.62,12.56h-3.05l-1.11-2.69ZM367.74,207.74l-1.99-4.81-1.99,4.81h3.98Z"></path>
+<path class="st24" d="M385.56,212.64l-.02-7.54-3.7,6.21h-1.31l-3.68-6.05v7.38h-2.73v-12.56h2.4l4.7,7.81,4.63-7.81h2.39l.04,12.56h-2.73Z"></path>
+<path class="st24" d="M325.92,218.02h2.91v10.19h6.3v2.37h-9.21v-12.56Z"></path>
+<path class="st24" d="M346.48,228.25v2.33h-9.73v-12.56h9.49v2.33h-6.6v2.73h5.83v2.26h-5.83v2.91h6.84Z"></path>
+<path class="st24" d="M357.07,227.89h-5.83l-1.11,2.69h-2.98l5.6-12.56h2.87l5.62,12.56h-3.05l-1.11-2.69ZM356.16,225.68l-1.99-4.81-1.99,4.81h3.98Z"></path>
+<path class="st24" d="M362.54,218.02h5.71c4.11,0,6.93,2.48,6.93,6.28s-2.82,6.28-6.93,6.28h-5.71v-12.56ZM368.11,228.2c2.49,0,4.13-1.49,4.13-3.89s-1.63-3.89-4.13-3.89h-2.66v7.79h2.66Z"></path>
+<path class="st24" d="M387.09,228.25v2.33h-9.73v-12.56h9.49v2.33h-6.6v2.73h5.83v2.26h-5.83v2.91h6.84Z"></path>
+<path class="st24" d="M397.41,230.58l-2.42-3.5h-2.67v3.5h-2.91v-12.56h5.44c3.36,0,5.46,1.74,5.46,4.56,0,1.88-.95,3.27-2.58,3.97l2.82,4.04h-3.12ZM394.69,220.39h-2.37v4.38h2.37c1.78,0,2.67-.83,2.67-2.19s-.9-2.19-2.67-2.19Z"></path>
+<g>
+<path class="st24" d="M344.7,248.41v-5.28s-2.63,4.4-2.63,4.4h-.48l-2.62-4.37v5.25h-.99v-7.25h.85l3.03,5.1,2.98-5.1h.85v7.25s-.98,0-.98,0Z"></path>
+<path class="st24" d="M352.07,245.09v3.32h-.94v-.73c-.33.5-.94.79-1.8.79-1.24,0-2.03-.66-2.03-1.62,0-.88.57-1.61,2.21-1.61h1.57v-.2c0-.84-.49-1.33-1.47-1.33-.65,0-1.32.23-1.74.59l-.41-.75c.57-.46,1.39-.7,2.27-.7,1.5,0,2.35.73,2.35,2.23ZM351.08,246.73v-.77h-1.53c-.98,0-1.26.38-1.26.85,0,.55.46.89,1.21.89s1.34-.34,1.59-.97Z"></path>
+<path class="st24" d="M359.12,245.25v3.16h-.99v-3.05c0-1.08-.54-1.61-1.48-1.61-1.06,0-1.74.63-1.74,1.82v2.83h-.99v-5.49h.95v.83c.4-.56,1.11-.88,1.98-.88,1.34,0,2.28.77,2.28,2.38Z"></path>
+<path class="st24" d="M365.32,245.09v3.32h-.94v-.73c-.33.5-.94.79-1.8.79-1.24,0-2.03-.66-2.03-1.62,0-.88.57-1.61,2.21-1.61h1.57v-.2c0-.84-.49-1.33-1.47-1.33-.65,0-1.32.23-1.74.59l-.41-.75c.57-.46,1.39-.7,2.27-.7,1.5,0,2.35.73,2.35,2.23ZM364.32,246.73v-.77h-1.53c-.98,0-1.26.38-1.26.85,0,.55.46.89,1.21.89s1.34-.34,1.59-.97Z"></path>
+<path class="st24" d="M372.44,242.92v4.75c0,1.94-.98,2.82-2.85,2.82-1.01,0-2.02-.28-2.62-.82l.48-.77c.51.44,1.31.71,2.11.71,1.29,0,1.89-.6,1.89-1.84v-.44c-.48.57-1.19.85-1.98.85-1.58,0-2.79-1.08-2.79-2.66s1.2-2.65,2.79-2.65c.82,0,1.56.3,2.03.9v-.85h.94ZM371.47,245.52c0-1.07-.79-1.78-1.89-1.78s-1.9.71-1.9,1.78.79,1.79,1.9,1.79,1.89-.74,1.89-1.79Z"></path>
+<path class="st24" d="M374.16,241.22c0-.36.29-.65.67-.65s.67.28.67.63c0,.37-.28.66-.67.66s-.67-.28-.67-.64ZM374.34,242.92h.99v5.49h-.99v-5.49Z"></path>
+<path class="st24" d="M382.44,245.25v3.16h-.99v-3.05c0-1.08-.54-1.61-1.48-1.61-1.06,0-1.74.63-1.74,1.82v2.83h-.99v-5.49h.95v.83c.4-.56,1.11-.88,1.98-.88,1.34,0,2.28.77,2.28,2.38Z"></path>
+<path class="st24" d="M389.56,242.92v4.75c0,1.94-.98,2.82-2.85,2.82-1.01,0-2.02-.28-2.62-.82l.48-.77c.51.44,1.31.71,2.11.71,1.29,0,1.89-.6,1.89-1.84v-.44c-.48.57-1.19.85-1.98.85-1.58,0-2.79-1.08-2.79-2.66s1.2-2.65,2.79-2.65c.82,0,1.56.3,2.03.9v-.85h.94ZM388.59,245.52c0-1.07-.79-1.78-1.89-1.78s-1.9.71-1.9,1.78.79,1.79,1.9,1.79,1.89-.74,1.89-1.79Z"></path>
+</g>
+<g>
+<path class="st24" d="M352.32,257.38c0,1.69-1.17,2.81-2.78,2.81-.78,0-1.46-.3-1.92-.89v2.84h-.99v-7.5h.95v.87c.45-.61,1.15-.92,1.96-.92,1.61,0,2.78,1.12,2.78,2.8ZM351.32,257.38c0-1.16-.8-1.93-1.85-1.93s-1.84.77-1.84,1.93.8,1.94,1.84,1.94,1.85-.77,1.85-1.94Z"></path>
+<path class="st24" d="M358.64,257.72h-4.46c.12.96.9,1.61,1.99,1.61.64,0,1.18-.22,1.59-.66l.55.64c-.5.58-1.25.89-2.17.89-1.77,0-2.95-1.17-2.95-2.81s1.17-2.8,2.76-2.8,2.71,1.14,2.71,2.83c0,.08-.01.21-.02.3ZM354.19,257h3.52c-.1-.92-.8-1.57-1.76-1.57s-1.66.64-1.76,1.57Z"></path>
+<path class="st24" d="M359.53,257.38c0-1.64,1.21-2.8,2.86-2.8s2.85,1.16,2.85,2.8-1.2,2.81-2.85,2.81-2.86-1.17-2.86-2.81ZM364.23,257.38c0-1.17-.79-1.93-1.84-1.93s-1.85.76-1.85,1.93.8,1.94,1.85,1.94,1.84-.77,1.84-1.94Z"></path>
+<path class="st24" d="M372.3,257.38c0,1.69-1.17,2.81-2.78,2.81-.78,0-1.46-.3-1.92-.89v2.84h-.99v-7.5h.95v.87c.45-.61,1.15-.92,1.96-.92,1.61,0,2.78,1.12,2.78,2.8ZM371.3,257.38c0-1.16-.8-1.93-1.85-1.93s-1.84.77-1.84,1.93.8,1.94,1.84,1.94,1.85-.77,1.85-1.94Z"></path>
+<path class="st24" d="M373.68,252.44h.99v7.69h-.99v-7.69Z"></path>
+<path class="st24" d="M381.51,257.72h-4.46c.12.96.9,1.61,1.99,1.61.64,0,1.18-.22,1.59-.66l.55.64c-.5.58-1.25.89-2.17.89-1.77,0-2.95-1.17-2.95-2.81s1.17-2.8,2.76-2.8,2.71,1.14,2.71,2.83c0,.08-.01.21-.02.3ZM377.05,257h3.52c-.1-.92-.8-1.57-1.76-1.57s-1.66.64-1.76,1.57Z"></path>
+</g>
+</g>
+<g>
+<path class="st24" d="M57.93,142.85h-4.89l-.93,2.26h-2.5l4.7-10.54h2.41l4.71,10.54h-2.56l-.93-2.26ZM57.17,141l-1.67-4.04-1.67,4.04h3.34Z"></path>
+<path class="st24" d="M61.72,139.84c0-3.18,2.44-5.45,5.72-5.45,1.82,0,3.34.66,4.34,1.87l-1.57,1.45c-.71-.81-1.6-1.23-2.65-1.23-1.97,0-3.37,1.39-3.37,3.37s1.4,3.37,3.37,3.37c1.05,0,1.94-.42,2.65-1.25l1.57,1.45c-.99,1.22-2.52,1.88-4.35,1.88-3.27,0-5.71-2.27-5.71-5.45Z"></path>
+<path class="st24" d="M72.53,139.84c0-3.18,2.44-5.45,5.72-5.45,1.82,0,3.34.66,4.34,1.87l-1.57,1.45c-.71-.81-1.6-1.23-2.65-1.23-1.97,0-3.37,1.39-3.37,3.37s1.4,3.37,3.37,3.37c1.05,0,1.94-.42,2.65-1.25l1.57,1.45c-.99,1.22-2.52,1.88-4.35,1.88-3.27,0-5.71-2.27-5.71-5.45Z"></path>
+<path class="st24" d="M83.35,139.84c0-3.13,2.44-5.45,5.77-5.45s5.77,2.3,5.77,5.45-2.45,5.45-5.77,5.45-5.77-2.32-5.77-5.45ZM92.42,139.84c0-2-1.42-3.37-3.3-3.37s-3.3,1.37-3.3,3.37,1.42,3.37,3.3,3.37,3.3-1.37,3.3-3.37Z"></path>
+<path class="st24" d="M96.64,140.47v-5.9h2.44v5.81c0,2,.87,2.83,2.35,2.83s2.35-.83,2.35-2.83v-5.81h2.41v5.9c0,3.1-1.78,4.82-4.77,4.82s-4.77-1.72-4.77-4.82Z"></path>
+<path class="st24" d="M118.27,134.57v10.54h-2l-5.26-6.4v6.4h-2.41v-10.54h2.02l5.24,6.4v-6.4h2.41Z"></path>
+<path class="st24" d="M122.95,136.56h-3.37v-1.99h9.19v1.99h-3.37v8.55h-2.44v-8.55Z"></path>
+<path class="st24" d="M136.49,142.85h-4.89l-.93,2.26h-2.5l4.7-10.54h2.41l4.71,10.54h-2.56l-.93-2.26ZM135.73,141l-1.67-4.04-1.67,4.04h3.34Z"></path>
+<path class="st24" d="M150.76,134.57v10.54h-2l-5.26-6.4v6.4h-2.41v-10.54h2.02l5.24,6.4v-6.4h2.41Z"></path>
+<path class="st24" d="M152.6,139.84c0-3.18,2.44-5.45,5.72-5.45,1.82,0,3.34.66,4.34,1.87l-1.57,1.45c-.71-.81-1.6-1.23-2.65-1.23-1.97,0-3.37,1.39-3.37,3.37s1.4,3.37,3.37,3.37c1.05,0,1.94-.42,2.65-1.25l1.57,1.45c-.99,1.22-2.52,1.88-4.35,1.88-3.27,0-5.71-2.27-5.71-5.45Z"></path>
+<path class="st24" d="M169.26,141.38v3.73h-2.44v-3.77l-4.08-6.78h2.59l2.82,4.68,2.82-4.68h2.39l-4.1,6.81Z"></path>
+<path class="st24" d="M81.47,151.52h2.44v8.55h5.29v1.99h-7.73v-10.54Z"></path>
+<path class="st24" d="M98.73,160.1v1.96h-8.16v-10.54h7.97v1.96h-5.54v2.29h4.89v1.9h-4.89v2.44h5.74Z"></path>
+<path class="st24" d="M110.67,151.52l-4.56,10.54h-2.41l-4.55-10.54h2.64l3.21,7.53,3.25-7.53h2.42Z"></path>
+<path class="st24" d="M119.7,160.1v1.96h-8.16v-10.54h7.97v1.96h-5.54v2.29h4.89v1.9h-4.89v2.44h5.74Z"></path>
+<path class="st24" d="M121.65,151.52h2.44v8.55h5.29v1.99h-7.73v-10.54Z"></path>
+<path class="st24" d="M142.23,160.07v1.99h-7.97v-1.58l4.07-3.84c.93-.89,1.1-1.43,1.1-1.94,0-.83-.57-1.31-1.69-1.31-.9,0-1.67.35-2.18,1.05l-1.78-1.14c.81-1.19,2.29-1.96,4.19-1.96,2.35,0,3.92,1.21,3.92,3.12,0,1.02-.29,1.96-1.76,3.33l-2.42,2.29h4.53Z"></path>
+</g>
+<rect class="st30" height="66.72" id="data-technician-level-3" rx="28.35" ry="28.35" width="167.82" x="645.24" y="79.37"></rect>
+<g>
+<path class="st24" d="M655.98,100.55h4.79c3.45,0,5.81,2.08,5.81,5.27s-2.36,5.27-5.81,5.27h-4.79v-10.54ZM660.65,109.09c2.09,0,3.46-1.25,3.46-3.27s-1.37-3.27-3.46-3.27h-2.23v6.54h2.23Z"></path>
+<path class="st24" d="M675.22,108.84h-4.9l-.93,2.26h-2.5l4.7-10.54h2.41l4.71,10.54h-2.56l-.93-2.26ZM674.45,106.98l-1.67-4.04-1.67,4.04h3.34Z"></path>
+<path class="st24" d="M681.47,102.54h-3.37v-1.99h9.19v1.99h-3.37v8.55h-2.44v-8.55Z"></path>
+<path class="st24" d="M695.01,108.84h-4.9l-.93,2.26h-2.5l4.7-10.54h2.41l4.71,10.54h-2.56l-.93-2.26ZM694.25,106.98l-1.67-4.04-1.67,4.04h3.34Z"></path>
+<path class="st24" d="M706.06,102.54h-3.37v-1.99h9.19v1.99h-3.37v8.55h-2.44v-8.55Z"></path>
+<path class="st24" d="M721.35,109.14v1.96h-8.16v-10.54h7.97v1.96h-5.54v2.29h4.89v1.9h-4.89v2.44h5.74Z"></path>
+<path class="st24" d="M722.6,105.83c0-3.18,2.44-5.45,5.72-5.45,1.82,0,3.34.66,4.34,1.87l-1.57,1.45c-.71-.81-1.6-1.23-2.65-1.23-1.97,0-3.37,1.39-3.37,3.37s1.4,3.37,3.37,3.37c1.05,0,1.94-.42,2.65-1.25l1.57,1.45c-.99,1.22-2.51,1.88-4.35,1.88-3.27,0-5.71-2.27-5.71-5.45Z"></path>
+<path class="st24" d="M743.97,100.55v10.54h-2.44v-4.32h-4.79v4.32h-2.44v-10.54h2.44v4.16h4.79v-4.16h2.44Z"></path>
+<path class="st24" d="M756.15,100.55v10.54h-2l-5.26-6.4v6.4h-2.41v-10.54h2.02l5.24,6.4v-6.4h2.41Z"></path>
+<path class="st24" d="M758.65,100.55h2.44v10.54h-2.44v-10.54Z"></path>
+<path class="st24" d="M762.93,105.83c0-3.18,2.44-5.45,5.72-5.45,1.82,0,3.34.66,4.34,1.87l-1.57,1.45c-.71-.81-1.6-1.23-2.65-1.23-1.97,0-3.37,1.39-3.37,3.37s1.4,3.37,3.37,3.37c1.05,0,1.94-.42,2.65-1.25l1.57,1.45c-.99,1.22-2.51,1.88-4.35,1.88-3.27,0-5.71-2.27-5.71-5.45Z"></path>
+<path class="st24" d="M774.63,100.55h2.44v10.54h-2.44v-10.54Z"></path>
+<path class="st24" d="M786.52,108.84h-4.9l-.93,2.26h-2.5l4.7-10.54h2.41l4.71,10.54h-2.56l-.93-2.26ZM785.75,106.98l-1.67-4.04-1.67,4.04h3.34Z"></path>
+<path class="st24" d="M800.78,100.55v10.54h-2l-5.26-6.4v6.4h-2.41v-10.54h2.02l5.24,6.4v-6.4h2.41Z"></path>
+<path class="st24" d="M698.41,117.5h2.44v8.55h5.29v1.99h-7.73v-10.54Z"></path>
+<path class="st24" d="M715.67,126.09v1.96h-8.16v-10.54h7.97v1.96h-5.54v2.29h4.89v1.9h-4.89v2.44h5.74Z"></path>
+<path class="st24" d="M727.6,117.5l-4.56,10.54h-2.41l-4.55-10.54h2.64l3.21,7.53,3.25-7.53h2.42Z"></path>
+<path class="st24" d="M736.64,126.09v1.96h-8.16v-10.54h7.97v1.96h-5.54v2.29h4.89v1.9h-4.89v2.44h5.74Z"></path>
+<path class="st24" d="M738.58,117.5h2.44v8.55h5.29v1.99h-7.73v-10.54Z"></path>
+<path class="st24" d="M759.07,124.82c0,1.78-1.37,3.4-4.37,3.4-1.48,0-3-.41-4.02-1.13l.95-1.87c.8.6,1.91.95,3.01.95,1.22,0,1.97-.5,1.97-1.36,0-.8-.59-1.29-1.97-1.29h-1.12v-1.61l2.17-2.46h-4.49v-1.96h7.38v1.58l-2.38,2.71c1.9.3,2.86,1.48,2.86,3.03Z"></path>
+</g>
+<rect class="st25" height="66.72" id="procurement-level-3" rx="28.35" ry="28.35" width="167.82" x="576.4" y="480.92"></rect>
+<g>
+<path class="st24" d="M607.62,505.58c0,2.35-1.76,3.81-4.58,3.81h-2.12v2.91h-2.44v-10.54h4.56c2.82,0,4.58,1.46,4.58,3.83ZM605.15,505.58c0-1.16-.75-1.84-2.24-1.84h-1.99v3.66h1.99c1.49,0,2.24-.68,2.24-1.82Z"></path>
+<path class="st24" d="M616.07,512.29l-2.03-2.94h-2.24v2.94h-2.44v-10.54h4.56c2.82,0,4.58,1.46,4.58,3.83,0,1.58-.8,2.74-2.17,3.33l2.37,3.39h-2.62ZM613.78,503.74h-1.99v3.67h1.99c1.49,0,2.24-.69,2.24-1.84s-.75-1.84-2.24-1.84Z"></path>
+<path class="st24" d="M619.76,507.02c0-3.13,2.44-5.45,5.77-5.45s5.77,2.3,5.77,5.45-2.46,5.45-5.77,5.45-5.77-2.32-5.77-5.45ZM628.83,507.02c0-2-1.42-3.37-3.3-3.37s-3.3,1.37-3.3,3.37,1.42,3.37,3.3,3.37,3.3-1.37,3.3-3.37Z"></path>
+<path class="st24" d="M632.48,507.02c0-3.18,2.44-5.45,5.72-5.45,1.82,0,3.34.66,4.34,1.87l-1.57,1.45c-.71-.81-1.6-1.23-2.65-1.23-1.97,0-3.37,1.39-3.37,3.37s1.4,3.37,3.37,3.37c1.05,0,1.94-.42,2.65-1.25l1.57,1.45c-.99,1.22-2.51,1.88-4.35,1.88-3.27,0-5.71-2.27-5.71-5.45Z"></path>
+<path class="st24" d="M644,507.65v-5.9h2.44v5.81c0,2,.87,2.83,2.35,2.83s2.35-.83,2.35-2.83v-5.81h2.41v5.9c0,3.1-1.78,4.82-4.77,4.82s-4.77-1.72-4.77-4.82Z"></path>
+<path class="st24" d="M662.68,512.29l-2.03-2.94h-2.24v2.94h-2.44v-10.54h4.56c2.82,0,4.58,1.46,4.58,3.83,0,1.58-.8,2.74-2.17,3.33l2.37,3.39h-2.62ZM660.39,503.74h-1.99v3.67h1.99c1.49,0,2.24-.69,2.24-1.84s-.75-1.84-2.24-1.84Z"></path>
+<path class="st24" d="M675.2,510.33v1.96h-8.16v-10.54h7.97v1.96h-5.54v2.29h4.89v1.9h-4.89v2.44h5.74Z"></path>
+<path class="st24" d="M686.74,512.29l-.02-6.33-3.1,5.21h-1.1l-3.09-5.08v6.19h-2.29v-10.54h2.02l3.95,6.55,3.89-6.55h2l.03,10.54h-2.29Z"></path>
+<path class="st24" d="M699.69,510.33v1.96h-8.16v-10.54h7.97v1.96h-5.54v2.29h4.89v1.9h-4.89v2.44h5.74Z"></path>
+<path class="st24" d="M711.31,501.75v10.54h-2l-5.26-6.4v6.4h-2.41v-10.54h2.02l5.24,6.4v-6.4h2.41Z"></path>
+<path class="st24" d="M715.99,503.74h-3.37v-1.99h9.19v1.99h-3.37v8.55h-2.44v-8.55Z"></path>
+<path class="st24" d="M629.57,518.7h2.44v8.55h5.29v1.99h-7.73v-10.54Z"></path>
+<path class="st24" d="M646.83,527.28v1.96h-8.16v-10.54h7.97v1.96h-5.54v2.29h4.89v1.9h-4.89v2.44h5.74Z"></path>
+<path class="st24" d="M658.76,518.7l-4.56,10.54h-2.41l-4.55-10.54h2.64l3.21,7.53,3.25-7.53h2.42Z"></path>
+<path class="st24" d="M667.8,527.28v1.96h-8.16v-10.54h7.97v1.96h-5.54v2.29h4.89v1.9h-4.89v2.44h5.74Z"></path>
+<path class="st24" d="M669.75,518.7h2.44v8.55h5.29v1.99h-7.73v-10.54Z"></path>
+<path class="st24" d="M690.23,526.02c0,1.78-1.37,3.4-4.37,3.4-1.48,0-3-.41-4.02-1.13l.95-1.87c.8.6,1.91.95,3.01.95,1.22,0,1.97-.5,1.97-1.36,0-.8-.59-1.3-1.97-1.3h-1.12v-1.61l2.17-2.45h-4.49v-1.96h7.38v1.58l-2.38,2.71c1.9.3,2.86,1.48,2.86,3.03Z"></path>
+</g>
+<!-- Business Admin Level 3 box (bottom-left). Assign an id so we can attach hover handlers -->
+<rect class="st29" height="66.72" id="business-admin-level-3" rx="28.35" ry="28.35" width="167.82" x="28.35" y="482.17"></rect>
+<g>
+<path class="st24" d="M52.77,510.67c0,1.82-1.45,2.88-4.22,2.88h-5.45v-10.54h5.15c2.64,0,3.99,1.1,3.99,2.74,0,1.05-.54,1.87-1.4,2.32,1.17.38,1.93,1.28,1.93,2.61ZM45.53,504.84v2.49h2.42c1.19,0,1.84-.42,1.84-1.25s-.65-1.24-1.84-1.24h-2.42ZM50.32,510.41c0-.89-.68-1.31-1.94-1.31h-2.85v2.61h2.85c1.27,0,1.94-.39,1.94-1.3Z"></path>
+<path class="st24" d="M54.54,508.91v-5.9h2.44v5.81c0,2,.87,2.83,2.35,2.83s2.35-.83,2.35-2.83v-5.81h2.41v5.9c0,3.1-1.78,4.82-4.77,4.82s-4.77-1.72-4.77-4.82Z"></path>
+<path class="st24" d="M65.67,512.51l.83-1.84c.89.65,2.21,1.1,3.48,1.1,1.45,0,2.03-.48,2.03-1.13,0-1.97-6.13-.62-6.13-4.53,0-1.79,1.45-3.28,4.44-3.28,1.33,0,2.68.32,3.66.93l-.75,1.85c-.98-.56-1.99-.83-2.92-.83-1.45,0-2,.54-2,1.21,0,1.94,6.13.6,6.13,4.47,0,1.76-1.46,3.27-4.47,3.27-1.67,0-3.36-.5-4.29-1.22Z"></path>
+<path class="st24" d="M76.11,503h2.44v10.54h-2.44v-10.54Z"></path>
+<path class="st24" d="M90.72,503v10.54h-2l-5.26-6.4v6.4h-2.41v-10.54h2.02l5.24,6.4v-6.4h2.41Z"></path>
+<path class="st24" d="M101.39,511.59v1.96h-8.16v-10.54h7.97v1.96h-5.54v2.29h4.89v1.9h-4.89v2.44h5.74Z"></path>
+<path class="st24" d="M102.5,512.51l.83-1.84c.89.65,2.21,1.1,3.48,1.1,1.45,0,2.03-.48,2.03-1.13,0-1.97-6.13-.62-6.13-4.53,0-1.79,1.45-3.28,4.44-3.28,1.33,0,2.68.32,3.66.93l-.75,1.85c-.98-.56-1.99-.83-2.92-.83-1.45,0-2,.54-2,1.21,0,1.94,6.13.6,6.13,4.47,0,1.76-1.46,3.27-4.47,3.27-1.67,0-3.36-.5-4.29-1.22Z"></path>
+<path class="st24" d="M112.11,512.51l.83-1.84c.89.65,2.21,1.1,3.48,1.1,1.45,0,2.03-.48,2.03-1.13,0-1.97-6.13-.62-6.13-4.53,0-1.79,1.45-3.28,4.44-3.28,1.33,0,2.68.32,3.66.93l-.75,1.85c-.98-.56-1.99-.83-2.92-.83-1.45,0-2,.54-2,1.21,0,1.94,6.13.6,6.13,4.47,0,1.76-1.46,3.27-4.47,3.27-1.67,0-3.36-.5-4.29-1.22Z"></path>
+<path class="st24" d="M133.76,511.29h-4.89l-.93,2.26h-2.5l4.7-10.54h2.41l4.71,10.54h-2.56l-.93-2.26ZM132.99,509.43l-1.67-4.04-1.67,4.04h3.34Z"></path>
+<path class="st24" d="M138.36,503h4.79c3.45,0,5.81,2.08,5.81,5.27s-2.36,5.27-5.81,5.27h-4.79v-10.54ZM143.02,511.54c2.09,0,3.46-1.25,3.46-3.27s-1.37-3.27-3.46-3.27h-2.23v6.54h2.23Z"></path>
+<path class="st24" d="M160.39,513.55l-.02-6.33-3.1,5.21h-1.1l-3.09-5.08v6.19h-2.29v-10.54h2.02l3.95,6.55,3.89-6.55h2l.03,10.54h-2.29Z"></path>
+<path class="st24" d="M165.19,503h2.44v10.54h-2.44v-10.54Z"></path>
+<path class="st24" d="M179.8,503v10.54h-2l-5.26-6.4v6.4h-2.41v-10.54h2.02l5.24,6.4v-6.4h2.41Z"></path>
+<path class="st24" d="M81.47,519.95h2.44v8.55h5.29v1.99h-7.73v-10.54Z"></path>
+<path class="st24" d="M98.73,528.54v1.96h-8.16v-10.54h7.97v1.96h-5.54v2.29h4.89v1.9h-4.89v2.44h5.74Z"></path>
+<path class="st24" d="M110.67,519.95l-4.56,10.54h-2.41l-4.55-10.54h2.64l3.21,7.53,3.25-7.53h2.42Z"></path>
+<path class="st24" d="M119.7,528.54v1.96h-8.16v-10.54h7.97v1.96h-5.54v2.29h4.89v1.9h-4.89v2.44h5.74Z"></path>
+<path class="st24" d="M121.65,519.95h2.44v8.55h5.29v1.99h-7.73v-10.54Z"></path>
+<path class="st24" d="M142.14,527.27c0,1.78-1.37,3.4-4.37,3.4-1.48,0-3-.41-4.02-1.13l.95-1.87c.8.6,1.91.95,3.01.95,1.22,0,1.97-.5,1.97-1.36,0-.8-.59-1.3-1.97-1.3h-1.11v-1.61l2.17-2.45h-4.49v-1.96h7.38v1.58l-2.38,2.71c1.9.3,2.86,1.48,2.86,3.03Z"></path>
+</g>
+<rect class="st28" height="66.72" id="accountancy-level-3-4" rx="28.35" ry="28.35" width="167.82" x="98.66" y="215.49"></rect>
+<g>
+<path class="st24" d="M128.25,244.95h-4.89l-.93,2.26h-2.5l4.7-10.54h2.41l4.71,10.54h-2.56l-.93-2.26ZM127.48,243.1l-1.67-4.04-1.67,4.04h3.34Z"></path>
+<path class="st24" d="M132.03,241.94c0-3.18,2.44-5.45,5.72-5.45,1.82,0,3.34.66,4.34,1.87l-1.57,1.45c-.71-.81-1.6-1.23-2.65-1.23-1.97,0-3.37,1.39-3.37,3.37s1.4,3.37,3.37,3.37c1.05,0,1.94-.42,2.65-1.25l1.57,1.45c-.99,1.22-2.52,1.88-4.35,1.88-3.27,0-5.71-2.27-5.71-5.45Z"></path>
+<path class="st24" d="M142.85,241.94c0-3.18,2.44-5.45,5.72-5.45,1.82,0,3.34.66,4.34,1.87l-1.57,1.45c-.71-.81-1.6-1.23-2.65-1.23-1.97,0-3.37,1.39-3.37,3.37s1.4,3.37,3.37,3.37c1.05,0,1.94-.42,2.65-1.25l1.57,1.45c-.99,1.22-2.52,1.88-4.35,1.88-3.27,0-5.71-2.27-5.71-5.45Z"></path>
+<path class="st24" d="M153.66,241.94c0-3.13,2.44-5.45,5.77-5.45s5.77,2.3,5.77,5.45-2.45,5.45-5.77,5.45-5.77-2.32-5.77-5.45ZM162.73,241.94c0-2-1.42-3.37-3.3-3.37s-3.3,1.37-3.3,3.37,1.42,3.37,3.3,3.37,3.3-1.37,3.3-3.37Z"></path>
+<path class="st24" d="M166.95,242.57v-5.9h2.44v5.81c0,2,.87,2.83,2.35,2.83s2.35-.83,2.35-2.83v-5.81h2.41v5.9c0,3.1-1.78,4.82-4.77,4.82s-4.77-1.72-4.77-4.82Z"></path>
+<path class="st24" d="M188.58,236.67v10.54h-2l-5.26-6.4v6.4h-2.41v-10.54h2.02l5.24,6.4v-6.4h2.41Z"></path>
+<path class="st24" d="M193.27,238.66h-3.37v-1.99h9.19v1.99h-3.37v8.55h-2.44v-8.55Z"></path>
+<path class="st24" d="M206.81,244.95h-4.89l-.93,2.26h-2.5l4.7-10.54h2.41l4.71,10.54h-2.56l-.93-2.26ZM206.04,243.1l-1.67-4.04-1.67,4.04h3.34Z"></path>
+<path class="st24" d="M221.07,236.67v10.54h-2l-5.26-6.4v6.4h-2.41v-10.54h2.02l5.24,6.4v-6.4h2.41Z"></path>
+<path class="st24" d="M222.91,241.94c0-3.18,2.44-5.45,5.72-5.45,1.82,0,3.34.66,4.34,1.87l-1.57,1.45c-.71-.81-1.6-1.23-2.65-1.23-1.97,0-3.37,1.39-3.37,3.37s1.4,3.37,3.37,3.37c1.05,0,1.94-.42,2.65-1.25l1.57,1.45c-.99,1.22-2.52,1.88-4.35,1.88-3.27,0-5.71-2.27-5.71-5.45Z"></path>
+<path class="st24" d="M239.57,243.48v3.74h-2.44v-3.76l-4.08-6.78h2.59l2.82,4.68,2.82-4.68h2.39l-4.1,6.81Z"></path>
+<path class="st24" d="M127.21,253.62h2.44v8.55h5.29v1.99h-7.73v-10.54Z"></path>
+<path class="st24" d="M144.47,262.2v1.96h-8.16v-10.54h7.97v1.96h-5.54v2.29h4.89v1.9h-4.89v2.44h5.74Z"></path>
+<path class="st24" d="M156.4,253.62l-4.56,10.54h-2.41l-4.55-10.54h2.64l3.21,7.53,3.25-7.53h2.42Z"></path>
+<path class="st24" d="M165.44,262.2v1.96h-8.16v-10.54h7.97v1.96h-5.54v2.29h4.89v1.9h-4.89v2.44h5.74Z"></path>
+<path class="st24" d="M167.39,253.62h2.44v8.55h5.29v1.99h-7.73v-10.54Z"></path>
+<path class="st24" d="M187.87,260.94c0,1.78-1.37,3.4-4.37,3.4-1.48,0-3-.41-4.02-1.13l.95-1.87c.8.6,1.91.95,3.01.95,1.22,0,1.97-.5,1.97-1.36,0-.8-.59-1.3-1.97-1.3h-1.11v-1.61l2.17-2.45h-4.49v-1.96h7.38v1.58l-2.38,2.71c1.9.3,2.86,1.48,2.86,3.03Z"></path>
+<path class="st24" d="M200.93,259.54v4.62h-2.2v-1.01c-.44.74-1.28,1.13-2.47,1.13-1.9,0-3.03-1.05-3.03-2.45s1.01-2.42,3.48-2.42h1.87c0-1.01-.6-1.6-1.87-1.6-.86,0-1.75.29-2.33.75l-.84-1.64c.89-.63,2.2-.98,3.49-.98,2.47,0,3.9,1.14,3.9,3.6ZM198.58,261.6v-.83h-1.61c-1.1,0-1.45.41-1.45.95,0,.59.5.98,1.33.98.78,0,1.46-.36,1.73-1.1Z"></path>
+<path class="st24" d="M211.34,259.52v4.64h-2.35v-4.28c0-1.31-.6-1.91-1.64-1.91-1.13,0-1.94.69-1.94,2.18v4.01h-2.35v-8.1h2.24v.95c.63-.69,1.58-1.07,2.68-1.07,1.91,0,3.36,1.11,3.36,3.58Z"></path>
+<path class="st24" d="M221.81,252.98v11.17h-2.24v-.93c-.59.71-1.45,1.05-2.53,1.05-2.29,0-4.05-1.63-4.05-4.17s1.76-4.17,4.05-4.17c.99,0,1.84.32,2.42.98v-3.93h2.35ZM219.51,260.11c0-1.4-.9-2.24-2.06-2.24s-2.08.84-2.08,2.24.9,2.24,2.08,2.24,2.06-.84,2.06-2.24Z"></path>
+<path class="st24" d="M237.4,261.95h-1.72v2.21h-2.38v-2.21h-5.68v-1.64l4.97-6.69h2.56l-4.61,6.34h2.83v-1.97h2.3v1.97h1.72v1.99Z"></path>
+</g>
+<rect class="st25" height="66.72" id="procurement-level-4" rx="28.35" ry="28.35" width="167.82" x="576.4" y="381.48"></rect>
+<g>
+<path class="st24" d="M607.62,406.13c0,2.35-1.76,3.81-4.58,3.81h-2.12v2.91h-2.44v-10.54h4.56c2.82,0,4.58,1.46,4.58,3.83ZM605.15,406.13c0-1.16-.75-1.84-2.24-1.84h-1.99v3.66h1.99c1.49,0,2.24-.68,2.24-1.82Z"></path>
+<path class="st24" d="M616.07,412.85l-2.03-2.94h-2.24v2.94h-2.44v-10.54h4.56c2.82,0,4.58,1.46,4.58,3.83,0,1.58-.8,2.74-2.17,3.33l2.37,3.39h-2.62ZM613.78,404.3h-1.99v3.67h1.99c1.49,0,2.24-.69,2.24-1.84s-.75-1.84-2.24-1.84Z"></path>
+<path class="st24" d="M619.76,407.58c0-3.13,2.44-5.45,5.77-5.45s5.77,2.3,5.77,5.45-2.46,5.45-5.77,5.45-5.77-2.32-5.77-5.45ZM628.83,407.58c0-2-1.42-3.37-3.3-3.37s-3.3,1.37-3.3,3.37,1.42,3.37,3.3,3.37,3.3-1.37,3.3-3.37Z"></path>
+<path class="st24" d="M632.48,407.58c0-3.18,2.44-5.45,5.72-5.45,1.82,0,3.34.66,4.34,1.87l-1.57,1.45c-.71-.81-1.6-1.23-2.65-1.23-1.97,0-3.37,1.39-3.37,3.37s1.4,3.37,3.37,3.37c1.05,0,1.94-.42,2.65-1.25l1.57,1.45c-.99,1.22-2.51,1.88-4.35,1.88-3.27,0-5.71-2.27-5.71-5.45Z"></path>
+<path class="st24" d="M644,408.21v-5.9h2.44v5.81c0,2,.87,2.83,2.35,2.83s2.35-.83,2.35-2.83v-5.81h2.41v5.9c0,3.1-1.78,4.82-4.77,4.82s-4.77-1.72-4.77-4.82Z"></path>
+<path class="st24" d="M662.68,412.85l-2.03-2.94h-2.24v2.94h-2.44v-10.54h4.56c2.82,0,4.58,1.46,4.58,3.83,0,1.58-.8,2.74-2.17,3.33l2.37,3.39h-2.62ZM660.39,404.3h-1.99v3.67h1.99c1.49,0,2.24-.69,2.24-1.84s-.75-1.84-2.24-1.84Z"></path>
+<path class="st24" d="M675.2,410.89v1.96h-8.16v-10.54h7.97v1.96h-5.54v2.29h4.89v1.9h-4.89v2.44h5.74Z"></path>
+<path class="st24" d="M686.74,412.85l-.02-6.33-3.1,5.21h-1.1l-3.09-5.08v6.19h-2.29v-10.54h2.02l3.95,6.55,3.89-6.55h2l.03,10.54h-2.29Z"></path>
+<path class="st24" d="M699.69,410.89v1.96h-8.16v-10.54h7.97v1.96h-5.54v2.29h4.89v1.9h-4.89v2.44h5.74Z"></path>
+<path class="st24" d="M711.31,402.31v10.54h-2l-5.26-6.4v6.4h-2.41v-10.54h2.02l5.24,6.4v-6.4h2.41Z"></path>
+<path class="st24" d="M715.99,404.3h-3.37v-1.99h9.19v1.99h-3.37v8.55h-2.44v-8.55Z"></path>
+<path class="st24" d="M628.84,419.26h2.44v8.55h5.29v1.99h-7.73v-10.54Z"></path>
+<path class="st24" d="M646.1,427.84v1.96h-8.16v-10.54h7.97v1.96h-5.54v2.29h4.89v1.9h-4.89v2.44h5.74Z"></path>
+<path class="st24" d="M658.03,419.26l-4.56,10.54h-2.41l-4.55-10.54h2.64l3.21,7.53,3.25-7.53h2.42Z"></path>
+<path class="st24" d="M667.07,427.84v1.96h-8.16v-10.54h7.97v1.96h-5.54v2.29h4.89v1.9h-4.89v2.44h5.74Z"></path>
+<path class="st24" d="M669.02,419.26h2.44v8.55h5.29v1.99h-7.73v-10.54Z"></path>
+<path class="st24" d="M691.37,427.59h-1.72v2.21h-2.38v-2.21h-5.68v-1.64l4.97-6.69h2.56l-4.61,6.34h2.83v-1.97h2.3v1.97h1.72v1.99Z"></path>
+</g>
+<rect class="st30" height="66.72" id="data-analyst-level-4" rx="28.35" ry="28.35" width="167.82" x="576.4" y="281.6"></rect>
+<g>
+<path class="st24" d="M600.86,302.43h4.79c3.45,0,5.81,2.08,5.81,5.27s-2.36,5.27-5.81,5.27h-4.79v-10.54ZM605.52,310.97c2.09,0,3.46-1.25,3.46-3.27s-1.37-3.27-3.46-3.27h-2.23v6.54h2.23Z"></path>
+<path class="st24" d="M620.09,310.71h-4.89l-.93,2.26h-2.5l4.7-10.54h2.41l4.71,10.54h-2.56l-.93-2.26ZM619.32,308.86l-1.67-4.04-1.67,4.04h3.34Z"></path>
+<path class="st24" d="M626.34,304.42h-3.37v-1.99h9.19v1.99h-3.37v8.55h-2.44v-8.55Z"></path>
+<path class="st24" d="M639.89,310.71h-4.89l-.93,2.26h-2.5l4.7-10.54h2.41l4.71,10.54h-2.56l-.93-2.26ZM639.12,308.86l-1.67-4.04-1.67,4.04h3.34Z"></path>
+<path class="st24" d="M655.69,310.71h-4.89l-.93,2.26h-2.5l4.7-10.54h2.41l4.71,10.54h-2.56l-.93-2.26ZM654.92,308.86l-1.67-4.04-1.67,4.04h3.34Z"></path>
+<path class="st24" d="M669.95,302.43v10.54h-2l-5.26-6.4v6.4h-2.41v-10.54h2.02l5.24,6.4v-6.4h2.41Z"></path>
+<path class="st24" d="M679.4,310.71h-4.9l-.93,2.26h-2.5l4.7-10.54h2.41l4.71,10.54h-2.56l-.93-2.26ZM678.63,308.86l-1.67-4.04-1.67,4.04h3.34Z"></path>
+<path class="st24" d="M684,302.43h2.44v8.55h5.29v1.99h-7.73v-10.54Z"></path>
+<path class="st24" d="M697.07,309.24v3.74h-2.44v-3.76l-4.08-6.78h2.59l2.82,4.68,2.82-4.68h2.4l-4.1,6.81Z"></path>
+<path class="st24" d="M701.14,311.93l.83-1.84c.89.65,2.21,1.1,3.48,1.1,1.45,0,2.03-.48,2.03-1.13,0-1.97-6.13-.62-6.13-4.53,0-1.79,1.45-3.28,4.44-3.28,1.33,0,2.68.32,3.66.93l-.75,1.85c-.98-.56-1.99-.83-2.92-.83-1.45,0-2,.54-2,1.21,0,1.94,6.13.6,6.13,4.47,0,1.76-1.46,3.27-4.47,3.27-1.67,0-3.36-.5-4.29-1.22Z"></path>
+<path class="st24" d="M713.61,304.42h-3.37v-1.99h9.19v1.99h-3.37v8.55h-2.44v-8.55Z"></path>
+<path class="st24" d="M628.84,319.38h2.44v8.55h5.29v1.99h-7.73v-10.54Z"></path>
+<path class="st24" d="M646.1,327.96v1.96h-8.16v-10.54h7.97v1.96h-5.54v2.29h4.89v1.9h-4.89v2.44h5.74Z"></path>
+<path class="st24" d="M658.03,319.38l-4.56,10.54h-2.41l-4.55-10.54h2.64l3.21,7.53,3.25-7.53h2.42Z"></path>
+<path class="st24" d="M667.07,327.96v1.96h-8.16v-10.54h7.97v1.96h-5.54v2.29h4.89v1.9h-4.89v2.44h5.74Z"></path>
+<path class="st24" d="M669.02,319.38h2.44v8.55h5.29v1.99h-7.73v-10.54Z"></path>
+<path class="st24" d="M691.37,327.71h-1.72v2.21h-2.38v-2.21h-5.68v-1.64l4.97-6.69h2.56l-4.61,6.34h2.83v-1.97h2.3v1.97h1.72v1.99Z"></path>
+</g>
+<!-- Connector associated with Accountancy Level 3 and 4 (horizontal bend). Add pulse-target and connector-original-l3-4 so it can pulse on hover -->
+<path class="st17 pulse-target connector-original-l3-4" d="M268.63,310.95h-41.33c-11.74,0-21.35-9.61-21.35-21.35v-9.96"></path>
+<path class="st6" d="M326.32,239.95"></path>
+<!-- Connector from Accountancy Level 2 to the next box. Add pulse-target class so it can pulse on hover -->
+<path class="st5 pulse-target connector-original-l2" d="M173.38,165.12h11.77c11.74,0,21.35,9.61,21.35,21.35v27.07c0,11.74-9.61,21.35-21.35,21.35h-12.4"></path>
+<!-- Vertical connector associated with Accountancy Level 2. Add pulse-target class so it can pulse on hover -->
+<line class="st7 pulse-target connector-original-l2" x1="60.04" x2="60.04" y1="178.88" y2="482.99"></line>
+<!-- Long horizontal connector originating from Accountancy Level 2. Add pulse-target class so it can pulse on hover -->
+<path class="st9 pulse-target connector-original-l2" d="M654.39,96.24h-356.68c-11.74,0-21.35,9.61-21.35,21.35l.2,8.68c0,11.74-9.61,21.35-21.35,21.35h-60.19"></path>
+<!-- Dashed container behind the central circles.  Assign an id so
+       it can be highlighted when Accountancy Level 2 is hovered. -->
+<rect class="st21" height="363.12" id="dash-container" rx="28.35" ry="28.35" width="235.7" x="289.82" y="157.75"></rect>
+<!-- Add BA connector classes so this container edge pulses when Business Admin Level 3 is hovered -->
+<path class="st2 pulse-target connector-original-ba" d="M806.88,132.32v410.57c0,11.74-9.61,21.35-21.35,21.35H208.1c-11.74,0-21.35-9.61-21.35-21.35v-9.96"></path>
+<!-- Arrowhead at the bottom of the Accountancy Level 2 path. Add pulse-target class so it can pulse on hover -->
+<path class="st29 pulse-target connector-original-l2" d="M47,457.07h26.09c1.72,1.72,1.72,4.54,0,6.27l-9.91,9.91c-1.72,1.72-4.54,1.72-6.27,0l-9.91-9.91c-1.72-1.72-1.72-4.54,0-6.27Z"></path>
+<!-- Arrowhead connector associated with Accountancy Level 3 and 4. Add pulse-target and connector-original-l3-4 so it can pulse on hover -->
+<path class="st26 pulse-target connector-original-l3-4" d="M267.43,324.5v-26.09c1.72-1.72,4.54-1.72,6.27,0l9.91,9.91c1.72,1.72,1.72,4.54,0,6.27l-9.91,9.91c-1.72,1.72-4.54,1.72-6.27,0Z"></path>
+<!-- Arrowhead connector at the top associated with Accountancy Level 2. Add pulse-target class so it can pulse on hover -->
+<path class="st30 pulse-target connector-original-l2" d="M618.93,109.04v-26.09c1.72-1.72,4.54-1.72,6.27,0l9.91,9.91c1.72,1.72,1.72,4.54,0,6.27l-9.91,9.91c-1.72,1.72-4.54,1.72-6.27,0Z"></path>
+<!-- Add pulse-target class so this arrow also pulses when Accountancy Level 2 is hovered -->
+<path class="st28 pulse-target connector-original-l2" d="M193.84,190.92h26.09c1.72,1.72,1.72,4.54,0,6.27l-9.91,9.91c-1.72,1.72-4.54,1.72-6.27,0l-9.91-9.91c-1.72-1.72-1.72-4.54,0-6.27Z"></path>
+<path class="st30" d="M819.81,164.85h-26.09c-1.72-1.72-1.72-4.54,0-6.27l9.91-9.91c1.72-1.72,4.54-1.72,6.27,0l9.91,9.91c1.72,1.72,1.72,4.54,0,6.27Z"></path>
+<line class="st3 pulse-target connector-original-ba" x1="188.71" x2="583.1" y1="532.56" y2="532.56"></line>
+<path class="st25 pulse-target connector-original-ba" d="M552.55,546.13v-26.09c1.72-1.72,4.54-1.72,6.27,0l9.91,9.91c1.72,1.72,1.72,4.54,0,6.27l-9.91,9.91c-1.72,1.72-4.54,1.72-6.27,0Z"></path>
+<path class="st4 pulse-target connector-original-ba" d="M268.63,408.76h-41.1c-11.74,0-21.35,9.61-21.35,21.35v32.63s0,13.44,0,13.44c0,11.74-9.61,21.35-21.35,21.35"></path>
+<path class="st26 pulse-target connector-original-ba" d="M267.43,422.56v-26.09c1.72-1.72,4.54-1.72,6.27,0l9.91,9.91c1.72,1.72,1.72,4.54,0,6.27l-9.91,9.91c-1.72,1.72-4.54,1.72-6.27,0Z"></path>
+<path class="st0 pulse-target connector-original-pl3" d="M785.97,142.34v369.4c0,11.74-9.61,21.35-21.35,21.35h-26.31"></path>
+<path class="st30 pulse-target connector-original-pl3" d="M798.94,191.98h-26.09c-1.72-1.72-1.72-4.54,0-6.27l9.91-9.91c1.72-1.72,4.54-1.72,6.27,0l9.91,9.91c1.72,1.72,1.72,4.54,0,6.27Z"></path>
+<line class="st20 pulse-target connector-original-pl3" x1="666.92" x2="666.92" y1="419.22" y2="490.61"></line>
+<path class="st25 pulse-target connector-original-pl3" d="M679.96,470.14h-26.09c-1.72-1.72-1.72-4.54,0-6.27l9.91-9.91c1.72-1.72,4.54-1.72,6.27,0l9.91,9.91c1.72,1.72,1.72,4.54,0,6.27Z"></path>
+<path class="st12 pulse-target connector-original-ba" d="M734.11,415.3h8.03c11.74,0,21.35,9.61,21.35,21.35v106.32c0,11.74-9.61,21.35-21.35,21.35h-12.4"></path>
+<line class="st10 pulse-target connector-original-pl4" x1="667.75" x2="667.75" y1="346.9" y2="393.65"></line>
+<path class="st30 pulse-target connector-original-pl4" d="M680.59,370.05h-26.09c-1.72-1.72-1.72-4.54,0-6.27l9.91-9.91c1.72-1.72,4.54-1.72,6.27,0l9.91,9.91c1.72,1.72,1.72,4.54,0,6.27Z"></path>
+<path class="st19 pulse-target connector-original-dt3" d="M617.93,206.49v-53.99c0-11.74,9.61-21.35,21.35-21.35h12.4"></path>
+<path class="st30 pulse-target connector-original-dt3" d="M604.82,157.6h26.09c1.72,1.72,1.72,4.54,0,6.27l-9.91,9.91c-1.72,1.72-4.54,1.72-6.27,0l-9.91-9.91c-1.72-1.72-1.72-4.54,0-6.27Z"></path>
+<rect class="st30" height="66.72" id="data-engineer-level-5" rx="28.35" ry="28.35" width="167.82" x="576.4" y="181.79"></rect>
+<g>
+<path class="st24" d="M595.7,202.62h4.79c3.45,0,5.81,2.08,5.81,5.27s-2.36,5.27-5.81,5.27h-4.79v-10.54ZM600.37,211.16c2.09,0,3.46-1.25,3.46-3.27s-1.37-3.27-3.46-3.27h-2.23v6.54h2.23Z"></path>
+<path class="st24" d="M614.94,210.91h-4.9l-.93,2.26h-2.5l4.7-10.54h2.41l4.71,10.54h-2.56l-.93-2.26ZM614.17,209.06l-1.67-4.04-1.67,4.04h3.34Z"></path>
+<path class="st24" d="M621.19,204.61h-3.37v-1.99h9.19v1.99h-3.37v8.55h-2.44v-8.55Z"></path>
+<path class="st24" d="M634.74,210.91h-4.9l-.93,2.26h-2.5l4.7-10.54h2.41l4.71,10.54h-2.56l-.93-2.26ZM633.97,209.06l-1.67-4.04-1.67,4.04h3.34Z"></path>
+<path class="st24" d="M651.76,211.21v1.96h-8.16v-10.54h7.97v1.96h-5.54v2.29h4.89v1.9h-4.89v2.44h5.74Z"></path>
+<path class="st24" d="M663.37,202.62v10.54h-2l-5.26-6.4v6.4h-2.41v-10.54h2.02l5.24,6.4v-6.4h2.41Z"></path>
+<path class="st24" d="M673,207.73h2.23v4.28c-1.16.87-2.76,1.34-4.26,1.34-3.31,0-5.75-2.27-5.75-5.45s2.44-5.45,5.8-5.45c1.85,0,3.39.63,4.41,1.82l-1.57,1.45c-.77-.81-1.66-1.19-2.73-1.19-2.05,0-3.45,1.37-3.45,3.37s1.4,3.37,3.42,3.37c.66,0,1.28-.12,1.9-.45v-3.09Z"></path>
+<path class="st24" d="M677.49,202.62h2.44v10.54h-2.44v-10.54Z"></path>
+<path class="st24" d="M692.1,202.62v10.54h-2l-5.26-6.4v6.4h-2.41v-10.54h2.02l5.24,6.4v-6.4h2.41Z"></path>
+<path class="st24" d="M702.77,211.21v1.96h-8.16v-10.54h7.97v1.96h-5.54v2.29h4.89v1.9h-4.89v2.44h5.74Z"></path>
+<path class="st24" d="M712.88,211.21v1.96h-8.16v-10.54h7.97v1.96h-5.54v2.29h4.89v1.9h-4.89v2.44h5.74Z"></path>
+<path class="st24" d="M721.54,213.17l-2.03-2.94h-2.24v2.94h-2.44v-10.54h4.56c2.82,0,4.58,1.46,4.58,3.83,0,1.58-.8,2.74-2.17,3.33l2.37,3.39h-2.62ZM719.25,204.61h-1.99v3.67h1.99c1.49,0,2.24-.69,2.24-1.84s-.75-1.84-2.24-1.84Z"></path>
+<path class="st24" d="M629.55,219.57h2.44v8.55h5.29v1.99h-7.73v-10.54Z"></path>
+<path class="st24" d="M646.81,228.16v1.96h-8.16v-10.54h7.97v1.96h-5.54v2.29h4.89v1.9h-4.89v2.44h5.74Z"></path>
+<path class="st24" d="M658.74,219.57l-4.56,10.54h-2.41l-4.55-10.54h2.64l3.21,7.53,3.25-7.53h2.42Z"></path>
+<path class="st24" d="M667.78,228.16v1.96h-8.16v-10.54h7.97v1.96h-5.54v2.29h4.89v1.9h-4.89v2.44h5.74Z"></path>
+<path class="st24" d="M669.72,219.57h2.44v8.55h5.29v1.99h-7.73v-10.54Z"></path>
+<path class="st24" d="M690.39,226.8c0,1.87-1.37,3.49-4.38,3.49-1.46,0-3-.41-4.02-1.13l.96-1.87c.8.6,1.9.95,3,.95,1.22,0,1.97-.51,1.97-1.37s-.54-1.37-2.45-1.37h-2.7l.54-5.93h6.43v1.96h-4.4l-.17,2h.86c3.12,0,4.35,1.4,4.35,3.27Z"></path>
+</g>
+<path class="st30 pulse-target connector-original-dt3" d="M747.6,279.5h26.09c1.72,1.72,1.72,4.54,0,6.27l-9.91,9.91c-1.72,1.72-4.54,1.72-6.27,0l-9.91-9.91c-1.72-1.72-1.72-4.54,0-6.27Z"></path>
+<line class="st19 pulse-target connector-original-da4" x1="668.17" x2="668.17" y1="247.96" y2="294.71"></line>
+<path class="st30 pulse-target connector-original-da4" d="M681.01,271.11h-26.09c-1.72-1.72-1.72-4.54,0-6.27l9.91-9.91c1.72-1.72,4.54-1.72,6.27,0l9.91,9.91c1.72,1.72,1.72,4.54,0,6.27Z"></path>
+<path class="st19 pulse-target connector-original-dt3" d="M760.58,144.84v152.21c0,11.74-9.61,21.35-21.35,21.35h-9.96"></path>
+<!-- Add BA connector classes so this arrow pulses when Business Admin Level 3 is hovered -->
+<path class="st25 pulse-target connector-original-ba" d="M775.98,448.73h-26.09c-1.72-1.72-1.72-4.54,0-6.27l9.91-9.91c1.72-1.72,4.54-1.72,6.27,0l9.91,9.91c1.72,1.72,1.72,4.54,0,6.27Z"></path>
+<path class="st1 pulse-target connector-original-dt3" d="M477.02,145.26v-7.93c0-11.74,9.61-21.35,21.35-21.35h153.52"></path>
+<line class="st11 pulse-target connector-original-de5" x1="578.83" x2="548.85" y1="215.39" y2="215.39"></line>
+<path class="st26 pulse-target connector-original-de5" d="M549.83,202.46v26.09c-1.72,1.72-4.54,1.72-6.27,0l-9.91-9.91c-1.72-1.72-1.72-4.54,0-6.27l9.91-9.91c1.72-1.72,4.54-1.72,6.27,0Z"></path>
+<line class="st13 pulse-target connector-original-da4" x1="579.66" x2="549.29" y1="316.74" y2="316.74"></line>
+<path class="st26 pulse-target connector-original-da4" d="M549.83,303.8v26.09c-1.72,1.72-4.54,1.72-6.27,0l-9.91-9.91c-1.72-1.72-1.72-4.54,0-6.27l9.91-9.91c1.72-1.72,4.54-1.72,6.27,0Z"></path>
+<path class="st26 pulse-target connector-original-dt3" d="M463.23,134.98h26.09c1.72,1.72,1.72,4.54,0,6.27l-9.91,9.91c-1.72,1.72-4.54,1.72-6.27,0l-9.91-9.91c-1.72-1.72-1.72-4.54,0-6.27Z"></path>
+<line class="st14 pulse-target connector-original-pl4" x1="579.25" x2="548.85" y1="414.01" y2="414.01"></line>
+<path class="st26 pulse-target connector-original-pl4" d="M549.83,401.07v26.09c-1.72,1.72-4.54,1.72-6.27,0l-9.91-9.91c-1.72-1.72-1.72-4.54,0-6.27l9.91-9.91c1.72-1.72,4.54-1.72,6.27,0Z"></path>
+<line class="st18 pulse-target connector-original-pl3" x1="583.42" x2="547.52" y1="495.8" y2="495.8"></line>
+<g>
+<path class="st24" d="M41.44,60.94v12.95h-1.31v-10.36l-5.09,8.71h-.65l-5.09-8.65v10.3h-1.31v-12.95h1.13l5.62,9.6,5.57-9.6h1.13Z"></path>
+<path class="st24" d="M54.15,64.16v9.73h-1.26v-1.78c-.68,1.18-1.94,1.87-3.5,1.87-2.48,0-4.11-1.39-4.11-4.18v-5.64h1.31v5.51c0,2.07,1.07,3.13,2.92,3.13,2.03,0,3.31-1.31,3.31-3.53v-5.1h1.31Z"></path>
+<path class="st24" d="M57.84,60.16h1.31v13.72h-1.31v-13.72Z"></path>
+<path class="st24" d="M67.97,73.29c-.52.46-1.29.68-2.05.68-1.83,0-2.85-1.04-2.85-2.83v-5.88h-1.74v-1.11h1.74v-2.13h1.31v2.13h2.96v1.11h-2.96v5.81c0,1.15.59,1.78,1.68,1.78.54,0,1.07-.17,1.44-.5l.46.94Z"></path>
+<path class="st24" d="M70.07,61.09c0-.5.42-.92.96-.92s.96.41.96.91c0,.54-.41.96-.96.96s-.96-.43-.96-.94ZM70.36,64.16h1.31v9.73h-1.31v-9.73Z"></path>
+<path class="st24" d="M85.19,69.02c0,2.96-2.07,4.96-4.84,4.96-1.55,0-2.88-.67-3.7-1.92v5.42h-1.31v-13.32h1.26v1.92c.79-1.29,2.14-2,3.75-2,2.77,0,4.84,2,4.84,4.94ZM83.88,69.02c0-2.26-1.57-3.79-3.62-3.79s-3.62,1.54-3.62,3.79,1.55,3.79,3.62,3.79,3.62-1.52,3.62-3.79Z"></path>
+<path class="st24" d="M87.88,60.16h1.31v13.72h-1.31v-13.72Z"></path>
+<path class="st24" d="M101.33,69.43h-8.14c.15,2.03,1.7,3.38,3.83,3.38,1.18,0,2.24-.43,2.98-1.28l.74.85c-.87,1.04-2.22,1.59-3.75,1.59-3.03,0-5.1-2.07-5.1-4.96s2.02-4.94,4.75-4.94,4.72,2.02,4.72,4.94c0,.11-.02.26-.02.41ZM93.19,68.45h6.9c-.17-1.9-1.55-3.24-3.46-3.24s-3.27,1.33-3.44,3.24Z"></path>
+<path class="st24" d="M118.74,69.02c0,2.96-2.07,4.96-4.85,4.96-1.55,0-2.88-.67-3.7-1.92v5.42h-1.31v-13.32h1.26v1.92c.79-1.29,2.14-2,3.75-2,2.77,0,4.85,2,4.85,4.94ZM117.42,69.02c0-2.26-1.57-3.79-3.62-3.79s-3.62,1.54-3.62,3.79,1.55,3.79,3.62,3.79,3.62-1.52,3.62-3.79Z"></path>
+<path class="st24" d="M126.32,64.08v1.28c-.11,0-.22-.02-.31-.02-2.03,0-3.27,1.29-3.27,3.59v4.96h-1.31v-9.73h1.26v1.9c.61-1.29,1.85-1.98,3.64-1.98Z"></path>
+<path class="st24" d="M127.62,69.02c0-2.89,2.11-4.94,4.96-4.94s4.94,2.05,4.94,4.94-2.09,4.96-4.94,4.96-4.96-2.07-4.96-4.96ZM136.18,69.02c0-2.27-1.54-3.79-3.61-3.79s-3.62,1.52-3.62,3.79,1.55,3.79,3.62,3.79,3.61-1.52,3.61-3.79Z"></path>
+<path class="st24" d="M149.2,64.16v8.54c0,3.35-1.65,4.86-4.86,4.86-1.78,0-3.51-.54-4.53-1.5l.67-1c.92.83,2.33,1.33,3.83,1.33,2.46,0,3.59-1.13,3.59-3.53v-1.24c-.81,1.24-2.2,1.89-3.79,1.89-2.77,0-4.88-1.94-4.88-4.73s2.11-4.7,4.88-4.7c1.63,0,3.03.67,3.85,1.94v-1.87h1.26ZM147.93,68.78c0-2.11-1.55-3.55-3.7-3.55s-3.68,1.44-3.68,3.55,1.53,3.57,3.68,3.57,3.7-1.46,3.7-3.57Z"></path>
+<path class="st24" d="M157.79,64.08v1.28c-.11,0-.22-.02-.31-.02-2.03,0-3.27,1.29-3.27,3.59v4.96h-1.31v-9.73h1.26v1.9c.61-1.29,1.85-1.98,3.64-1.98Z"></path>
+<path class="st24" d="M168.54,69.43h-8.14c.15,2.03,1.7,3.38,3.83,3.38,1.18,0,2.24-.43,2.98-1.28l.74.85c-.87,1.04-2.22,1.59-3.75,1.59-3.03,0-5.1-2.07-5.1-4.96s2.02-4.94,4.75-4.94,4.72,2.02,4.72,4.94c0,.11-.02.26-.02.41ZM160.4,68.45h6.9c-.17-1.9-1.55-3.24-3.46-3.24s-3.27,1.33-3.44,3.24Z"></path>
+<path class="st24" d="M169.89,72.77l.59-1.04c.78.61,2.09,1.09,3.46,1.09,1.85,0,2.61-.63,2.61-1.59,0-2.53-6.31-.54-6.31-4.38,0-1.59,1.37-2.77,3.85-2.77,1.26,0,2.63.35,3.44.91l-.57,1.05c-.85-.59-1.87-.83-2.87-.83-1.76,0-2.53.68-2.53,1.61,0,2.63,6.31.65,6.31,4.38,0,1.68-1.48,2.77-4.01,2.77-1.61,0-3.16-.52-3.96-1.2Z"></path>
+<path class="st24" d="M178.94,72.77l.59-1.04c.78.61,2.09,1.09,3.46,1.09,1.85,0,2.61-.63,2.61-1.59,0-2.53-6.31-.54-6.31-4.38,0-1.59,1.37-2.77,3.85-2.77,1.26,0,2.63.35,3.44.91l-.57,1.05c-.85-.59-1.87-.83-2.87-.83-1.76,0-2.53.68-2.53,1.61,0,2.63,6.31.65,6.31,4.38,0,1.68-1.48,2.77-4.01,2.77-1.61,0-3.16-.52-3.96-1.2Z"></path>
+<path class="st24" d="M189.04,61.09c0-.5.42-.92.96-.92s.96.41.96.91c0,.54-.41.96-.96.96s-.96-.43-.96-.94ZM189.33,64.16h1.31v9.73h-1.31v-9.73Z"></path>
+<path class="st24" d="M193.33,69.02c0-2.89,2.11-4.94,4.96-4.94s4.94,2.05,4.94,4.94-2.09,4.96-4.94,4.96-4.96-2.07-4.96-4.96ZM201.89,69.02c0-2.27-1.54-3.79-3.61-3.79s-3.62,1.52-3.62,3.79,1.55,3.79,3.62,3.79,3.61-1.52,3.61-3.79Z"></path>
+<path class="st24" d="M214.86,68.24v5.64h-1.31v-5.51c0-2.05-1.07-3.11-2.92-3.11-2.09,0-3.4,1.29-3.4,3.51v5.1h-1.31v-9.73h1.26v1.79c.7-1.18,2.02-1.87,3.7-1.87,2.37,0,4,1.37,4,4.16Z"></path>
+<path class="st24" d="M228.18,64.08v1.28c-.11,0-.22-.02-.31-.02-2.03,0-3.27,1.29-3.27,3.59v4.96h-1.31v-9.73h1.26v1.9c.61-1.29,1.85-1.98,3.64-1.98Z"></path>
+<path class="st24" d="M229.48,69.02c0-2.89,2.11-4.94,4.96-4.94s4.94,2.05,4.94,4.94-2.09,4.96-4.94,4.96-4.96-2.07-4.96-4.96ZM238.04,69.02c0-2.27-1.54-3.79-3.61-3.79s-3.62,1.52-3.62,3.79,1.55,3.79,3.62,3.79,3.61-1.52,3.61-3.79Z"></path>
+<path class="st24" d="M250.82,64.16v9.73h-1.26v-1.78c-.68,1.18-1.94,1.87-3.5,1.87-2.48,0-4.11-1.39-4.11-4.18v-5.64h1.31v5.51c0,2.07,1.07,3.13,2.92,3.13,2.03,0,3.31-1.31,3.31-3.53v-5.1h1.31Z"></path>
+<path class="st24" d="M259.63,73.29c-.52.46-1.29.68-2.05.68-1.83,0-2.85-1.04-2.85-2.83v-5.88h-1.74v-1.11h1.74v-2.13h1.31v2.13h2.96v1.11h-2.96v5.81c0,1.15.59,1.78,1.68,1.78.54,0,1.07-.17,1.44-.5l.46.94Z"></path>
+<path class="st24" d="M270.14,69.43h-8.14c.15,2.03,1.7,3.38,3.83,3.38,1.18,0,2.24-.43,2.98-1.28l.74.85c-.87,1.04-2.22,1.59-3.75,1.59-3.03,0-5.1-2.07-5.1-4.96s2.02-4.94,4.75-4.94,4.72,2.02,4.72,4.94c0,.11-.02.26-.02.41ZM262,68.45h6.9c-.17-1.9-1.55-3.24-3.46-3.24s-3.27,1.33-3.44,3.24Z"></path>
+<path class="st24" d="M271.49,72.77l.59-1.04c.78.61,2.09,1.09,3.46,1.09,1.85,0,2.61-.63,2.61-1.59,0-2.53-6.31-.54-6.31-4.38,0-1.59,1.37-2.77,3.85-2.77,1.26,0,2.63.35,3.44.91l-.57,1.05c-.85-.59-1.87-.83-2.87-.83-1.76,0-2.53.68-2.53,1.61,0,2.63,6.31.65,6.31,4.38,0,1.68-1.48,2.77-4.01,2.77-1.61,0-3.16-.52-3.96-1.2Z"></path>
+<path class="st24" d="M291.86,73.29c-.52.46-1.29.68-2.05.68-1.83,0-2.85-1.04-2.85-2.83v-5.88h-1.74v-1.11h1.74v-2.13h1.31v2.13h2.96v1.11h-2.96v5.81c0,1.15.59,1.78,1.68,1.78.54,0,1.07-.17,1.44-.5l.46.94Z"></path>
+<path class="st24" d="M292.91,69.02c0-2.89,2.11-4.94,4.96-4.94s4.94,2.05,4.94,4.94-2.09,4.96-4.94,4.96-4.96-2.07-4.96-4.96ZM301.48,69.02c0-2.27-1.54-3.79-3.61-3.79s-3.62,1.52-3.62,3.79,1.55,3.79,3.62,3.79,3.61-1.52,3.61-3.79Z"></path>
+<path class="st24" d="M318.81,69.43h-8.14c.15,2.03,1.7,3.38,3.83,3.38,1.18,0,2.24-.43,2.98-1.28l.74.85c-.87,1.04-2.22,1.59-3.75,1.59-3.03,0-5.1-2.07-5.1-4.96s2.02-4.94,4.75-4.94,4.72,2.02,4.72,4.94c0,.11-.02.26-.02.41ZM310.67,68.45h6.9c-.17-1.9-1.55-3.24-3.46-3.24s-3.27,1.33-3.44,3.24Z"></path>
+<path class="st24" d="M330.47,68.24v5.64h-1.31v-5.51c0-2.05-1.07-3.11-2.92-3.11-2.09,0-3.4,1.29-3.4,3.51v5.1h-1.31v-9.73h1.26v1.79c.7-1.18,2.02-1.87,3.7-1.87,2.37,0,4,1.37,4,4.16Z"></path>
+<path class="st24" d="M342.99,68.24v5.64h-1.31v-5.51c0-2.05-1.07-3.11-2.92-3.11-2.09,0-3.4,1.29-3.4,3.51v5.1h-1.31v-13.72h1.31v5.7c.72-1.13,2-1.78,3.64-1.78,2.37,0,4,1.37,4,4.16Z"></path>
+<path class="st24" d="M353.91,67.85v6.03h-1.26v-1.52c-.59,1-1.74,1.61-3.35,1.61-2.2,0-3.55-1.15-3.55-2.83,0-1.5.96-2.76,3.75-2.76h3.09v-.59c0-1.66-.94-2.57-2.75-2.57-1.26,0-2.44.44-3.24,1.15l-.59-.98c.98-.83,2.42-1.31,3.96-1.31,2.52,0,3.94,1.26,3.94,3.77ZM352.59,70.96v-1.59h-3.05c-1.89,0-2.5.74-2.5,1.74,0,1.13.91,1.83,2.46,1.83s2.57-.7,3.09-1.98Z"></path>
+<path class="st24" d="M366.43,68.24v5.64h-1.31v-5.51c0-2.05-1.07-3.11-2.92-3.11-2.09,0-3.4,1.29-3.4,3.51v5.1h-1.31v-9.73h1.26v1.79c.7-1.18,2.02-1.87,3.7-1.87,2.37,0,4,1.37,4,4.16Z"></path>
+<path class="st24" d="M369.06,69.02c0-2.9,2.11-4.94,5.01-4.94,1.65,0,3.03.65,3.81,1.92l-.98.67c-.67-.98-1.7-1.44-2.83-1.44-2.13,0-3.68,1.52-3.68,3.79s1.55,3.79,3.68,3.79c1.13,0,2.16-.44,2.83-1.42l.98.67c-.78,1.26-2.16,1.92-3.81,1.92-2.9,0-5.01-2.05-5.01-4.96Z"></path>
+<path class="st24" d="M388.76,69.43h-8.14c.15,2.03,1.7,3.38,3.83,3.38,1.18,0,2.24-.43,2.98-1.28l.74.85c-.87,1.04-2.22,1.59-3.75,1.59-3.03,0-5.1-2.07-5.1-4.96s2.02-4.94,4.75-4.94,4.72,2.02,4.72,4.94c0,.11-.02.26-.02.41ZM380.62,68.45h6.9c-.17-1.9-1.55-3.24-3.46-3.24s-3.27,1.33-3.44,3.24Z"></path>
+<path class="st24" d="M395.33,69.02c0-2.9,2.11-4.94,5.01-4.94,1.65,0,3.03.65,3.81,1.92l-.98.67c-.67-.98-1.7-1.44-2.83-1.44-2.13,0-3.68,1.52-3.68,3.79s1.55,3.79,3.68,3.79c1.13,0,2.16-.44,2.83-1.42l.98.67c-.78,1.26-2.16,1.92-3.81,1.92-2.9,0-5.01-2.05-5.01-4.96Z"></path>
+<path class="st24" d="M414.07,67.85v6.03h-1.26v-1.52c-.59,1-1.74,1.61-3.35,1.61-2.2,0-3.55-1.15-3.55-2.83,0-1.5.96-2.76,3.75-2.76h3.09v-.59c0-1.66-.94-2.57-2.75-2.57-1.26,0-2.44.44-3.24,1.15l-.59-.98c.98-.83,2.42-1.31,3.96-1.31,2.52,0,3.94,1.26,3.94,3.77ZM412.75,70.96v-1.59h-3.05c-1.89,0-2.5.74-2.5,1.74,0,1.13.91,1.83,2.46,1.83s2.57-.7,3.09-1.98Z"></path>
+<path class="st24" d="M427.5,69.02c0,2.96-2.07,4.96-4.84,4.96-1.55,0-2.88-.67-3.7-1.92v5.42h-1.31v-13.32h1.26v1.92c.79-1.29,2.14-2,3.75-2,2.77,0,4.84,2,4.84,4.94ZM426.18,69.02c0-2.26-1.57-3.79-3.62-3.79s-3.62,1.54-3.62,3.79,1.55,3.79,3.62,3.79,3.62-1.52,3.62-3.79Z"></path>
+<path class="st24" d="M437.47,67.85v6.03h-1.26v-1.52c-.59,1-1.74,1.61-3.35,1.61-2.2,0-3.55-1.15-3.55-2.83,0-1.5.96-2.76,3.75-2.76h3.09v-.59c0-1.66-.94-2.57-2.75-2.57-1.26,0-2.44.44-3.24,1.15l-.59-.98c.98-.83,2.42-1.31,3.96-1.31,2.52,0,3.94,1.26,3.94,3.77ZM436.16,70.96v-1.59h-3.05c-1.89,0-2.5.74-2.5,1.74,0,1.13.91,1.83,2.46,1.83s2.57-.7,3.09-1.98Z"></path>
+<path class="st24" d="M450.9,69.02c0,2.94-2.07,4.96-4.84,4.96-1.61,0-2.96-.7-3.75-2.02v1.92h-1.26v-13.72h1.31v5.84c.81-1.26,2.15-1.92,3.7-1.92,2.77,0,4.84,2,4.84,4.94ZM449.58,69.02c0-2.27-1.57-3.79-3.62-3.79s-3.62,1.52-3.62,3.79,1.55,3.79,3.62,3.79,3.62-1.52,3.62-3.79Z"></path>
+<path class="st24" d="M453.29,61.09c0-.5.42-.92.96-.92s.96.41.96.91c0,.54-.41.96-.96.96s-.96-.43-.96-.94ZM453.58,64.16h1.31v9.73h-1.31v-9.73Z"></path>
+<path class="st24" d="M458.56,60.16h1.31v13.72h-1.31v-13.72Z"></path>
+<path class="st24" d="M463.24,61.09c0-.5.42-.92.96-.92s.96.41.96.91c0,.54-.41.96-.96.96s-.96-.43-.96-.94ZM463.54,64.16h1.31v9.73h-1.31v-9.73Z"></path>
+<path class="st24" d="M473.64,73.29c-.52.46-1.29.68-2.05.68-1.83,0-2.85-1.04-2.85-2.83v-5.88h-1.74v-1.11h1.74v-2.13h1.31v2.13h2.96v1.11h-2.96v5.81c0,1.15.59,1.78,1.68,1.78.54,0,1.07-.17,1.44-.5l.46.94Z"></path>
+<path class="st24" d="M484.01,64.16l-4.86,10.89c-.81,1.9-1.85,2.52-3.24,2.52-.91,0-1.78-.3-2.37-.89l.61-.98c.48.48,1.07.74,1.78.74.87,0,1.46-.41,2.02-1.63l.42-.94-4.35-9.71h1.37l3.66,8.27,3.66-8.27h1.29Z"></path>
+<path class="st24" d="M498.05,67.85v6.03h-1.26v-1.52c-.59,1-1.74,1.61-3.35,1.61-2.2,0-3.55-1.15-3.55-2.83,0-1.5.96-2.76,3.75-2.76h3.09v-.59c0-1.66-.94-2.57-2.75-2.57-1.26,0-2.44.44-3.24,1.15l-.59-.98c.98-.83,2.42-1.31,3.96-1.31,2.52,0,3.94,1.26,3.94,3.77ZM496.74,70.96v-1.59h-3.05c-1.89,0-2.5.74-2.5,1.74,0,1.13.91,1.83,2.46,1.83s2.57-.7,3.09-1.98Z"></path>
+<path class="st24" d="M510.58,68.24v5.64h-1.31v-5.51c0-2.05-1.07-3.11-2.92-3.11-2.09,0-3.4,1.29-3.4,3.51v5.1h-1.31v-9.73h1.26v1.79c.7-1.18,2.02-1.87,3.7-1.87,2.37,0,4,1.37,4,4.16Z"></path>
+<path class="st24" d="M523.07,60.16v13.72h-1.26v-1.92c-.79,1.31-2.15,2.02-3.75,2.02-2.77,0-4.85-2.02-4.85-4.96s2.07-4.94,4.85-4.94c1.55,0,2.88.67,3.7,1.92v-5.84h1.31ZM521.77,69.02c0-2.27-1.55-3.79-3.61-3.79s-3.62,1.52-3.62,3.79,1.55,3.79,3.62,3.79,3.61-1.52,3.61-3.79Z"></path>
+<path class="st24" d="M541.44,69.02c0,2.96-2.07,4.96-4.85,4.96-1.55,0-2.88-.67-3.7-1.92v5.42h-1.31v-13.32h1.26v1.92c.79-1.29,2.14-2,3.75-2,2.77,0,4.85,2,4.85,4.94ZM540.12,69.02c0-2.26-1.57-3.79-3.62-3.79s-3.62,1.54-3.62,3.79,1.55,3.79,3.62,3.79,3.62-1.52,3.62-3.79Z"></path>
+<path class="st24" d="M549.02,64.08v1.28c-.11,0-.22-.02-.31-.02-2.03,0-3.27,1.29-3.27,3.59v4.96h-1.31v-9.73h1.26v1.9c.61-1.29,1.85-1.98,3.64-1.98Z"></path>
+<path class="st24" d="M550.32,69.02c0-2.89,2.11-4.94,4.96-4.94s4.94,2.05,4.94,4.94-2.09,4.96-4.94,4.96-4.96-2.07-4.96-4.96ZM558.88,69.02c0-2.27-1.54-3.79-3.61-3.79s-3.62,1.52-3.62,3.79,1.55,3.79,3.62,3.79,3.61-1.52,3.61-3.79Z"></path>
+<path class="st24" d="M571.78,60.16v13.72h-1.26v-1.92c-.79,1.31-2.15,2.02-3.75,2.02-2.77,0-4.85-2.02-4.85-4.96s2.07-4.94,4.85-4.94c1.55,0,2.88.67,3.7,1.92v-5.84h1.31ZM570.48,69.02c0-2.27-1.55-3.79-3.61-3.79s-3.62,1.52-3.62,3.79,1.55,3.79,3.62,3.79,3.61-1.52,3.61-3.79Z"></path>
+<path class="st24" d="M584.21,64.16v9.73h-1.26v-1.78c-.68,1.18-1.94,1.87-3.5,1.87-2.48,0-4.11-1.39-4.11-4.18v-5.64h1.31v5.51c0,2.07,1.07,3.13,2.92,3.13,2.03,0,3.31-1.31,3.31-3.53v-5.1h1.31Z"></path>
+<path class="st24" d="M586.91,69.02c0-2.9,2.11-4.94,5.01-4.94,1.65,0,3.03.65,3.81,1.92l-.98.67c-.67-.98-1.7-1.44-2.83-1.44-2.13,0-3.68,1.52-3.68,3.79s1.55,3.79,3.68,3.79c1.13,0,2.16-.44,2.83-1.42l.98.67c-.78,1.26-2.16,1.92-3.81,1.92-2.9,0-5.01-2.05-5.01-4.96Z"></path>
+<path class="st24" d="M603.54,73.29c-.52.46-1.29.68-2.05.68-1.83,0-2.85-1.04-2.85-2.83v-5.88h-1.74v-1.11h1.74v-2.13h1.31v2.13h2.96v1.11h-2.96v5.81c0,1.15.59,1.78,1.68,1.78.54,0,1.07-.17,1.44-.5l.46.94Z"></path>
+<path class="st24" d="M605.63,61.09c0-.5.42-.92.96-.92s.96.41.96.91c0,.54-.41.96-.96.96s-.96-.43-.96-.94ZM605.93,64.16h1.31v9.73h-1.31v-9.73Z"></path>
+<path class="st24" d="M619.08,64.16l-4.33,9.73h-1.35l-4.31-9.73h1.37l3.64,8.29,3.68-8.29h1.29Z"></path>
+<path class="st24" d="M620.64,61.09c0-.5.42-.92.96-.92s.96.41.96.91c0,.54-.41.96-.96.96s-.96-.43-.96-.94ZM620.93,64.16h1.31v9.73h-1.31v-9.73Z"></path>
+<path class="st24" d="M631.03,73.29c-.52.46-1.29.68-2.05.68-1.83,0-2.85-1.04-2.85-2.83v-5.88h-1.74v-1.11h1.74v-2.13h1.31v2.13h2.96v1.11h-2.96v5.81c0,1.15.59,1.78,1.68,1.78.54,0,1.07-.17,1.44-.5l.46.94Z"></path>
+<path class="st24" d="M641.41,64.16l-4.86,10.89c-.81,1.9-1.85,2.52-3.24,2.52-.91,0-1.78-.3-2.37-.89l.61-.98c.48.48,1.07.74,1.78.74.87,0,1.46-.41,2.02-1.63l.42-.94-4.35-9.71h1.37l3.66,8.27,3.66-8.27h1.29Z"></path>
+</g>
+<!-- Add connector-original-ba so this arrow also pulses when Business Admin Level 3 is hovered -->
+<path class="st28 pulse-target connector-original-ba" d="M98.31,205.57h-26.09c-1.72-1.72-1.72-4.54,0-6.27l9.91-9.91c1.72-1.72,4.54-1.72,6.27,0l9.91,9.91c1.72,1.72,1.72,4.54,0,6.27Z"></path>
+<!-- Add BA connector classes so this vertical line pulses when Business Admin Level 3 is hovered -->
+<line class="st8 pulse-target connector-original-ba" x1="85.27" x2="85.27" y1="178.46" y2="482.57"></line>
+<line class="st22" x1="452.41" x2="479.01" y1="274.21" y2="409.88"></line>
+<circle class="st16" cx="452.22" cy="283.32" r="61.16"></circle>
+<g>
+<path class="st24" d="M420.44,258.64c0,2.8-2.1,4.54-5.46,4.54h-2.53v3.46h-2.91v-12.56h5.44c3.36,0,5.46,1.74,5.46,4.56ZM417.5,258.64c0-1.38-.9-2.19-2.67-2.19h-2.37v4.36h2.37c1.78,0,2.67-.81,2.67-2.17Z"></path>
+<path class="st24" d="M430.51,266.65l-2.42-3.5h-2.67v3.5h-2.91v-12.56h5.44c3.36,0,5.46,1.74,5.46,4.56,0,1.88-.95,3.27-2.58,3.97l2.82,4.04h-3.12ZM427.78,256.45h-2.37v4.38h2.37c1.78,0,2.67-.83,2.67-2.19s-.9-2.19-2.67-2.19Z"></path>
+<path class="st24" d="M434.9,260.37c0-3.73,2.91-6.5,6.87-6.5s6.87,2.75,6.87,6.5-2.92,6.5-6.87,6.5-6.87-2.76-6.87-6.5ZM445.71,260.37c0-2.39-1.69-4.02-3.93-4.02s-3.93,1.63-3.93,4.02,1.69,4.02,3.93,4.02,3.93-1.63,3.93-4.02Z"></path>
+<path class="st24" d="M448.79,265.03l1.62-1.94c.68.92,1.44,1.38,2.33,1.38,1.17,0,1.78-.7,1.78-2.08v-5.98h-4.42v-2.33h7.3v8.15c0,3.1-1.56,4.63-4.52,4.63-1.69,0-3.18-.65-4.09-1.83Z"></path>
+<path class="st24" d="M470,264.31v2.33h-9.73v-12.56h9.49v2.33h-6.6v2.73h5.83v2.26h-5.83v2.91h6.84Z"></path>
+<path class="st24" d="M471.5,260.37c0-3.79,2.91-6.5,6.82-6.5,2.17,0,3.98.79,5.17,2.23l-1.87,1.72c-.84-.97-1.9-1.47-3.16-1.47-2.35,0-4.02,1.65-4.02,4.02s1.67,4.02,4.02,4.02c1.26,0,2.32-.5,3.16-1.49l1.87,1.72c-1.18,1.45-3,2.24-5.19,2.24-3.89,0-6.8-2.71-6.8-6.5Z"></path>
+<path class="st24" d="M487.92,256.45h-4.02v-2.37h10.95v2.37h-4.02v10.19h-2.91v-10.19Z"></path>
+<path class="st24" d="M415.4,284.59l-.02-7.54-3.7,6.21h-1.31l-3.68-6.05v7.38h-2.73v-12.56h2.4l4.7,7.81,4.63-7.81h2.39l.04,12.56h-2.73Z"></path>
+<path class="st24" d="M429.38,281.9h-5.83l-1.11,2.69h-2.98l5.6-12.56h2.87l5.62,12.56h-3.05l-1.11-2.69ZM428.46,279.69l-1.99-4.81-1.99,4.81h3.98Z"></path>
+<path class="st24" d="M446.37,272.03v12.56h-2.39l-6.26-7.63v7.63h-2.87v-12.56h2.4l6.25,7.63v-7.63h2.87Z"></path>
+<path class="st24" d="M457.62,281.9h-5.83l-1.11,2.69h-2.98l5.6-12.56h2.87l5.62,12.56h-3.05l-1.11-2.69ZM456.71,279.69l-1.99-4.81-1.99,4.81h3.98Z"></path>
+<path class="st24" d="M471.41,278.11h2.66v5.1c-1.38,1.04-3.28,1.6-5.08,1.6-3.95,0-6.85-2.71-6.85-6.5s2.91-6.5,6.91-6.5c2.21,0,4.04.75,5.26,2.17l-1.87,1.72c-.92-.97-1.97-1.42-3.25-1.42-2.44,0-4.11,1.63-4.11,4.02s1.67,4.02,4.07,4.02c.79,0,1.53-.14,2.26-.54v-3.68Z"></path>
+<path class="st24" d="M486.48,282.26v2.33h-9.73v-12.56h9.49v2.33h-6.6v2.73h5.83v2.26h-5.83v2.91h6.84Z"></path>
+<path class="st24" d="M496.8,284.59l-2.42-3.5h-2.67v3.5h-2.91v-12.56h5.44c3.36,0,5.46,1.74,5.46,4.56,0,1.88-.95,3.27-2.58,3.97l2.82,4.04h-3.12ZM494.07,274.4h-2.37v4.38h2.37c1.78,0,2.67-.83,2.67-2.19s-.9-2.19-2.67-2.19Z"></path>
+<g>
+<path class="st24" d="M433.4,302.42v-5.28s-2.63,4.4-2.63,4.4h-.48l-2.62-4.37v5.25h-.99v-7.25h.85l3.03,5.1,2.98-5.1h.85v7.25s-.98,0-.98,0Z"></path>
+<path class="st24" d="M440.77,299.1v3.32h-.94v-.73c-.33.5-.94.79-1.8.79-1.24,0-2.03-.66-2.03-1.62,0-.88.57-1.61,2.21-1.61h1.57v-.2c0-.84-.49-1.33-1.47-1.33-.65,0-1.32.23-1.74.59l-.41-.75c.57-.46,1.39-.7,2.27-.7,1.5,0,2.35.73,2.35,2.23ZM439.78,300.74v-.77h-1.53c-.98,0-1.26.38-1.26.85,0,.55.46.89,1.21.89s1.34-.34,1.59-.97Z"></path>
+<path class="st24" d="M447.82,299.26v3.16h-.99v-3.05c0-1.08-.54-1.61-1.48-1.61-1.06,0-1.74.63-1.74,1.82v2.83h-.99v-5.49h.95v.83c.4-.56,1.11-.88,1.98-.88,1.34,0,2.28.77,2.28,2.38Z"></path>
+<path class="st24" d="M454.02,299.1v3.32h-.94v-.73c-.33.5-.94.79-1.8.79-1.24,0-2.03-.66-2.03-1.62,0-.88.57-1.61,2.21-1.61h1.57v-.2c0-.84-.49-1.33-1.47-1.33-.65,0-1.32.23-1.74.59l-.42-.75c.57-.46,1.39-.7,2.27-.7,1.5,0,2.35.73,2.35,2.23ZM453.02,300.74v-.77h-1.53c-.98,0-1.26.38-1.26.85,0,.55.46.89,1.21.89s1.34-.34,1.58-.97Z"></path>
+<path class="st24" d="M461.14,296.93v4.75c0,1.94-.98,2.82-2.85,2.82-1,0-2.02-.28-2.62-.82l.48-.77c.51.43,1.3.71,2.11.71,1.29,0,1.89-.6,1.89-1.84v-.43c-.48.57-1.19.85-1.98.85-1.59,0-2.79-1.08-2.79-2.66s1.2-2.65,2.79-2.65c.82,0,1.56.3,2.03.9v-.85h.94ZM460.17,299.53c0-1.07-.79-1.78-1.89-1.78s-1.9.71-1.9,1.78.79,1.79,1.9,1.79,1.89-.74,1.89-1.79Z"></path>
+<path class="st24" d="M462.86,295.23c0-.36.29-.65.67-.65s.67.28.67.63c0,.37-.28.66-.67.66s-.67-.28-.67-.64ZM463.04,296.93h1v5.49h-1v-5.49Z"></path>
+<path class="st24" d="M471.14,299.26v3.16h-1v-3.05c0-1.08-.54-1.61-1.48-1.61-1.06,0-1.74.63-1.74,1.82v2.83h-1v-5.49h.95v.83c.4-.56,1.11-.88,1.98-.88,1.34,0,2.28.77,2.28,2.38Z"></path>
+<path class="st24" d="M478.26,296.93v4.75c0,1.94-.98,2.82-2.85,2.82-1,0-2.02-.28-2.62-.82l.48-.77c.51.43,1.3.71,2.11.71,1.29,0,1.89-.6,1.89-1.84v-.43c-.48.57-1.19.85-1.98.85-1.59,0-2.79-1.08-2.79-2.66s1.2-2.65,2.79-2.65c.82,0,1.56.3,2.03.9v-.85h.94ZM477.29,299.53c0-1.07-.79-1.78-1.89-1.78s-1.9.71-1.9,1.78.79,1.79,1.9,1.79,1.89-.74,1.89-1.79Z"></path>
+</g>
+<g>
+<path class="st24" d="M437.13,311.53c0,1.69-1.17,2.81-2.78,2.81-.78,0-1.46-.3-1.92-.89v2.84h-1v-7.5h.95v.87c.45-.61,1.15-.92,1.96-.92,1.61,0,2.78,1.12,2.78,2.8ZM436.13,311.53c0-1.16-.8-1.93-1.85-1.93s-1.84.77-1.84,1.93.8,1.94,1.84,1.94,1.85-.77,1.85-1.94Z"></path>
+<path class="st24" d="M441.46,308.73v.96c-.08-.01-.16-.01-.23-.01-1.07,0-1.73.65-1.73,1.85v2.74h-1v-5.49h.95v.92c.35-.64,1.04-.97,2-.97Z"></path>
+<path class="st24" d="M442.12,311.53c0-1.64,1.21-2.8,2.86-2.8s2.85,1.16,2.85,2.8-1.2,2.81-2.85,2.81-2.86-1.17-2.86-2.81ZM446.83,311.53c0-1.17-.79-1.93-1.84-1.93s-1.85.76-1.85,1.93.8,1.94,1.85,1.94,1.84-.77,1.84-1.94Z"></path>
+<path class="st24" d="M447.31,316.01l.32-.77c.2.17.49.26.81.26.53,0,.82-.33.82-.96v-5.76h1v5.74c0,1.12-.62,1.82-1.75,1.82-.46,0-.91-.1-1.19-.33ZM449.08,307.08c0-.36.29-.65.67-.65s.67.28.67.63c0,.37-.28.66-.67.66s-.67-.28-.67-.64Z"></path>
+<path class="st24" d="M457.09,311.86h-4.46c.12.96.9,1.61,1.99,1.61.64,0,1.18-.22,1.58-.66l.55.64c-.5.58-1.25.89-2.17.89-1.77,0-2.95-1.17-2.95-2.81s1.17-2.8,2.76-2.8,2.71,1.14,2.71,2.83c0,.08,0,.21-.02.3ZM452.63,311.15h3.52c-.1-.92-.8-1.58-1.76-1.58s-1.66.64-1.76,1.58Z"></path>
+<path class="st24" d="M457.98,311.53c0-1.64,1.21-2.8,2.9-2.8.98,0,1.8.4,2.24,1.17l-.76.49c-.35-.54-.89-.79-1.49-.79-1.08,0-1.89.76-1.89,1.93s.81,1.94,1.89,1.94c.6,0,1.14-.25,1.49-.79l.76.48c-.44.77-1.25,1.18-2.24,1.18-1.69,0-2.9-1.17-2.9-2.81Z"></path>
+<path class="st24" d="M467.56,313.95c-.3.26-.76.38-1.2.38-1.11,0-1.74-.61-1.74-1.72v-3.02h-.93v-.82h.93v-1.2h.99v1.2h1.58v.82h-1.58v2.97c0,.59.31.92.86.92.29,0,.57-.09.78-.26l.31.71Z"></path>
+<path class="st24" d="M468.07,313.69l.41-.79c.47.33,1.21.57,1.93.57.92,0,1.31-.28,1.31-.75,0-1.23-3.47-.17-3.47-2.35,0-.98.88-1.65,2.29-1.65.71,0,1.52.19,2,.5l-.42.79c-.5-.32-1.05-.44-1.58-.44-.87,0-1.29.32-1.29.76,0,1.3,3.48.24,3.48,2.37,0,.99-.91,1.63-2.37,1.63-.91,0-1.81-.28-2.27-.64Z"></path>
+</g>
+</g>
+<circle class="st15" cx="478.78" cy="409.97" r="33.2"></circle>
+<g>
+<path class="st27" d="M464.52,402.12c0-2.74,2.11-4.71,4.94-4.71,1.57,0,2.89.57,3.74,1.61l-1.35,1.25c-.61-.7-1.38-1.07-2.29-1.07-1.7,0-2.91,1.2-2.91,2.91s1.21,2.91,2.91,2.91c.91,0,1.68-.36,2.29-1.08l1.35,1.25c-.86,1.05-2.17,1.63-3.76,1.63-2.82,0-4.93-1.96-4.93-4.71Z"></path>
+<path class="st27" d="M474.3,397.57h2.11v9.1h-2.11v-9.1Z"></path>
+<path class="st27" d="M486.13,400.87c0,2.03-1.52,3.29-3.95,3.29h-1.83v2.51h-2.11v-9.1h3.94c2.43,0,3.95,1.26,3.95,3.3ZM484,400.87c0-1-.65-1.59-1.94-1.59h-1.72v3.16h1.72c1.29,0,1.94-.58,1.94-1.57Z"></path>
+<path class="st27" d="M486.71,405.77l.71-1.59c.77.56,1.91.95,3,.95,1.25,0,1.75-.42,1.75-.98,0-1.7-5.29-.53-5.29-3.91,0-1.55,1.25-2.83,3.83-2.83,1.14,0,2.31.27,3.16.81l-.65,1.6c-.85-.48-1.72-.71-2.52-.71-1.25,0-1.73.47-1.73,1.04,0,1.68,5.29.52,5.29,3.86,0,1.52-1.26,2.82-3.86,2.82-1.44,0-2.9-.43-3.71-1.05Z"></path>
+<path class="st27" d="M457.89,411.57h2.11v7.38h4.56v1.72h-6.67v-9.1Z"></path>
+<path class="st27" d="M472.04,417.74h-5.29c.2.87.94,1.4,2,1.4.74,0,1.27-.22,1.75-.68l1.08,1.17c-.65.74-1.62,1.13-2.89,1.13-2.42,0-3.99-1.52-3.99-3.6s1.6-3.6,3.73-3.6,3.64,1.38,3.64,3.63c0,.16-.03.38-.04.55ZM466.72,416.56h3.45c-.14-.88-.81-1.46-1.72-1.46s-1.59.56-1.73,1.46Z"></path>
+<path class="st27" d="M479.92,413.67l-2.95,6.99h-2.09l-2.94-6.99h2.09l1.94,4.76,2-4.76h1.95Z"></path>
+<path class="st27" d="M487.04,417.74h-5.29c.2.87.94,1.4,2,1.4.74,0,1.27-.22,1.75-.68l1.08,1.17c-.65.74-1.62,1.13-2.89,1.13-2.42,0-3.99-1.52-3.99-3.6s1.6-3.6,3.73-3.6,3.64,1.38,3.64,3.63c0,.16-.03.38-.04.55ZM481.72,416.56h3.45c-.14-.88-.81-1.46-1.72-1.46s-1.59.56-1.73,1.46Z"></path>
+<path class="st27" d="M488.11,411.02h2.03v9.65h-2.03v-9.65Z"></path>
+<path class="st27" d="M501.5,417.81c0,1.61-1.18,3.02-3.78,3.02-1.26,0-2.59-.35-3.47-.98l.83-1.61c.69.52,1.64.82,2.59.82,1.05,0,1.7-.44,1.7-1.18s-.47-1.18-2.12-1.18h-2.33l.47-5.12h5.55v1.69h-3.8l-.14,1.73h.74c2.69,0,3.76,1.21,3.76,2.82Z"></path>
+</g>
+<circle class="st16" cx="363.91" cy="339.24" r="61.16"></circle>
+<g>
+<path class="st27" d="M310.8,318.83h2.27v9.8h-2.27v-9.8Z"></path>
+<path class="st27" d="M323.96,328.64v-5.88s-2.9,4.85-2.9,4.85h-1.02l-2.87-4.72v5.76h-2.13v-9.8h1.88l3.67,6.09,3.61-6.09h1.86l.03,9.8h-2.13Z"></path>
+<path class="st27" d="M336.56,322.39c0,2.19-1.64,3.54-4.26,3.54h-1.98v2.7h-2.27v-9.8h4.24c2.62,0,4.26,1.36,4.26,3.56ZM334.27,322.39c0-1.08-.7-1.71-2.09-1.71h-1.85v3.4h1.85c1.39,0,2.09-.63,2.09-1.7Z"></path>
+<path class="st27" d="M344.07,328.64l-1.89-2.73h-2.09v2.73h-2.27v-9.8h4.24c2.62,0,4.26,1.36,4.26,3.56,0,1.47-.74,2.55-2.02,3.1l2.2,3.15h-2.44ZM341.94,320.68h-1.85v3.42h1.85c1.39,0,2.09-.64,2.09-1.71s-.7-1.71-2.09-1.71Z"></path>
+<path class="st27" d="M347.14,323.74c0-2.91,2.27-5.07,5.37-5.07s5.37,2.14,5.37,5.07-2.28,5.07-5.37,5.07-5.37-2.16-5.37-5.07ZM355.58,323.74c0-1.86-1.32-3.14-3.07-3.14s-3.07,1.27-3.07,3.14,1.32,3.14,3.07,3.14,3.07-1.27,3.07-3.14Z"></path>
+<path class="st27" d="M368.33,318.83l-4.24,9.8h-2.24l-4.23-9.8h2.45l2.98,7,3.03-7h2.25Z"></path>
+<path class="st27" d="M376.38,326.82v1.82h-7.59v-9.8h7.41v1.82h-5.15v2.13h4.55v1.76h-4.55v2.27h5.34Z"></path>
+<path class="st27" d="M386.75,328.64v-5.88s-2.9,4.85-2.9,4.85h-1.02l-2.87-4.72v5.76h-2.13v-9.8h1.88l3.67,6.09,3.61-6.09h1.86l.03,9.8h-2.13Z"></path>
+<path class="st27" d="M398.44,326.82v1.82h-7.59v-9.8h7.41v1.82h-5.15v2.13h4.55v1.76h-4.55v2.27h5.34Z"></path>
+<path class="st27" d="M408.89,318.83v9.8h-1.86l-4.89-5.95v5.95h-2.24v-9.8h1.88l4.87,5.95v-5.95h2.24Z"></path>
+<path class="st27" d="M412.89,320.68h-3.14v-1.85h8.54v1.85h-3.14v7.96h-2.27v-7.96Z"></path>
+<path class="st27" d="M318.43,338.39c0,2.19-1.64,3.54-4.26,3.54h-1.98v2.7h-2.27v-9.8h4.24c2.62,0,4.26,1.36,4.26,3.56ZM316.14,338.39c0-1.08-.7-1.71-2.09-1.71h-1.85v3.4h1.85c1.39,0,2.09-.63,2.09-1.7Z"></path>
+<path class="st27" d="M326.29,344.64l-1.89-2.73h-2.09v2.73h-2.27v-9.8h4.24c2.62,0,4.26,1.36,4.26,3.56,0,1.47-.74,2.55-2.02,3.1l2.2,3.15h-2.44ZM324.16,336.68h-1.85v3.42h1.85c1.39,0,2.09-.64,2.09-1.71s-.7-1.71-2.09-1.71Z"></path>
+<path class="st27" d="M336.79,342.54h-4.55l-.87,2.1h-2.33l4.37-9.8h2.24l4.38,9.8h-2.38l-.87-2.1ZM336.07,340.82l-1.55-3.75-1.56,3.75h3.11Z"></path>
+<path class="st27" d="M340.3,339.74c0-2.96,2.27-5.07,5.32-5.07,1.7,0,3.11.62,4.03,1.74l-1.46,1.34c-.66-.76-1.48-1.15-2.46-1.15-1.83,0-3.14,1.29-3.14,3.14s1.3,3.14,3.14,3.14c.98,0,1.81-.39,2.46-1.16l1.46,1.34c-.92,1.13-2.34,1.75-4.05,1.75-3.04,0-5.31-2.12-5.31-5.07Z"></path>
+<path class="st27" d="M353.11,336.68h-3.14v-1.85h8.54v1.85h-3.14v7.96h-2.27v-7.96Z"></path>
+<path class="st27" d="M359.73,334.83h2.27v9.8h-2.27v-9.8Z"></path>
+<path class="st27" d="M366.35,336.68h-3.14v-1.85h8.54v1.85h-3.14v7.96h-2.27v-7.96Z"></path>
+<path class="st27" d="M372.97,334.83h2.27v9.8h-2.27v-9.8Z"></path>
+<path class="st27" d="M376.95,339.74c0-2.91,2.27-5.07,5.37-5.07s5.37,2.14,5.37,5.07-2.28,5.07-5.37,5.07-5.37-2.16-5.37-5.07ZM385.38,339.74c0-1.86-1.32-3.14-3.07-3.14s-3.07,1.27-3.07,3.14,1.32,3.14,3.07,3.14,3.07-1.27,3.07-3.14Z"></path>
+<path class="st27" d="M398.37,334.83v9.8h-1.86l-4.89-5.95v5.95h-2.24v-9.8h1.88l4.87,5.95v-5.95h2.24Z"></path>
+<path class="st27" d="M408.29,342.82v1.82h-7.59v-9.8h7.41v1.82h-5.15v2.13h4.55v1.76h-4.55v2.27h5.34Z"></path>
+<path class="st27" d="M416.33,344.64l-1.89-2.73h-2.09v2.73h-2.27v-9.8h4.24c2.62,0,4.26,1.36,4.26,3.56,0,1.47-.74,2.55-2.02,3.1l2.2,3.15h-2.44ZM414.21,336.68h-1.85v3.42h1.85c1.39,0,2.09-.64,2.09-1.71s-.7-1.71-2.09-1.71Z"></path>
+</g>
+<circle class="st16" cx="363.91" cy="448.1" r="61.16"></circle>
+<g>
+<path class="st24" d="M329.83,426.02c0,2.17-1.72,3.43-5.02,3.43h-6.5v-12.56h6.14c3.14,0,4.75,1.31,4.75,3.27,0,1.26-.65,2.22-1.67,2.76,1.4.45,2.3,1.52,2.3,3.1ZM321.2,419.08v2.96h2.89c1.42,0,2.19-.5,2.19-1.49s-.77-1.47-2.19-1.47h-2.89ZM326.9,425.72c0-1.06-.81-1.56-2.31-1.56h-3.39v3.1h3.39c1.51,0,2.31-.47,2.31-1.54Z"></path>
+<path class="st24" d="M331.93,423.92v-7.03h2.91v6.93c0,2.39,1.04,3.37,2.8,3.37s2.8-.99,2.8-3.37v-6.93h2.87v7.03c0,3.7-2.12,5.74-5.69,5.74s-5.69-2.04-5.69-5.74Z"></path>
+<path class="st24" d="M345.19,428.21l.99-2.19c1.06.77,2.64,1.31,4.15,1.31,1.72,0,2.42-.57,2.42-1.35,0-2.35-7.3-.74-7.3-5.4,0-2.14,1.72-3.91,5.29-3.91,1.58,0,3.19.38,4.36,1.11l-.9,2.21c-1.17-.66-2.37-.99-3.48-.99-1.72,0-2.39.65-2.39,1.44,0,2.31,7.3.72,7.3,5.33,0,2.1-1.74,3.89-5.33,3.89-1.99,0-4-.59-5.11-1.45Z"></path>
+<path class="st24" d="M357.63,416.89h2.91v12.56h-2.91v-12.56Z"></path>
+<path class="st24" d="M375.03,416.89v12.56h-2.39l-6.26-7.63v7.63h-2.87v-12.56h2.4l6.24,7.63v-7.63h2.87Z"></path>
+<path class="st24" d="M387.74,427.12v2.33h-9.73v-12.56h9.49v2.33h-6.6v2.73h5.83v2.26h-5.83v2.91h6.84Z"></path>
+<path class="st24" d="M389.07,428.21l.99-2.19c1.06.77,2.64,1.31,4.15,1.31,1.72,0,2.42-.57,2.42-1.35,0-2.35-7.3-.74-7.3-5.4,0-2.14,1.72-3.91,5.29-3.91,1.58,0,3.19.38,4.36,1.11l-.9,2.21c-1.17-.66-2.37-.99-3.48-.99-1.72,0-2.39.65-2.39,1.44,0,2.31,7.3.72,7.3,5.33,0,2.1-1.74,3.89-5.33,3.89-1.99,0-4-.59-5.11-1.45Z"></path>
+<path class="st24" d="M400.52,428.21l.99-2.19c1.06.77,2.64,1.31,4.15,1.31,1.72,0,2.42-.57,2.42-1.35,0-2.35-7.3-.74-7.3-5.4,0-2.14,1.72-3.91,5.29-3.91,1.58,0,3.19.38,4.36,1.11l-.9,2.21c-1.17-.66-2.37-.99-3.48-.99-1.72,0-2.39.65-2.39,1.44,0,2.31,7.3.72,7.3,5.33,0,2.1-1.74,3.89-5.33,3.89-1.99,0-4-.59-5.11-1.45Z"></path>
+<path class="st24" d="M331.02,444.71h-5.83l-1.11,2.69h-2.98l5.6-12.56h2.87l5.62,12.56h-3.05l-1.11-2.69ZM330.11,442.5l-1.99-4.81-1.99,4.81h3.98Z"></path>
+<path class="st24" d="M348.02,434.84v12.56h-2.39l-6.26-7.63v7.63h-2.87v-12.56h2.4l6.24,7.63v-7.63h2.87Z"></path>
+<path class="st24" d="M359.27,444.71h-5.83l-1.11,2.69h-2.98l5.6-12.56h2.87l5.62,12.56h-3.05l-1.11-2.69ZM358.35,442.5l-1.99-4.81-1.99,4.81h3.98Z"></path>
+<path class="st24" d="M364.74,434.84h2.91v10.19h6.3v2.37h-9.21v-12.56Z"></path>
+<path class="st24" d="M380.32,442.95v4.45h-2.91v-4.49l-4.86-8.08h3.09l3.36,5.58,3.36-5.58h2.85l-4.88,8.11Z"></path>
+<path class="st24" d="M385.17,446.16l.99-2.19c1.06.77,2.64,1.31,4.15,1.31,1.72,0,2.42-.57,2.42-1.35,0-2.35-7.3-.74-7.3-5.4,0-2.14,1.72-3.91,5.29-3.91,1.58,0,3.19.38,4.36,1.11l-.9,2.21c-1.17-.66-2.37-.99-3.48-.99-1.72,0-2.39.65-2.39,1.44,0,2.31,7.3.72,7.3,5.33,0,2.1-1.74,3.89-5.33,3.89-1.99,0-4-.59-5.11-1.45Z"></path>
+<path class="st24" d="M400.02,437.2h-4.02v-2.37h10.95v2.37h-4.02v10.19h-2.91v-10.19Z"></path>
+<path class="st24" d="M317.13,465.22v-5.28s-2.63,4.4-2.63,4.4h-.48l-2.62-4.37v5.25h-.99v-7.25h.85l3.03,5.1,2.98-5.1h.85v7.25s-.98,0-.98,0Z"></path>
+<path class="st24" d="M324.5,461.91v3.32h-.94v-.73c-.33.5-.94.79-1.8.79-1.24,0-2.03-.66-2.03-1.62,0-.88.57-1.61,2.21-1.61h1.57v-.2c0-.84-.49-1.33-1.47-1.33-.65,0-1.32.23-1.74.59l-.41-.75c.57-.46,1.39-.7,2.27-.7,1.5,0,2.35.73,2.35,2.23ZM323.51,463.54v-.77h-1.53c-.98,0-1.26.38-1.26.85,0,.55.46.89,1.21.89s1.34-.34,1.59-.97Z"></path>
+<path class="st24" d="M331.56,462.06v3.16h-.99v-3.05c0-1.08-.54-1.61-1.48-1.61-1.06,0-1.74.63-1.74,1.82v2.83h-.99v-5.49h.95v.83c.4-.56,1.11-.88,1.98-.88,1.34,0,2.28.77,2.28,2.38Z"></path>
+<path class="st24" d="M337.75,461.91v3.32h-.94v-.73c-.33.5-.94.79-1.8.79-1.24,0-2.03-.66-2.03-1.62,0-.88.57-1.61,2.21-1.61h1.57v-.2c0-.84-.49-1.33-1.47-1.33-.65,0-1.32.23-1.74.59l-.41-.75c.57-.46,1.39-.7,2.27-.7,1.5,0,2.35.73,2.35,2.23ZM336.76,463.54v-.77h-1.53c-.98,0-1.26.38-1.26.85,0,.55.46.89,1.21.89s1.34-.34,1.59-.97Z"></path>
+<path class="st24" d="M344.88,459.73v4.75c0,1.94-.98,2.82-2.85,2.82-1.01,0-2.02-.28-2.62-.82l.48-.77c.51.43,1.31.71,2.11.71,1.29,0,1.89-.6,1.89-1.84v-.43c-.48.57-1.19.85-1.98.85-1.58,0-2.79-1.08-2.79-2.66s1.2-2.65,2.79-2.65c.82,0,1.56.3,2.03.9v-.85h.94ZM343.9,462.33c0-1.07-.79-1.78-1.89-1.78s-1.9.71-1.9,1.78.79,1.79,1.9,1.79,1.89-.74,1.89-1.79Z"></path>
+<path class="st24" d="M346.59,458.03c0-.36.29-.65.67-.65s.67.28.67.63c0,.37-.28.66-.67.66s-.67-.28-.67-.64ZM346.77,459.73h.99v5.49h-.99v-5.49Z"></path>
+<path class="st24" d="M354.87,462.06v3.16h-.99v-3.05c0-1.08-.54-1.61-1.48-1.61-1.06,0-1.74.63-1.74,1.82v2.83h-.99v-5.49h.95v.83c.4-.56,1.11-.88,1.98-.88,1.34,0,2.28.77,2.28,2.38Z"></path>
+<path class="st24" d="M362,459.73v4.75c0,1.94-.98,2.82-2.85,2.82-1.01,0-2.02-.28-2.62-.82l.48-.77c.51.43,1.31.71,2.11.71,1.29,0,1.89-.6,1.89-1.84v-.43c-.48.57-1.19.85-1.98.85-1.58,0-2.79-1.08-2.79-2.66s1.2-2.65,2.79-2.65c.82,0,1.56.3,2.03.9v-.85h.94ZM361.02,462.33c0-1.07-.79-1.78-1.89-1.78s-1.9.71-1.9,1.78.79,1.79,1.9,1.79,1.89-.74,1.89-1.79Z"></path>
+<path class="st24" d="M371.62,462.81h-4.46c.12.96.9,1.61,1.99,1.61.64,0,1.18-.22,1.59-.66l.55.64c-.5.58-1.25.89-2.17.89-1.77,0-2.95-1.17-2.95-2.81s1.17-2.8,2.76-2.8,2.71,1.14,2.71,2.83c0,.08-.01.21-.02.3ZM367.16,462.09h3.52c-.1-.92-.8-1.58-1.76-1.58s-1.66.64-1.76,1.58Z"></path>
+<path class="st24" d="M374.13,459.25v.48h1.6v.82h-1.57v4.67h-.99v-4.67h-.93v-.82h.93v-.49c0-1.07.64-1.77,1.81-1.77.42,0,.84.1,1.12.32l-.3.76c-.21-.16-.48-.26-.77-.26-.59,0-.89.33-.89.96Z"></path>
+<path class="st24" d="M378.63,457.47c.42,0,.84.1,1.12.32l-.3.76c-.21-.16-.48-.26-.77-.26-.59,0-.89.33-.89.96v.48h1.6v.82h-1.57v4.67h-.99v-4.67h-.93v-.82h.93v-.49c0-1.07.64-1.77,1.81-1.77ZM380.98,458.03c0-.36.29-.65.67-.65s.67.28.67.63c0,.37-.28.66-.67.66s-.67-.28-.67-.64ZM381.16,459.73h.99v5.49h-.99v-5.49Z"></path>
+<path class="st24" d="M383.54,462.48c0-1.64,1.21-2.8,2.9-2.8.98,0,1.8.4,2.24,1.17l-.76.49c-.35-.54-.89-.79-1.49-.79-1.08,0-1.89.76-1.89,1.93s.81,1.94,1.89,1.94c.6,0,1.14-.25,1.49-.79l.76.48c-.44.77-1.25,1.18-2.24,1.18-1.69,0-2.9-1.17-2.9-2.81Z"></path>
+<path class="st24" d="M389.78,458.03c0-.36.29-.65.67-.65s.67.28.67.63c0,.37-.28.66-.67.66s-.67-.28-.67-.64ZM389.96,459.73h.99v5.49h-.99v-5.49Z"></path>
+<path class="st24" d="M397.79,462.81h-4.46c.12.96.9,1.61,1.99,1.61.64,0,1.18-.22,1.59-.66l.55.64c-.5.58-1.25.89-2.17.89-1.77,0-2.95-1.17-2.95-2.81s1.17-2.8,2.76-2.8,2.71,1.14,2.71,2.83c0,.08-.01.21-.02.3ZM393.33,462.09h3.52c-.1-.92-.8-1.58-1.76-1.58s-1.66.64-1.76,1.58Z"></path>
+<path class="st24" d="M404.4,462.06v3.16h-.99v-3.05c0-1.08-.54-1.61-1.48-1.61-1.06,0-1.74.63-1.74,1.82v2.83h-.99v-5.49h.95v.83c.4-.56,1.11-.88,1.98-.88,1.34,0,2.28.77,2.28,2.38Z"></path>
+<path class="st24" d="M405.76,462.48c0-1.64,1.21-2.8,2.9-2.8.98,0,1.8.4,2.24,1.17l-.76.49c-.35-.54-.89-.79-1.49-.79-1.08,0-1.89.76-1.89,1.93s.81,1.94,1.89,1.94c.6,0,1.14-.25,1.49-.79l.76.48c-.44.77-1.25,1.18-2.24,1.18-1.69,0-2.9-1.17-2.9-2.81Z"></path>
+<path class="st24" d="M416.97,459.73l-2.66,6.04c-.49,1.16-1.12,1.52-1.96,1.52-.53,0-1.07-.18-1.41-.51l.42-.75c.27.26.61.4.98.4.48,0,.78-.22,1.05-.85l.18-.38-2.42-5.48h1.04l1.92,4.39,1.9-4.39h.97Z"></path>
+<path class="st24" d="M418.48,464.57c0,.21-.04.36-.18.75l-.49,1.44h-.65l.38-1.54c-.26-.09-.44-.33-.44-.64,0-.42.3-.71.69-.71s.67.3.67.71Z"></path>
+<path class="st24" d="M325.31,469.33c0-.36.29-.65.67-.65s.67.28.67.63c0,.37-.28.66-.67.66s-.67-.28-.67-.64ZM325.49,471.03h.99v5.49h-.99v-5.49Z"></path>
+<path class="st24" d="M333.59,473.36v3.16h-.99v-3.05c0-1.08-.54-1.61-1.48-1.61-1.06,0-1.74.63-1.74,1.82v2.83h-.99v-5.49h.95v.83c.4-.56,1.11-.88,1.98-.88,1.34,0,2.28.77,2.28,2.38Z"></path>
+<path class="st24" d="M340.65,473.36v3.16h-.99v-3.05c0-1.08-.54-1.61-1.48-1.61-1.06,0-1.74.63-1.74,1.82v2.83h-.99v-5.49h.95v.83c.4-.56,1.11-.88,1.98-.88,1.34,0,2.28.77,2.28,2.38Z"></path>
+<path class="st24" d="M342.01,473.77c0-1.64,1.21-2.8,2.86-2.8s2.85,1.16,2.85,2.8-1.2,2.81-2.85,2.81-2.86-1.17-2.86-2.81ZM346.71,473.77c0-1.17-.79-1.93-1.84-1.93s-1.85.76-1.85,1.93.8,1.94,1.85,1.94,1.84-.77,1.84-1.94Z"></path>
+<path class="st24" d="M353.8,471.03l-2.4,5.49h-1.02l-2.4-5.49h1.04l1.89,4.4,1.93-4.4h.97Z"></path>
+<path class="st24" d="M358.9,473.2v3.32h-.94v-.73c-.33.5-.94.79-1.8.79-1.24,0-2.03-.66-2.03-1.62,0-.88.57-1.61,2.21-1.61h1.57v-.2c0-.84-.49-1.33-1.47-1.33-.65,0-1.32.23-1.74.59l-.41-.75c.57-.46,1.39-.7,2.27-.7,1.5,0,2.35.73,2.35,2.23ZM357.91,474.84v-.77h-1.53c-.98,0-1.26.38-1.26.85,0,.55.46.89,1.21.89s1.34-.34,1.59-.97Z"></path>
+<path class="st24" d="M363.83,476.2c-.3.26-.76.38-1.2.38-1.11,0-1.74-.61-1.74-1.72v-3.02h-.93v-.82h.93v-1.2h.99v1.2h1.57v.82h-1.57v2.97c0,.59.31.92.86.92.29,0,.57-.09.78-.26l.31.71Z"></path>
+<path class="st24" d="M364.86,469.33c0-.36.29-.65.67-.65s.67.28.67.63c0,.37-.28.66-.67.66s-.67-.28-.67-.64ZM365.03,471.03h.99v5.49h-.99v-5.49Z"></path>
+<path class="st24" d="M367.42,473.77c0-1.64,1.21-2.8,2.86-2.8s2.85,1.16,2.85,2.8-1.2,2.81-2.85,2.81-2.86-1.17-2.86-2.81ZM372.12,473.77c0-1.17-.79-1.93-1.84-1.93s-1.85.76-1.85,1.93.8,1.94,1.85,1.94,1.84-.77,1.84-1.94Z"></path>
+<path class="st24" d="M379.71,473.36v3.16h-.99v-3.05c0-1.08-.54-1.61-1.48-1.61-1.06,0-1.74.63-1.74,1.82v2.83h-.99v-5.49h.95v.83c.4-.56,1.11-.88,1.98-.88,1.34,0,2.28.77,2.28,2.38Z"></path>
+<path class="st24" d="M388.69,473.2v3.32h-.94v-.73c-.33.5-.94.79-1.8.79-1.24,0-2.03-.66-2.03-1.62,0-.88.57-1.61,2.21-1.61h1.57v-.2c0-.84-.49-1.33-1.47-1.33-.65,0-1.32.23-1.74.59l-.41-.75c.57-.46,1.39-.7,2.27-.7,1.5,0,2.35.73,2.35,2.23ZM387.7,474.84v-.77h-1.53c-.98,0-1.26.38-1.26.85,0,.55.46.89,1.21.89s1.34-.34,1.59-.97Z"></path>
+<path class="st24" d="M395.74,473.36v3.16h-.99v-3.05c0-1.08-.54-1.61-1.48-1.61-1.06,0-1.74.63-1.74,1.82v2.83h-.99v-5.49h.95v.83c.4-.56,1.11-.88,1.98-.88,1.34,0,2.28.77,2.28,2.38Z"></path>
+<path class="st24" d="M402.8,468.83v7.69h-.95v-.87c-.45.62-1.15.93-1.96.93-1.61,0-2.78-1.13-2.78-2.81s1.17-2.8,2.78-2.8c.78,0,1.46.29,1.92.88v-3.03h.99ZM401.81,473.77c0-1.17-.8-1.93-1.84-1.93s-1.85.76-1.85,1.93.8,1.94,1.85,1.94,1.84-.77,1.84-1.94Z"></path>
+<path class="st24" d="M344.75,485.07c0-1.64,1.21-2.8,2.9-2.8.98,0,1.8.4,2.24,1.17l-.76.49c-.35-.54-.89-.79-1.49-.79-1.08,0-1.89.76-1.89,1.93s.81,1.94,1.89,1.94c.6,0,1.14-.25,1.49-.79l.76.48c-.44.77-1.25,1.18-2.24,1.18-1.69,0-2.9-1.17-2.9-2.81Z"></path>
+<path class="st24" d="M356.31,484.66v3.16h-.99v-3.05c0-1.08-.54-1.61-1.48-1.61-1.06,0-1.74.63-1.74,1.82v2.83h-.99v-7.69h.99v2.97c.41-.53,1.1-.83,1.94-.83,1.34,0,2.28.77,2.28,2.38Z"></path>
+<path class="st24" d="M362.5,484.5v3.32h-.94v-.73c-.33.5-.94.79-1.8.79-1.24,0-2.03-.66-2.03-1.62,0-.88.57-1.61,2.21-1.61h1.57v-.2c0-.84-.49-1.33-1.47-1.33-.65,0-1.32.23-1.74.59l-.41-.75c.57-.46,1.39-.7,2.27-.7,1.5,0,2.35.73,2.35,2.23ZM361.51,486.14v-.77h-1.53c-.98,0-1.26.38-1.26.85,0,.55.46.89,1.21.89s1.34-.34,1.59-.97Z"></path>
+<path class="st24" d="M369.56,484.66v3.16h-.99v-3.05c0-1.08-.54-1.61-1.48-1.61-1.06,0-1.74.63-1.74,1.82v2.83h-.99v-5.49h.95v.83c.4-.56,1.11-.88,1.98-.88,1.34,0,2.28.77,2.28,2.38Z"></path>
+<path class="st24" d="M376.68,482.33v4.75c0,1.94-.98,2.82-2.85,2.82-1.01,0-2.02-.28-2.62-.82l.48-.77c.51.43,1.31.71,2.11.71,1.29,0,1.89-.6,1.89-1.84v-.43c-.48.57-1.19.85-1.98.85-1.58,0-2.79-1.08-2.79-2.66s1.2-2.65,2.79-2.65c.82,0,1.56.3,2.03.9v-.85h.94ZM375.71,484.93c0-1.07-.79-1.78-1.89-1.78s-1.9.71-1.9,1.78.79,1.79,1.9,1.79,1.89-.74,1.89-1.79Z"></path>
+<path class="st24" d="M383.52,485.4h-4.46c.12.96.9,1.61,1.99,1.61.64,0,1.18-.22,1.59-.66l.55.64c-.5.58-1.25.89-2.17.89-1.77,0-2.95-1.17-2.95-2.81s1.17-2.8,2.76-2.8,2.71,1.14,2.71,2.83c0,.08-.01.21-.02.3ZM379.06,484.69h3.52c-.1-.92-.8-1.58-1.76-1.58s-1.66.64-1.76,1.58Z"></path>
+</g>
+<path class="st26 pulse-target connector-original-pl3" d="M549.83,482.93v26.09c-1.72,1.72-4.54,1.72-6.27,0l-9.91-9.91c-1.72-1.72-1.72-4.54,0-6.27l9.91-9.91c1.72-1.72,4.54-1.72,6.27,0Z"></path>
+<g>
+<path class="st27" d="M347.05,360.42v-5.2s-2.59,4.33-2.59,4.33h-.47l-2.58-4.3v5.17h-.98v-7.13h.84l2.98,5.01,2.94-5.01h.83v7.13s-.97,0-.97,0Z"></path>
+<path class="st27" d="M354.31,357.16v3.26h-.93v-.71c-.33.49-.93.78-1.77.78-1.22,0-2-.65-2-1.59,0-.87.56-1.58,2.17-1.58h1.55v-.19c0-.83-.48-1.3-1.45-1.3-.64,0-1.29.22-1.71.58l-.41-.73c.56-.45,1.37-.69,2.23-.69,1.48,0,2.31.71,2.31,2.19ZM353.33,358.77v-.75h-1.51c-.97,0-1.24.38-1.24.84,0,.54.45.88,1.19.88s1.31-.34,1.56-.96Z"></path>
+<path class="st27" d="M361.26,357.32v3.11h-.98v-3c0-1.06-.53-1.58-1.46-1.58-1.04,0-1.71.62-1.71,1.79v2.78h-.98v-5.4h.94v.82c.4-.55,1.09-.87,1.95-.87,1.31,0,2.24.75,2.24,2.34Z"></path>
+<path class="st27" d="M367.36,357.16v3.26h-.93v-.71c-.33.49-.93.78-1.77.78-1.22,0-2-.65-2-1.59,0-.87.56-1.58,2.17-1.58h1.55v-.19c0-.83-.48-1.3-1.45-1.3-.64,0-1.29.22-1.71.58l-.41-.73c.56-.45,1.37-.69,2.23-.69,1.48,0,2.31.71,2.31,2.19ZM366.38,358.77v-.75h-1.51c-.97,0-1.24.38-1.24.84,0,.54.45.88,1.19.88s1.31-.34,1.56-.96Z"></path>
+<path class="st27" d="M374.37,355.02v4.67c0,1.91-.97,2.77-2.8,2.77-.99,0-1.99-.27-2.58-.8l.47-.75c.5.43,1.28.7,2.08.7,1.27,0,1.86-.59,1.86-1.81v-.43c-.47.56-1.17.83-1.95.83-1.56,0-2.74-1.06-2.74-2.62s1.18-2.61,2.74-2.61c.81,0,1.54.3,2,.89v-.84h.93ZM373.42,357.58c0-1.05-.77-1.75-1.85-1.75s-1.87.7-1.87,1.75.77,1.76,1.87,1.76,1.85-.72,1.85-1.76Z"></path>
+<path class="st27" d="M376.07,353.35c0-.36.29-.64.66-.64s.66.28.66.62c0,.37-.28.65-.66.65s-.66-.27-.66-.63ZM376.24,355.02h.98v5.4h-.98v-5.4Z"></path>
+<path class="st27" d="M384.22,357.32v3.11h-.98v-3c0-1.06-.53-1.58-1.46-1.58-1.04,0-1.71.62-1.71,1.79v2.78h-.98v-5.4h.94v.82c.4-.55,1.09-.87,1.95-.87,1.31,0,2.24.75,2.24,2.34Z"></path>
+<path class="st27" d="M391.23,355.02v4.67c0,1.91-.97,2.77-2.8,2.77-.99,0-1.99-.27-2.58-.8l.47-.75c.5.43,1.28.7,2.08.7,1.27,0,1.86-.59,1.86-1.81v-.43c-.47.56-1.17.83-1.95.83-1.56,0-2.74-1.06-2.74-2.62s1.18-2.61,2.74-2.61c.81,0,1.54.3,2,.89v-.84h.93ZM390.27,357.58c0-1.05-.77-1.75-1.85-1.75s-1.87.7-1.87,1.75.77,1.76,1.87,1.76,1.85-.72,1.85-1.76Z"></path>
+<path class="st27" d="M332.29,369.05h-4.38c.12.95.89,1.58,1.96,1.58.63,0,1.16-.21,1.56-.65l.54.63c-.49.57-1.23.88-2.13.88-1.74,0-2.91-1.15-2.91-2.76s1.15-2.75,2.71-2.75,2.67,1.12,2.67,2.78c0,.08,0,.2-.02.3ZM327.91,368.35h3.47c-.1-.91-.79-1.55-1.73-1.55s-1.63.63-1.73,1.55Z"></path>
+<path class="st27" d="M338.8,368.32v3.11h-.98v-3c0-1.06-.53-1.58-1.46-1.58-1.04,0-1.71.62-1.71,1.79v2.78h-.98v-5.4h.94v.82c.4-.55,1.09-.87,1.95-.87,1.31,0,2.24.75,2.24,2.34Z"></path>
+<path class="st27" d="M345.75,368.32v3.11h-.98v-3c0-1.06-.53-1.58-1.46-1.58-1.04,0-1.71.62-1.71,1.79v2.78h-.98v-7.56h.98v2.93c.41-.52,1.08-.82,1.91-.82,1.31,0,2.24.75,2.24,2.34Z"></path>
+<path class="st27" d="M351.85,368.16v3.26h-.93v-.71c-.33.49-.93.78-1.77.78-1.22,0-2-.65-2-1.59,0-.87.56-1.58,2.17-1.58h1.55v-.19c0-.83-.48-1.3-1.45-1.3-.64,0-1.29.22-1.71.58l-.41-.73c.56-.45,1.37-.69,2.23-.69,1.48,0,2.31.71,2.31,2.19ZM350.87,369.77v-.75h-1.51c-.97,0-1.24.38-1.24.84,0,.54.45.88,1.19.88s1.31-.34,1.56-.96Z"></path>
+<path class="st27" d="M358.79,368.32v3.11h-.98v-3c0-1.06-.53-1.58-1.46-1.58-1.04,0-1.71.62-1.71,1.79v2.78h-.98v-5.4h.94v.82c.4-.55,1.09-.87,1.95-.87,1.31,0,2.24.75,2.24,2.34Z"></path>
+<path class="st27" d="M360.14,368.72c0-1.61,1.19-2.75,2.85-2.75.97,0,1.77.4,2.2,1.15l-.74.48c-.35-.53-.88-.77-1.47-.77-1.06,0-1.85.74-1.85,1.9s.79,1.91,1.85,1.91c.59,0,1.12-.25,1.47-.77l.74.47c-.43.75-1.23,1.16-2.2,1.16-1.66,0-2.85-1.15-2.85-2.76Z"></path>
+<path class="st27" d="M371.25,369.05h-4.38c.12.95.89,1.58,1.96,1.58.63,0,1.16-.21,1.56-.65l.54.63c-.49.57-1.23.88-2.13.88-1.74,0-2.91-1.15-2.91-2.76s1.15-2.75,2.71-2.75,2.67,1.12,2.67,2.78c0,.08,0,.2-.02.3ZM366.86,368.35h3.47c-.1-.91-.79-1.55-1.73-1.55s-1.63.63-1.73,1.55Z"></path>
+<path class="st27" d="M381.6,368.32v3.11h-.98v-3c0-1.06-.51-1.58-1.4-1.58-.98,0-1.62.62-1.62,1.79v2.78h-.98v-3c0-1.06-.51-1.58-1.4-1.58-.98,0-1.62.62-1.62,1.79v2.78h-.98v-5.4h.94v.81c.39-.55,1.05-.86,1.87-.86s1.52.33,1.88,1c.41-.61,1.16-1,2.08-1,1.31,0,2.21.75,2.21,2.34Z"></path>
+<path class="st27" d="M388.3,369.05h-4.38c.12.95.89,1.58,1.96,1.58.63,0,1.16-.21,1.56-.65l.54.63c-.49.57-1.23.88-2.13.88-1.74,0-2.91-1.15-2.91-2.76s1.15-2.75,2.71-2.75,2.67,1.12,2.67,2.78c0,.08,0,.2-.02.3ZM383.92,368.35h3.47c-.1-.91-.79-1.55-1.73-1.55s-1.63.63-1.73,1.55Z"></path>
+<path class="st27" d="M394.81,368.32v3.11h-.98v-3c0-1.06-.53-1.58-1.46-1.58-1.04,0-1.71.62-1.71,1.79v2.78h-.98v-5.4h.94v.82c.4-.55,1.09-.87,1.95-.87,1.31,0,2.24.75,2.24,2.34Z"></path>
+<path class="st27" d="M399.67,371.11c-.29.25-.74.38-1.18.38-1.09,0-1.71-.6-1.71-1.69v-2.97h-.92v-.81h.92v-1.18h.98v1.18h1.55v.81h-1.55v2.92c0,.58.31.91.85.91.29,0,.56-.09.76-.25l.31.7Z"></path>
+<path class="st27" d="M400.17,370.85l.41-.77c.46.33,1.19.56,1.9.56.91,0,1.28-.27,1.28-.73,0-1.21-3.41-.16-3.41-2.31,0-.97.87-1.62,2.25-1.62.7,0,1.5.18,1.97.49l-.42.77c-.49-.32-1.03-.43-1.56-.43-.86,0-1.27.32-1.27.74,0,1.27,3.42.23,3.42,2.33,0,.98-.9,1.6-2.33,1.6-.9,0-1.78-.28-2.23-.63Z"></path>
+</g>
+<!-- Script to add or remove the pulsing highlight on connectors when hovering the Accountancy Level 2 box. -->
+<script type="text/ecmascript">
+    (function() {
+      // Pulse behaviour for Accountancy Level&nbsp;2 connectors
+      function addPulseL2() {
+        var originals = document.querySelectorAll('.connector-original-l2');
+        var duplicates = document.querySelectorAll('.connector-duplicate-l2');
+        for (var i = 0; i &lt; originals.length; i++) {
+          originals[i].classList.add('pulse-hidden');
+        }
+        for (var j = 0; j &lt; duplicates.length; j++) {
+          duplicates[j].classList.add('pulse-glow');
+        }
+
+        // Do not apply the dashed container glow when hovering Accountancy Level&nbsp;2.
+        // Leaving this block empty ensures that only the connectors pulse.
+      }
+      function removePulseL2() {
+        var originals = document.querySelectorAll('.connector-original-l2');
+        var duplicates = document.querySelectorAll('.connector-duplicate-l2');
+        for (var i = 0; i &lt; originals.length; i++) {
+          originals[i].classList.remove('pulse-hidden');
+        }
+        for (var j = 0; j &lt; duplicates.length; j++) {
+          duplicates[j].classList.remove('pulse-glow');
+        }
+
+        // No dashed container glow to remove for Accountancy Level&nbsp;2; keep this block empty.
+      }
+      var hoverBoxL2 = document.getElementById('accountancy-level-2');
+      if (hoverBoxL2) {
+        hoverBoxL2.addEventListener('mouseenter', addPulseL2);
+        hoverBoxL2.addEventListener('mouseleave', removePulseL2);
+      }
+
+      // Pulse behaviour for Accountancy Level&nbsp;3 and&nbsp;4 connectors
+      function addPulseL34() {
+        var originals = document.querySelectorAll('.connector-original-l3-4');
+        var duplicates = document.querySelectorAll('.connector-duplicate-l3-4');
+        for (var i = 0; i &lt; originals.length; i++) {
+          originals[i].classList.add('pulse-hidden');
+        }
+        for (var j = 0; j &lt; duplicates.length; j++) {
+          duplicates[j].classList.add('pulse-glow');
+        }
+
+        // Also apply the glow to the dashed container when hovering Accountancy Level&nbsp;3 and&nbsp;4
+        var dashBox = document.getElementById('dash-container');
+        if (dashBox) {
+          dashBox.classList.add('glow-dash-container');
+        }
+      }
+      function removePulseL34() {
+        var originals = document.querySelectorAll('.connector-original-l3-4');
+        var duplicates = document.querySelectorAll('.connector-duplicate-l3-4');
+        for (var i = 0; i &lt; originals.length; i++) {
+          originals[i].classList.remove('pulse-hidden');
+        }
+        for (var j = 0; j &lt; duplicates.length; j++) {
+          duplicates[j].classList.remove('pulse-glow');
+        }
+
+        // Remove the glow from the dashed container when no longer hovering Accountancy Level&nbsp;3 and&nbsp;4
+        var dashBox = document.getElementById('dash-container');
+        if (dashBox) {
+          dashBox.classList.remove('glow-dash-container');
+        }
+      }
+      var hoverBoxL34 = document.getElementById('accountancy-level-3-4');
+      if (hoverBoxL34) {
+        hoverBoxL34.addEventListener('mouseenter', addPulseL34);
+        hoverBoxL34.addEventListener('mouseleave', removePulseL34);
+      }
+
+      // Pulse behaviour for Business Admin Level&nbsp;3 connectors
+      function addPulseBA() {
+        var originals = document.querySelectorAll('.connector-original-ba');
+        var duplicates = document.querySelectorAll('.connector-duplicate-ba');
+        for (var i = 0; i &lt; originals.length; i++) {
+          originals[i].classList.add('pulse-hidden');
+        }
+        for (var j = 0; j &lt; duplicates.length; j++) {
+          duplicates[j].classList.add('pulse-glow');
+        }
+        // Also apply the glow to the dashed container when hovering Business Admin Level&nbsp;3
+        var dashBoxBA = document.getElementById('dash-container');
+        if (dashBoxBA) {
+          dashBoxBA.classList.add('glow-dash-container');
+        }
+      }
+      function removePulseBA() {
+        var originals = document.querySelectorAll('.connector-original-ba');
+        var duplicates = document.querySelectorAll('.connector-duplicate-ba');
+        for (var i = 0; i &lt; originals.length; i++) {
+          originals[i].classList.remove('pulse-hidden');
+        }
+        for (var j = 0; j &lt; duplicates.length; j++) {
+          duplicates[j].classList.remove('pulse-glow');
+        }
+        // Remove the glow from the dashed container when no longer hovering Business Admin Level&nbsp;3
+        var dashBoxBA = document.getElementById('dash-container');
+        if (dashBoxBA) {
+          dashBoxBA.classList.remove('glow-dash-container');
+        }
+      }
+      var hoverBoxBA = document.getElementById('business-admin-level-3');
+      if (hoverBoxBA) {
+        hoverBoxBA.addEventListener('mouseenter', addPulseBA);
+        hoverBoxBA.addEventListener('mouseleave', removePulseBA);
+      }
+    
+      // Pulse behaviour for Data Technician Level 3 connectors
+      function addPulseDT3() {
+        var originals = document.querySelectorAll('.connector-original-dt3');
+        var duplicates = document.querySelectorAll('.connector-duplicate-dt3');
+        for (var i=0;i&lt;originals.length;i++){ originals[i].classList.add('pulse-hidden'); }
+        for (var j=0;j&lt;duplicates.length;j++){ duplicates[j].classList.add('pulse-glow'); }
+        var dash = document.getElementById('dash-container');
+        if (dash) dash.classList.add('glow-dash-container');
+      }
+      function removePulseDT3() {
+        var originals = document.querySelectorAll('.connector-original-dt3');
+        var duplicates = document.querySelectorAll('.connector-duplicate-dt3');
+        for (var i=0;i&lt;originals.length;i++){ originals[i].classList.remove('pulse-hidden'); }
+        for (var j=0;j&lt;duplicates.length;j++){ duplicates[j].classList.remove('pulse-glow'); }
+        var dash = document.getElementById('dash-container');
+        if (dash) dash.classList.remove('glow-dash-container');
+      }
+      var hoverDT3 = document.getElementById('data-technician-level-3');
+      if (hoverDT3){ hoverDT3.addEventListener('mouseenter', addPulseDT3); hoverDT3.addEventListener('mouseleave', removePulseDT3); }
+
+      // Pulse behaviour for Data Engineer Level 5 connectors
+      function addPulseDE5() {
+        var originals = document.querySelectorAll('.connector-original-de5');
+        var duplicates = document.querySelectorAll('.connector-duplicate-de5');
+        for (var i=0;i&lt;originals.length;i++){ originals[i].classList.add('pulse-hidden'); }
+        for (var j=0;j&lt;duplicates.length;j++){ duplicates[j].classList.add('pulse-glow'); }
+        var dash = document.getElementById('dash-container');
+        if (dash) dash.classList.add('glow-dash-container');
+      }
+      function removePulseDE5() {
+        var originals = document.querySelectorAll('.connector-original-de5');
+        var duplicates = document.querySelectorAll('.connector-duplicate-de5');
+        for (var i=0;i&lt;originals.length;i++){ originals[i].classList.remove('pulse-hidden'); }
+        for (var j=0;j&lt;duplicates.length;j++){ duplicates[j].classList.remove('pulse-glow'); }
+        var dash = document.getElementById('dash-container');
+        if (dash) dash.classList.remove('glow-dash-container');
+      }
+      var hoverDE5 = document.getElementById('data-engineer-level-5');
+      if (hoverDE5){ hoverDE5.addEventListener('mouseenter', addPulseDE5); hoverDE5.addEventListener('mouseleave', removePulseDE5); }
+
+      // Pulse behaviour for Data Analyst Level 4 connectors
+      function addPulseDA4() {
+        var originals = document.querySelectorAll('.connector-original-da4');
+        var duplicates = document.querySelectorAll('.connector-duplicate-da4');
+        for (var i = 0; i &lt; originals.length; i++) { originals[i].classList.add('pulse-hidden'); }
+        for (var j = 0; j &lt; duplicates.length; j++) { duplicates[j].classList.add('pulse-glow'); }
+        var dashBox = document.getElementById('dash-container');
+        if (dashBox) { dashBox.classList.add('glow-dash-container'); }
+      }
+      function removePulseDA4() {
+        var originals = document.querySelectorAll('.connector-original-da4');
+        var duplicates = document.querySelectorAll('.connector-duplicate-da4');
+        for (var i = 0; i &lt; originals.length; i++) { originals[i].classList.remove('pulse-hidden'); }
+        for (var j = 0; j &lt; duplicates.length; j++) { duplicates[j].classList.remove('pulse-glow'); }
+        var dashBox = document.getElementById('dash-container');
+        if (dashBox) { dashBox.classList.remove('glow-dash-container'); }
+      }
+      var hoverDA4 = document.getElementById('data-analyst-level-4');
+      if (hoverDA4) {
+        hoverDA4.addEventListener('mouseenter', addPulseDA4);
+        hoverDA4.addEventListener('mouseleave', removePulseDA4);
+      }
+
+      // Pulse behaviour for Procurement Level 4 connectors
+      function addPulsePL4() {
+        var originals = document.querySelectorAll('.connector-original-pl4');
+        var duplicates = document.querySelectorAll('.connector-duplicate-pl4');
+        for (var i = 0; i &lt; originals.length; i++) { originals[i].classList.add('pulse-hidden'); }
+        for (var j = 0; j &lt; duplicates.length; j++) { duplicates[j].classList.add('pulse-glow'); }
+        var dashBox = document.getElementById('dash-container');
+        if (dashBox) { dashBox.classList.add('glow-dash-container'); }
+      }
+      function removePulsePL4() {
+        var originals = document.querySelectorAll('.connector-original-pl4');
+        var duplicates = document.querySelectorAll('.connector-duplicate-pl4');
+        for (var i = 0; i &lt; originals.length; i++) { originals[i].classList.remove('pulse-hidden'); }
+        for (var j = 0; j &lt; duplicates.length; j++) { duplicates[j].classList.remove('pulse-glow'); }
+        var dashBox = document.getElementById('dash-container');
+        if (dashBox) { dashBox.classList.remove('glow-dash-container'); }
+      }
+      var hoverPL4 = document.getElementById('procurement-level-4');
+      if (hoverPL4) {
+        hoverPL4.addEventListener('mouseenter', addPulsePL4);
+        hoverPL4.addEventListener('mouseleave', removePulsePL4);
+      }
+
+      // Pulse behaviour for Procurement Level 3 connectors
+      function addPulsePL3() {
+        var originals = document.querySelectorAll('.connector-original-pl3');
+        var duplicates = document.querySelectorAll('.connector-duplicate-pl3');
+        for (var i = 0; i &lt; originals.length; i++) { originals[i].classList.add('pulse-hidden'); }
+        for (var j = 0; j &lt; duplicates.length; j++) { duplicates[j].classList.add('pulse-glow'); }
+        var dash = document.getElementById('dash-container');
+        if (dash) { dash.classList.add('glow-dash-container'); }
+      }
+      function removePulsePL3() {
+        var originals = document.querySelectorAll('.connector-original-pl3');
+        var duplicates = document.querySelectorAll('.connector-duplicate-pl3');
+        for (var i = 0; i &lt; originals.length; i++) { originals[i].classList.remove('pulse-hidden'); }
+        for (var j = 0; j &lt; duplicates.length; j++) { duplicates[j].classList.remove('pulse-glow'); }
+        var dash = document.getElementById('dash-container');
+        if (dash) { dash.classList.remove('glow-dash-container'); }
+      }
+      var hoverPL3 = document.getElementById('procurement-level-3');
+      if (hoverPL3) {
+        hoverPL3.addEventListener('mouseenter', addPulsePL3);
+        hoverPL3.addEventListener('mouseleave', removePulsePL3);
+      }
+})();
+  </script>
+</svg>
+            </div>
+        </div>
+    </div>
+
+    <!-- Career Map Overlay -->
+    <div class="overlay" id="careerMapOverlay">
+        <div class="overlay-content">
+            <button class="close-btn" id="closeMapBtn">&times;</button>
+            <div class="overlay-header">
+                <h2>Career Progression Pathways</h2>
+                <p>Explore interactive career paths and progression opportunities</p>
+            </div>
+            <!-- SVG content will be loaded here -->
+            <div id="svgContainer"></div>
+        </div>
+    </div>
+
+    <script>
+    // Career Wizard Chatbot Implementation
+    (function() {
+        'use strict';
+
+        // Conversation state
+        const state = {
+            stage: 'greeting',
+            userData: {
+                name: '',
+                role: '',
+                tasks: [],
+                favouriteTask: '',
+                interests: [],
+                goals: [],
+                preferences: [],
+                skills: [],
+                tools: [],
+                progressionInterest: '',
+                nextLevel: '',
+                learningInterests: [],
+                employerSupport: '',
+                helpNeeded: [],
+                readinessChecklist: {},
+                conversationHistory: []
+            }
+        };
+
+        // DOM elements
+        const chatMessages = document.getElementById('chatMessages');
+        const chatInput = document.getElementById('chatInput');
+        const sendBtn = document.getElementById('sendBtn');
+        const contextPanel = document.getElementById('panelContent');
+        const mapTrigger = document.getElementById('mapTrigger');
+        const careerMapOverlay = document.getElementById('careerMapOverlay');
+        const closeMapBtn = document.getElementById('closeMapBtn');
+
+        // Initialize chatbot
+        function init() {
+            sendBtn.addEventListener('click', handleSend);
+            chatInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') handleSend();
+            });
+
+            // Map overlay controls
+            mapTrigger.addEventListener('click', () => {
+                careerMapOverlay.classList.add('active');
+            });
+
+            closeMapBtn.addEventListener('click', () => {
+                careerMapOverlay.classList.remove('active');
+            });
+
+            careerMapOverlay.addEventListener('click', (e) => {
+                if (e.target === careerMapOverlay) {
+                    careerMapOverlay.classList.remove('active');
+                }
+            });
+
+            // Start conversation
+            setTimeout(() => startConversation(), 500);
+        }
+
+        // Add message to chat
+        function addMessage(text, isUser = false, options = null) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message ' + (isUser ? 'user-message' : 'bot-message');
+            messageDiv.innerHTML = text;
+
+            chatMessages.appendChild(messageDiv);
+
+            // Add quick reply buttons if provided
+            if (options && options.length > 0) {
+                const repliesDiv = document.createElement('div');
+                repliesDiv.className = 'quick-replies';
+
+                options.forEach(option => {
+                    const btn = document.createElement('button');
+                    btn.className = 'quick-reply-btn';
+                    btn.textContent = option.label || option;
+                    btn.onclick = () => handleQuickReply(option.value || option, option.label || option);
+                    repliesDiv.appendChild(btn);
+                });
+
+                chatMessages.appendChild(repliesDiv);
+            }
+
+            scrollToBottom();
+        }
+
+        // Scroll chat to bottom
+        function scrollToBottom() {
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // Handle send button
+        function handleSend() {
+            const message = chatInput.value.trim();
+            if (!message) return;
+
+            addMessage(message, true);
+            chatInput.value = '';
+
+            processUserInput(message);
+        }
+
+        // Handle quick reply
+        function handleQuickReply(value, label) {
+            addMessage(label, true);
+            processUserInput(value);
+        }
+
+        // Start the conversation
+        function startConversation() {
+            addMessage('👋 Hello! Welcome to The Apprentice Academy Career Progression Wizard!');
+            setTimeout(() => {
+                addMessage('I am here to help you explore your career development opportunities within our organization. Lets start by getting to know you better.');
+                setTimeout(() => {
+                    addMessage('What is your name?');
+                    enableInput();
+                }, 1000);
+            }, 1000);
+        }
+
+        // Enable/disable input
+        function enableInput() {
+            chatInput.disabled = false;
+            sendBtn.disabled = false;
+            chatInput.focus();
+        }
+
+        function disableInput() {
+            chatInput.disabled = true;
+            sendBtn.disabled = true;
+        }
+
+        // Process user input based on current stage
+        function processUserInput(input) {
+            disableInput();
+
+            switch(state.stage) {
+                case 'greeting':
+                    state.userData.name = input;
+                    state.stage = 'role';
+                    setTimeout(() => askRole(), 800);
+                    break;
+
+                case 'role':
+                    state.userData.role = input;
+                    state.stage = 'tasks';
+                    setTimeout(() => askTasks(), 800);
+                    break;
+
+                case 'tasks':
+                    state.userData.tasks = parseListInput(input);
+                    state.stage = 'favouriteTask';
+                    setTimeout(() => askFavouriteTask(), 800);
+                    break;
+
+                case 'favouriteTask':
+                    state.userData.favouriteTask = input;
+                    state.stage = 'interests';
+                    setTimeout(() => askInterests(), 800);
+                    break;
+
+                case 'interests':
+                    state.userData.interests = parseListInput(input);
+                    state.stage = 'goals';
+                    setTimeout(() => askGoals(), 800);
+                    break;
+
+                case 'goals':
+                    state.userData.goals = parseListInput(input);
+                    state.stage = 'preferences';
+                    setTimeout(() => askPreferences(), 800);
+                    break;
+
+                case 'preferences':
+                    state.userData.preferences = parseListInput(input);
+                    state.stage = 'skills';
+                    setTimeout(() => askSkills(), 800);
+                    break;
+
+                case 'skills':
+                    state.userData.skills = parseListInput(input);
+                    state.stage = 'tools';
+                    setTimeout(() => askTools(), 800);
+                    break;
+
+                case 'tools':
+                    state.userData.tools = parseListInput(input);
+                    state.stage = 'progression';
+                    setTimeout(() => askProgressionInterest(), 800);
+                    break;
+
+                case 'progression':
+                    state.userData.progressionInterest = input;
+                    if (input.toLowerCase().includes('yes') || input.toLowerCase().includes('interested')) {
+                        state.stage = 'nextLevel';
+                        setTimeout(() => askNextLevel(), 800);
+                    } else {
+                        state.stage = 'learning';
+                        setTimeout(() => askLearningInterests(), 800);
+                    }
+                    break;
+
+                case 'nextLevel':
+                    state.userData.nextLevel = input;
+                    state.stage = 'learning';
+                    setTimeout(() => askLearningInterests(), 800);
+                    break;
+
+                case 'learning':
+                    state.userData.learningInterests = parseListInput(input);
+                    state.stage = 'support';
+                    setTimeout(() => askEmployerSupport(), 800);
+                    break;
+
+                case 'support':
+                    state.userData.employerSupport = input;
+                    state.stage = 'help';
+                    setTimeout(() => askHelpNeeded(), 800);
+                    break;
+
+                case 'help':
+                    state.userData.helpNeeded = parseListInput(input);
+                    // Check if readiness checklist is needed
+                    if (state.userData.progressionInterest.toLowerCase().includes('yes')) {
+                        state.stage = 'readiness';
+                        setTimeout(() => askReadinessChecklist(), 800);
+                    } else {
+                        state.stage = 'summary';
+                        setTimeout(() => showSummary(), 800);
+                    }
+                    break;
+
+                case 'readiness':
+                    state.userData.readinessChecklist = parseReadinessInput(input);
+                    state.stage = 'summary';
+                    setTimeout(() => showSummary(), 800);
+                    break;
+            }
+
+            updateContextPanel();
+        }
+
+        // Stage-specific question functions
+        function askRole() {
+            addMessage('Great to meet you, ' + state.userData.name + '! 😊');
+            setTimeout(() => {
+                addMessage('What is your current role?', false, [
+                    { label: 'Accountancy Level 2', value: 'Accountancy Level 2' },
+                    { label: 'Business Admin Level 3', value: 'Business Admin Level 3' },
+                    { label: 'Data Technician Level 3', value: 'Data Technician Level 3' },
+                    { label: 'Other', value: 'other' }
+                ]);
+            }, 600);
+        }
+
+        function askTasks() {
+            addMessage('Excellent! As a ' + state.userData.role + ', you must have a variety of responsibilities.');
+            setTimeout(() => {
+                addMessage('What are the main tasks you perform in your current role? (You can list multiple tasks separated by commas)');
+                enableInput();
+            }, 800);
+        }
+
+        function askFavouriteTask() {
+            addMessage('Thanks for sharing! 📝');
+            setTimeout(() => {
+                addMessage('Out of all those tasks, which one do you enjoy the most and why?');
+                enableInput();
+            }, 800);
+        }
+
+        function askInterests() {
+            addMessage('That is wonderful to hear! 🌟');
+            setTimeout(() => {
+                addMessage('What areas of work are you most interested in exploring? (e.g., management, technical, customer-facing, etc.)');
+                enableInput();
+            }, 800);
+        }
+
+        function askGoals() {
+            addMessage('Great choices! Let us talk about your aspirations.');
+            setTimeout(() => {
+                addMessage('What are your career goals for the next 2-3 years?');
+                enableInput();
+            }, 800);
+        }
+
+        function askPreferences() {
+            addMessage('Those are ambitious and achievable goals! 🎯');
+            setTimeout(() => {
+                addMessage('What type of work environment do you prefer? (e.g., collaborative, independent, fast-paced, structured)');
+                enableInput();
+            }, 800);
+        }
+
+        function askSkills() {
+            addMessage('Understanding your work style helps us find the perfect fit! 💼');
+            setTimeout(() => {
+                addMessage('What are your strongest skills? List up to 5 skills that you excel at.');
+                enableInput();
+            }, 800);
+        }
+
+        function askTools() {
+            addMessage('Impressive skill set! 💪');
+            setTimeout(() => {
+                addMessage('What tools, software, or systems are you proficient with?');
+                enableInput();
+            }, 800);
+        }
+
+        function askProgressionInterest() {
+            addMessage('Your technical proficiency is valuable! 🔧');
+            setTimeout(() => {
+                addMessage('Are you interested in moving to a higher level in your current career path?', false, [
+                    { label: 'Yes, definitely!', value: 'yes' },
+                    { label: 'Maybe, I am exploring options', value: 'maybe' },
+                    { label: 'No, I am happy where I am', value: 'no' }
+                ]);
+            }, 800);
+        }
+
+        function askNextLevel() {
+            addMessage('Fantastic! Let us explore your progression options. 🚀');
+            setTimeout(() => {
+                addMessage('What level or role are you aiming for next?');
+                enableInput();
+            }, 800);
+        }
+
+        function askLearningInterests() {
+            addMessage('Continuous learning is key to career success! 📚');
+            setTimeout(() => {
+                addMessage('What new skills or knowledge areas would you like to develop?');
+                enableInput();
+            }, 800);
+        }
+
+        function askEmployerSupport() {
+            addMessage('Investing in your development will open many doors! 🔓');
+            setTimeout(() => {
+                addMessage('How does your employer currently support your career development?');
+                enableInput();
+            }, 800);
+        }
+
+        function askHelpNeeded() {
+            addMessage('That is great to know what support is already in place! 🤝');
+            setTimeout(() => {
+                addMessage('What additional help or resources would be most valuable to you right now?');
+                enableInput();
+            }, 800);
+        }
+
+        function askReadinessChecklist() {
+            addMessage('Let us assess your readiness for the next step! ✅');
+            setTimeout(() => {
+                const checklistHTML = '<div class="form-container">' +
+                    '<h3>Readiness Checklist</h3>' +
+                    '<p style="margin-bottom: 1rem;">Please indicate your level of preparedness:</p>' +
+                    '<div class="checkbox-group">' +
+                        '<div class="checkbox-item">' +
+                            '<input type="checkbox" id="ready-skills" name="readiness" value="skills">' +
+                            '<label for="ready-skills">I have the required skills</label>' +
+                        '</div>' +
+                        '<div class="checkbox-item">' +
+                            '<input type="checkbox" id="ready-experience" name="readiness" value="experience">' +
+                            '<label for="ready-experience">I have relevant experience</label>' +
+                        '</div>' +
+                        '<div class="checkbox-item">' +
+                            '<input type="checkbox" id="ready-qualifications" name="readiness" value="qualifications">' +
+                            '<label for="ready-qualifications">I have or am working toward qualifications</label>' +
+                        '</div>' +
+                        '<div class="checkbox-item">' +
+                            '<input type="checkbox" id="ready-confidence" name="readiness" value="confidence">' +
+                            '<label for="ready-confidence">I feel confident to take the next step</label>' +
+                        '</div>' +
+                        '<div class="checkbox-item">' +
+                            '<input type="checkbox" id="ready-support" name="readiness" value="support">' +
+                            '<label for="ready-support">I have support from my manager</label>' +
+                        '</div>' +
+                    '</div>' +
+                    '<button class="submit-btn" onclick="submitReadiness()">Submit</button>' +
+                '</div>';
+
+                const tempDiv = document.createElement('div');
+                tempDiv.className = 'message bot-message';
+                tempDiv.innerHTML = checklistHTML;
+                chatMessages.appendChild(tempDiv);
+                scrollToBottom();
+            }, 800);
+        }
+
+        // Make submit function global so it can be called from HTML
+        window.submitReadiness = function() {
+            const checkboxes = document.querySelectorAll('input[name="readiness"]:checked');
+            const values = Array.from(checkboxes).map(cb => cb.value);
+
+            if (values.length === 0) {
+                alert('Please select at least one item.');
+                return;
+            }
+
+            const summary = values.join(', ');
+            addMessage('Selected: ' + summary, true);
+            processUserInput(summary);
+        };
+
+        function showSummary() {
+            addMessage('🎉 Thank you for completing the Career Progression Wizard!');
+
+            setTimeout(() => {
+                let summaryHTML = '<div class="form-container">' +
+                    '<h3>📋 Your Career Profile Summary</h3>' +
+                    '<br>' +
+                    '<p><strong>Name:</strong> ' + state.userData.name + '</p>' +
+                    '<p><strong>Current Role:</strong> ' + state.userData.role + '</p>' +
+                    '<br>' +
+                    '<p><strong>Main Tasks:</strong></p>' +
+                    '<ul class="summary-list">';
+
+                state.userData.tasks.forEach(task => {
+                    summaryHTML += '<li>' + task + '</li>';
+                });
+
+                summaryHTML += '</ul><br>' +
+                    '<p><strong>Favourite Task:</strong> ' + state.userData.favouriteTask + '</p>' +
+                    '<br>' +
+                    '<p><strong>Career Interests:</strong></p>' +
+                    '<ul class="summary-list">';
+
+                state.userData.interests.forEach(interest => {
+                    summaryHTML += '<li>' + interest + '</li>';
+                });
+
+                summaryHTML += '</ul><br>' +
+                    '<p><strong>Career Goals:</strong></p>' +
+                    '<ul class="summary-list">';
+
+                state.userData.goals.forEach(goal => {
+                    summaryHTML += '<li>' + goal + '</li>';
+                });
+
+                summaryHTML += '</ul><br>' +
+                    '<p><strong>Key Skills:</strong></p>' +
+                    '<div>';
+
+                state.userData.skills.forEach(skill => {
+                    summaryHTML += '<span class="skill-badge">' + skill + '</span>';
+                });
+
+                summaryHTML += '</div><br>' +
+                    '<p><strong>Tools & Systems:</strong></p>' +
+                    '<div>';
+
+                state.userData.tools.forEach(tool => {
+                    summaryHTML += '<span class="skill-badge">' + tool + '</span>';
+                });
+
+                summaryHTML += '</div><br>' +
+                    '<p><strong>Learning Interests:</strong></p>' +
+                    '<ul class="summary-list">';
+
+                state.userData.learningInterests.forEach(interest => {
+                    summaryHTML += '<li>' + interest + '</li>';
+                });
+
+                summaryHTML += '</ul><br>' +
+                    '<p><strong>Help Needed:</strong></p>' +
+                    '<ul class="summary-list">';
+
+                state.userData.helpNeeded.forEach(help => {
+                    summaryHTML += '<li>' + help + '</li>';
+                });
+
+                summaryHTML += '</ul></div>';
+
+                const tempDiv = document.createElement('div');
+                tempDiv.className = 'message bot-message';
+                tempDiv.innerHTML = summaryHTML;
+                chatMessages.appendChild(tempDiv);
+                scrollToBottom();
+
+                setTimeout(() => {
+                    addMessage('🗺️ Do not forget to explore our interactive Career Map to see all the progression pathways available to you! Click the "View Career Map" button in the bottom right corner.');
+                    setTimeout(() => {
+                        addMessage('Would you like to start over or explore different career options?', false, [
+                            { label: '🔄 Start Over', value: 'restart' },
+                            { label: '🗺️ View Career Map', value: 'map' }
+                        ]);
+
+                        // Override quick reply handler for final choices
+                        window.handleQuickReply = function(value) {
+                            if (value === 'restart') {
+                                location.reload();
+                            } else if (value === 'map') {
+                                careerMapOverlay.classList.add('active');
+                            }
+                        };
+                    }, 1500);
+                }, 1000);
+            }, 1000);
+        }
+
+        // Helper function to parse list input
+        function parseListInput(input) {
+            return input.split(',').map(item => item.trim()).filter(item => item.length > 0);
+        }
+
+        // Helper function to parse readiness checklist input
+        function parseReadinessInput(input) {
+            const items = parseListInput(input);
+            const checklist = {};
+            items.forEach(item => {
+                checklist[item] = true;
+            });
+            return checklist;
+        }
+
+        // Update context panel with current information
+        function updateContextPanel() {
+            let contextHTML = '<h2>Your Progress</h2>';
+
+            if (state.userData.name) {
+                contextHTML += '<p><strong>Name:</strong> ' + state.userData.name + '</p>';
+            }
+            if (state.userData.role) {
+                contextHTML += '<p><strong>Role:</strong> ' + state.userData.role + '</p>';
+            }
+
+            contextHTML += '<br><div class="three-cs-info">';
+
+            // Confidence card
+            contextHTML += '<div class="c-card confidence">' +
+                '<h3>💪 Confidence</h3>';
+            if (state.userData.favouriteTask) {
+                contextHTML += '<p>Enjoys: ' + state.userData.favouriteTask + '</p>';
+            } else {
+                contextHTML += '<p>Building self-assurance in career choices</p>';
+            }
+            contextHTML += '</div>';
+
+            // Competence card
+            contextHTML += '<div class="c-card competence">' +
+                '<h3>🎯 Competence</h3>';
+            if (state.userData.skills.length > 0) {
+                contextHTML += '<p>Skills: ' + state.userData.skills.slice(0, 3).join(', ') + '</p>';
+            } else {
+                contextHTML += '<p>Developing skills and expertise</p>';
+            }
+            contextHTML += '</div>';
+
+            // Career card
+            contextHTML += '<div class="c-card career">' +
+                '<h3>🚀 Career Capability</h3>';
+            if (state.userData.goals.length > 0) {
+                contextHTML += '<p>Goal: ' + state.userData.goals[0] + '</p>';
+            } else {
+                contextHTML += '<p>Creating clear career pathways</p>';
+            }
+            contextHTML += '</div>';
+
+            contextHTML += '</div>';
+
+            contextPanel.innerHTML = contextHTML;
+        }
+
+        // Initialize on page load
+        init();
+    })();
+
+    // Career Map Panel Management
+    (function() {
+        'use strict';
+
+        const careerMapPanel = document.getElementById('careerMapPanel');
+        const careerMapContent = document.getElementById('careerMapContent');
+        const fullscreenBtn = document.getElementById('fullscreenBtn');
+        const careerMapSVG = document.getElementById('CareerMapSVG');
+
+        // Move the SVG from overlay to the new panel on page load
+        if (careerMapSVG && careerMapContent) {
+            careerMapContent.appendChild(careerMapSVG);
+        }
+
+        // Fullscreen toggle functionality
+        if (fullscreenBtn) {
+            fullscreenBtn.addEventListener('click', function() {
+                if (careerMapPanel.classList.contains('fullscreen')) {
+                    careerMapPanel.classList.remove('fullscreen');
+                    fullscreenBtn.textContent = '⛶ Fullscreen';
+                } else {
+                    careerMapPanel.classList.add('fullscreen');
+                    fullscreenBtn.textContent = '✕ Exit Fullscreen';
+                }
+            });
+        }
+
+        // Load Career Map SVG
+        function loadCareerMap() {
+            const careerMapContent = document.getElementById('careerMapContent');
+            if (careerMapContent) {
+                fetch('career-map.svg')
+                    .then(response => response.text())
+                    .then(svgContent => {
+                        careerMapContent.innerHTML = svgContent;
+                    })
+                    .catch(error => console.error('Error loading career map:', error));
+            }
+        }
+
+        // Load SVG on page load
+        loadCareerMap();
+    })();
+    </script>
+</body>
+</html>
