@@ -522,6 +522,9 @@
 
         // Update context panel with current information
         function updateContextPanel() {
+            // Check if context panel exists (it may have been removed)
+            if (!contextPanel) return;
+
             let contextHTML = '<h2>Your Progress</h2>';
 
             if (state.userData.name) {
