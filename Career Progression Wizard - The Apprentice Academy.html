@@ -1136,6 +1136,571 @@ body {
                 font-size: 16px;
             }
         }
+
+        /* Modal/Popup Styles */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            overflow-y: auto;
+            padding: 2rem;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 1.5rem;
+            max-width: 800px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+
+        .modal-header {
+            background: var(--primary-gradient);
+            color: white;
+            padding: 2rem;
+            border-radius: 1.5rem 1.5rem 0 0;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .modal-header h2 {
+            margin: 0;
+            font-size: 1.8rem;
+        }
+
+        .modal-header p {
+            margin: 0.5rem 0 0 0;
+            opacity: 0.9;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .modal-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg);
+        }
+
+        .modal-body {
+            padding: 2rem;
+        }
+
+        /* Bridge Questions Styles */
+        .bridge-question {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: #f8f9fa;
+            border-radius: 1rem;
+            border-left: 4px solid #667eea;
+        }
+
+        .bridge-question h3 {
+            margin: 0 0 1rem 0;
+            color: #2b3d6d;
+            font-size: 1.1rem;
+        }
+
+        .bridge-question-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .bridge-option {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0.8rem;
+            background: white;
+            border-radius: 0.5rem;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .bridge-option:hover {
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        .bridge-option input[type="checkbox"],
+        .bridge-option input[type="radio"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: #667eea;
+        }
+
+        .bridge-option label {
+            flex: 1;
+            cursor: pointer;
+            font-size: 0.95rem;
+        }
+
+        /* Likert Scale Styles */
+        .likert-question {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: #f8f9fa;
+            border-radius: 1rem;
+        }
+
+        .likert-question h3 {
+            margin: 0 0 1rem 0;
+            color: #2b3d6d;
+            font-size: 1rem;
+        }
+
+        .likert-scale {
+            display: flex;
+            justify-content: space-between;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .likert-option {
+            flex: 1;
+            text-align: center;
+        }
+
+        .likert-option input[type="radio"] {
+            display: none;
+        }
+
+        .likert-option label {
+            display: block;
+            padding: 0.8rem 0.5rem;
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .likert-option input[type="radio"]:checked + label {
+            background: var(--secondary-gradient);
+            color: white;
+            border-color: #667eea;
+        }
+
+        .likert-option label:hover {
+            border-color: #667eea;
+            transform: translateY(-2px);
+        }
+
+        /* Dashboard Styles */
+        .dashboard {
+            padding: 2rem;
+        }
+
+        .dashboard-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .dashboard-header h2 {
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .compatibility-score {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 2rem 0;
+        }
+
+        .score-circle {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: var(--secondary-gradient);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .score-circle .percentage {
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+
+        .score-circle .label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .dashboard-section {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 1rem;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid #667eea;
+        }
+
+        .dashboard-section h3 {
+            color: #2b3d6d;
+            margin: 0 0 1rem 0;
+            font-size: 1.2rem;
+        }
+
+        .career-option {
+            background: white;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .career-option h4 {
+            color: #667eea;
+            margin: 0 0 0.5rem 0;
+        }
+
+        .salary-range {
+            color: #4ade80;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .skills-needed {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .skill-tag {
+            background: var(--accent-gradient);
+            color: white;
+            padding: 0.4rem 1rem;
+            border-radius: 1.5rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .dashboard-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .dashboard-btn {
+            flex: 1;
+            min-width: 200px;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 0.8rem;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .dashboard-btn.primary {
+            background: var(--secondary-gradient);
+            color: white;
+        }
+
+        .dashboard-btn.secondary {
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+
+        .dashboard-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Contact Form Styles */
+        .contact-form {
+            padding: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #2b3d6d;
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 0.5rem;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        /* Progress Indicator */
+        .progress-steps {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            padding: 0 1rem;
+        }
+
+        .step {
+            flex: 1;
+            text-align: center;
+            position: relative;
+        }
+
+        .step::before {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #e0e0e0;
+            z-index: -1;
+        }
+
+        .step:first-child::before {
+            left: 50%;
+        }
+
+        .step:last-child::before {
+            right: 50%;
+        }
+
+        .step-circle {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #e0e0e0;
+            color: white;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.85rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .step.active .step-circle {
+            background: var(--secondary-gradient);
+        }
+
+        .step.completed .step-circle {
+            background: #4ade80;
+        }
+
+        .step-label {
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        .step.active .step-label {
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        /* Course Selection Grid */
+        .course-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .course-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 0.8rem;
+            border: 2px solid #e0e0e0;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .course-card:hover {
+            border-color: #667eea;
+            transform: translateY(-4px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.2);
+        }
+
+        .course-card.selected {
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        .course-card h4 {
+            color: #2b3d6d;
+            margin: 0;
+            font-size: 1rem;
+        }
+
+        .submit-btn {
+            margin-top: 0.8rem;
+            padding: 0.8rem 1.6rem;
+            background: var(--accent-gradient);
+            color: white;
+            border: none;
+            border-radius: 0.6rem;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 165, 0, 0.4);
+            width: 100%;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 165, 0, 0.5);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        /* Personality Type Display */
+        .personality-type {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        .personality-type h3 {
+            font-size: 2.5rem;
+            margin: 0 0 0.5rem 0;
+            letter-spacing: 0.3rem;
+        }
+
+        .personality-type .type-name {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 1rem;
+        }
+
+        .personality-type .type-description {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            opacity: 0.95;
+        }
+
+        .personality-traits {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .personality-trait {
+            background: rgba(102, 126, 234, 0.1);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            border-left: 3px solid #667eea;
+        }
+
+        .personality-trait h4 {
+            color: #2b3d6d;
+            margin: 0 0 0.5rem 0;
+            font-size: 1rem;
+        }
+
+        .personality-match {
+            background: rgba(74, 222, 128, 0.1);
+            border: 2px solid #4ade80;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin: 1rem 0;
+        }
+
+        .personality-match h4 {
+            color: #22c55e;
+            margin: 0 0 0.5rem 0;
+        }
+
+        /* Modal Responsive Design */
+        @media (max-width: 768px) {
+            .modal-content {
+                margin: 1rem;
+            }
+
+            .likert-scale {
+                flex-direction: column;
+            }
+
+            .dashboard-actions {
+                flex-direction: column;
+            }
+
+            .dashboard-btn {
+                width: 100%;
+            }
+
+            .personality-traits {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 <body>
@@ -2330,6 +2895,195 @@ body {
             </div>
             <!-- SVG content will be loaded here -->
             <div id="svgContainer"></div>
+        </div>
+    </div>
+
+    <!-- Bridge Questions Modal -->
+    <div class="modal-overlay" id="bridgeQuestionsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="modal-close" onclick="closeBridgeQuestions()">×</button>
+                <h2>Skills Assessment</h2>
+                <p>Help us understand your current skills and experience</p>
+            </div>
+            <div class="modal-body">
+                <div class="progress-steps">
+                    <div class="step active">
+                        <div class="step-circle">1</div>
+                        <div class="step-label">Skills</div>
+                    </div>
+                    <div class="step">
+                        <div class="step-circle">2</div>
+                        <div class="step-label">Personality</div>
+                    </div>
+                    <div class="step">
+                        <div class="step-circle">3</div>
+                        <div class="step-label">Preferences</div>
+                    </div>
+                    <div class="step">
+                        <div class="step-circle">4</div>
+                        <div class="step-label">Results</div>
+                    </div>
+                </div>
+                <div id="bridgeQuestionsContent">
+                    <!-- Bridge questions will be inserted here -->
+                </div>
+                <button class="submit-btn" onclick="submitBridgeQuestions()" style="margin-top: 2rem;">Continue to Personality Assessment</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Personality Assessment Modal -->
+    <div class="modal-overlay" id="personalityModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="modal-close" onclick="closePersonality()">×</button>
+                <h2>Personality Assessment</h2>
+                <p>Discover your work personality type</p>
+            </div>
+            <div class="modal-body">
+                <div class="progress-steps">
+                    <div class="step completed">
+                        <div class="step-circle">✓</div>
+                        <div class="step-label">Skills</div>
+                    </div>
+                    <div class="step active">
+                        <div class="step-circle">2</div>
+                        <div class="step-label">Personality</div>
+                    </div>
+                    <div class="step">
+                        <div class="step-circle">3</div>
+                        <div class="step-label">Preferences</div>
+                    </div>
+                    <div class="step">
+                        <div class="step-circle">4</div>
+                        <div class="step-label">Results</div>
+                    </div>
+                </div>
+                <div id="personalityContent">
+                    <!-- Personality questions will be inserted here -->
+                </div>
+                <button class="submit-btn" onclick="submitPersonality()" style="margin-top: 2rem;">Continue to Work Preferences</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Work Preferences Modal -->
+    <div class="modal-overlay" id="workPreferencesModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="modal-close" onclick="closeWorkPreferences()">×</button>
+                <h2>Work Preferences</h2>
+                <p>Tell us about the kind of work you enjoy</p>
+            </div>
+            <div class="modal-body">
+                <div class="progress-steps">
+                    <div class="step completed">
+                        <div class="step-circle">✓</div>
+                        <div class="step-label">Skills</div>
+                    </div>
+                    <div class="step completed">
+                        <div class="step-circle">✓</div>
+                        <div class="step-label">Personality</div>
+                    </div>
+                    <div class="step active">
+                        <div class="step-circle">3</div>
+                        <div class="step-label">Preferences</div>
+                    </div>
+                    <div class="step">
+                        <div class="step-circle">4</div>
+                        <div class="step-label">Results</div>
+                    </div>
+                </div>
+                <div id="workPreferencesContent">
+                    <!-- Work preference questions will be inserted here -->
+                </div>
+                <button class="submit-btn" onclick="submitWorkPreferences()" style="margin-top: 2rem;">View My Results</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard Modal -->
+    <div class="modal-overlay" id="dashboardModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="modal-close" onclick="closeDashboard()">×</button>
+                <h2>Your Career Progression Dashboard</h2>
+                <p>Based on your skills, personality, and preferences</p>
+            </div>
+            <div class="modal-body">
+                <div class="progress-steps">
+                    <div class="step completed">
+                        <div class="step-circle">✓</div>
+                        <div class="step-label">Skills</div>
+                    </div>
+                    <div class="step completed">
+                        <div class="step-circle">✓</div>
+                        <div class="step-label">Personality</div>
+                    </div>
+                    <div class="step completed">
+                        <div class="step-circle">✓</div>
+                        <div class="step-label">Preferences</div>
+                    </div>
+                    <div class="step active">
+                        <div class="step-circle">4</div>
+                        <div class="step-label">Results</div>
+                    </div>
+                </div>
+                <div id="dashboardContent">
+                    <!-- Dashboard will be inserted here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact Form Modal -->
+    <div class="modal-overlay" id="contactFormModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="modal-close" onclick="closeContactForm()">×</button>
+                <h2>Send to My Coach</h2>
+                <p>Share your career progression plan</p>
+            </div>
+            <div class="modal-body">
+                <div class="contact-form">
+                    <form id="coachContactForm">
+                        <div class="form-group">
+                            <label for="userName">Your Name</label>
+                            <input type="text" id="userName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="userEmail">Your Email</label>
+                            <input type="email" id="userEmail" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="coachEmail">Coach's Email</label>
+                            <input type="email" id="coachEmail" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="additionalMessage">Additional Message (Optional)</label>
+                            <textarea id="additionalMessage" placeholder="Any additional comments or questions..."></textarea>
+                        </div>
+                        <button type="submit" class="submit-btn">Send Career Plan</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Alternative Course Selection Modal -->
+    <div class="modal-overlay" id="alternativeCourseModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="modal-close" onclick="closeAlternativeCourse()">×</button>
+                <h2>Choose a Different Path</h2>
+                <p>Select an alternative career progression route</p>
+            </div>
+            <div class="modal-body">
+                <div id="alternativeCourseContent">
+                    <!-- Alternative course options will be inserted here -->
+                </div>
+            </div>
         </div>
     </div>
 
