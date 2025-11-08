@@ -867,7 +867,7 @@ body {
         /* Career Map Panel */
         .career-map-panel {
             background: white;
-            overflow: auto;
+            overflow: visible;
             position: relative;
             border-left: 2px solid var(--medium-gray);
             display: flex;
@@ -943,25 +943,8 @@ body {
         .career-map-content {
             flex: 1;
             padding: 2rem;
-            overflow: auto;
+            overflow: visible;
             background: white;
-        }
-
-        .career-map-content::-webkit-scrollbar {
-            width: 10px;
-        }
-
-        .career-map-content::-webkit-scrollbar-track {
-            background: var(--light-gray);
-        }
-
-        .career-map-content::-webkit-scrollbar-thumb {
-            background: var(--taa-orange);
-            border-radius: 5px;
-        }
-
-        .career-map-content::-webkit-scrollbar-thumb:hover {
-            background: var(--primary-dark);
         }
 
         /* SVG Container Styling */
