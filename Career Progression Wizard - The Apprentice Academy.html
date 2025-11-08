@@ -2876,7 +2876,10 @@ body {
                     if (e.key === 'Enter') handleSend();
                 });
 
-                document.getElementById('coachContactForm').addEventListener('submit', handleContactFormSubmit);
+                const coachForm = document.getElementById('coachContactForm');
+                if (coachForm) {
+                    coachForm.addEventListener('submit', handleContactFormSubmit);
+                }
 
                 setTimeout(() => startConversation(), 500);
             }
@@ -3037,12 +3040,19 @@ body {
             function openBridgeQuestionsModal() {
                 const modal = document.getElementById('bridgeQuestionsModal');
                 const content = document.getElementById('bridgeQuestionsContent');
-                
+
+                if (!modal || !content) {
+                    console.error('Bridge questions modal elements not found');
+                    addMessage('I apologize, but there seems to be a technical issue. Please contact support for assistance.');
+                    enableInput();
+                    return;
+                }
+
                 const questions = BRIDGE_QUESTIONS[state.userData.currentCourse] || [];
-                
+
                 let html = '<h2 style="color: #2b3d6d; margin-bottom: 1.5rem;">Skills Assessment: ' + state.userData.currentCourse + '</h2>';
                 html += '<p style="margin-bottom: 2rem; color: #666;">Please select all statements that apply to you:</p>';
-                
+
                 questions.forEach(question => {
                     html += `
                         <div class="bridge-question">
@@ -3053,13 +3063,16 @@ body {
                         </div>
                     `;
                 });
-                
+
                 content.innerHTML = html;
                 modal.classList.add('active');
             }
 
             window.closeBridgeQuestions = function() {
-                document.getElementById('bridgeQuestionsModal').classList.remove('active');
+                const modal = document.getElementById('bridgeQuestionsModal');
+                if (modal) {
+                    modal.classList.remove('active');
+                }
                 addMessage('No problem! Feel free to come back when you\'re ready. 👋');
                 enableInput();
             };
@@ -3067,15 +3080,18 @@ body {
             window.submitBridgeQuestions = function() {
                 const checkboxes = document.querySelectorAll('input[name="bridge"]:checked');
                 const answers = {};
-                
+
                 checkboxes.forEach(cb => {
                     answers[cb.value] = true;
                 });
-                
+
                 state.userData.bridgeAnswers = answers;
-                
-                document.getElementById('bridgeQuestionsModal').classList.remove('active');
-                
+
+                const modal = document.getElementById('bridgeQuestionsModal');
+                if (modal) {
+                    modal.classList.remove('active');
+                }
+
                 setTimeout(() => {
                     openPersonalityModal();
                 }, 500);
@@ -3084,40 +3100,50 @@ body {
             function openPersonalityModal() {
                 const modal = document.getElementById('personalityModal');
                 const content = document.getElementById('personalityContent');
-                
+
+                if (!modal || !content) {
+                    console.error('Personality modal elements not found');
+                    addMessage('I apologize, but there seems to be a technical issue. Please contact support for assistance.');
+                    enableInput();
+                    return;
+                }
+
                 let html = '<h2 style="color: #2b3d6d; margin-bottom: 1.5rem;">Discover Your Work Personality</h2>';
                 html += '<p style="margin-bottom: 2rem; color: #666;">Answer these questions about how you prefer to work. There are no right or wrong answers!</p>';
-                
+
                 MBTI_QUESTIONS.forEach((question, index) => {
                     html += `
                         <div class="likert-question">
                             <h3>${index + 1}. ${question.text}</h3>
                             <div class="bridge-question-options" style="margin-top: 1rem;">
                     `;
-                    
+
                     question.options.forEach((option, optIndex) => {
                         html += `
                             <div class="bridge-option">
-                                <input type="radio" 
-                                       id="${question.id}_${optIndex}" 
-                                       name="${question.id}" 
-                                       value="${option.value}" 
+                                <input type="radio"
+                                       id="${question.id}_${optIndex}"
+                                       name="${question.id}"
+                                       value="${option.value}"
                                        data-weight="${option.weight}"
                                        data-dimension="${question.dimension}">
                                 <label for="${question.id}_${optIndex}">${option.text}</label>
                             </div>
                         `;
                     });
-                    
+
                     html += '</div></div>';
                 });
-                
+
                 content.innerHTML = html;
                 modal.classList.add('active');
             }
 
             window.closePersonality = function() {
-                document.getElementById('personalityModal').classList.remove('active');
+                const modal = document.getElementById('personalityModal');
+                if (modal) {
+                    modal.classList.remove('active');
+                }
                 addMessage('No problem! You can restart the assessment anytime. 👋');
             };
 
@@ -3157,9 +3183,12 @@ body {
                 
                 state.userData.personalityType = type;
                 state.userData.personalityScores = scores;
-                
-                document.getElementById('personalityModal').classList.remove('active');
-                
+
+                const modal = document.getElementById('personalityModal');
+                if (modal) {
+                    modal.classList.remove('active');
+                }
+
                 setTimeout(() => {
                     openWorkPreferencesModal();
                 }, 500);
@@ -3168,10 +3197,17 @@ body {
             function openWorkPreferencesModal() {
                 const modal = document.getElementById('workPreferencesModal');
                 const content = document.getElementById('workPreferencesContent');
-                
+
+                if (!modal || !content) {
+                    console.error('Work preferences modal elements not found');
+                    addMessage('I apologize, but there seems to be a technical issue. Please contact support for assistance.');
+                    enableInput();
+                    return;
+                }
+
                 let html = '<h2 style="color: #2b3d6d; margin-bottom: 1.5rem;">What kind of work do you enjoy?</h2>';
                 html += '<p style="margin-bottom: 2rem; color: #666;">Rate how much you enjoy each type of work:</p>';
-                
+
                 WORK_PREFERENCE_QUESTIONS.forEach(question => {
                     html += `
                         <div class="likert-question">
@@ -3201,13 +3237,16 @@ body {
                         </div>
                     `;
                 });
-                
+
                 content.innerHTML = html;
                 modal.classList.add('active');
             }
 
             window.closeWorkPreferences = function() {
-                document.getElementById('workPreferencesModal').classList.remove('active');
+                const modal = document.getElementById('workPreferencesModal');
+                if (modal) {
+                    modal.classList.remove('active');
+                }
                 addMessage('No problem! You can restart the assessment anytime. 👋');
             };
 
@@ -3230,11 +3269,14 @@ body {
                 }
                 
                 state.userData.workPreferences = preferences;
-                
+
                 calculateRecommendation();
-                
-                document.getElementById('workPreferencesModal').classList.remove('active');
-                
+
+                const modal = document.getElementById('workPreferencesModal');
+                if (modal) {
+                    modal.classList.remove('active');
+                }
+
                 setTimeout(() => {
                     openDashboardModal();
                 }, 500);
@@ -3286,7 +3328,14 @@ body {
             function openDashboardModal(selectedCourse = null) {
                 const modal = document.getElementById('dashboardModal');
                 const content = document.getElementById('dashboardContent');
-                
+
+                if (!modal || !content) {
+                    console.error('Dashboard modal elements not found');
+                    addMessage('I apologize, but there seems to be a technical issue. Please contact support for assistance.');
+                    enableInput();
+                    return;
+                }
+
                 const course = selectedCourse || state.userData.recommendedCourse;
                 const score = selectedCourse ? state.userData.allScores[selectedCourse] : state.userData.compatibilityScore;
                 const careerInfo = CAREER_INFO[course] || { careers: [], ksb: { knowledge: [], skills: [], behaviours: [] } };
@@ -3386,16 +3435,28 @@ body {
             }
 
             window.closeDashboard = function() {
-                document.getElementById('dashboardModal').classList.remove('active');
+                const modal = document.getElementById('dashboardModal');
+                if (modal) {
+                    modal.classList.remove('active');
+                }
             };
 
             window.openContactFormModal = function() {
-                document.getElementById('userName').value = state.userData.name;
-                document.getElementById('contactFormModal').classList.add('active');
+                const userName = document.getElementById('userName');
+                const modal = document.getElementById('contactFormModal');
+                if (userName) {
+                    userName.value = state.userData.name;
+                }
+                if (modal) {
+                    modal.classList.add('active');
+                }
             };
 
             window.closeContactForm = function() {
-                document.getElementById('contactFormModal').classList.remove('active');
+                const modal = document.getElementById('contactFormModal');
+                if (modal) {
+                    modal.classList.remove('active');
+                }
             };
 
             function handleContactFormSubmit(e) {
@@ -3418,12 +3479,17 @@ body {
             window.openAlternativeCourseModal = function() {
                 const modal = document.getElementById('alternativeCourseModal');
                 const content = document.getElementById('alternativeCourseContent');
-                
+
+                if (!modal || !content) {
+                    console.error('Alternative course modal elements not found');
+                    return;
+                }
+
                 const pathways = state.userData.availablePathways;
-                
+
                 let html = '<h2 style="color: #2b3d6d; margin: 0 0 1.5rem 0;">Choose Your Path</h2>';
                 html += '<p style="color: #666; margin-bottom: 2rem;">Select an alternative career progression route:</p>';
-                
+
                 html += '<div class="course-grid">';
                 pathways.forEach(pathway => {
                     const score = state.userData.allScores[pathway] || 0;
@@ -3435,13 +3501,16 @@ body {
                     `;
                 });
                 html += '</div>';
-                
+
                 content.innerHTML = html;
                 modal.classList.add('active');
             };
 
             window.closeAlternativeCourse = function() {
-                document.getElementById('alternativeCourseModal').classList.remove('active');
+                const modal = document.getElementById('alternativeCourseModal');
+                if (modal) {
+                    modal.classList.remove('active');
+                }
             };
 
             window.selectAlternativeCourse = function(course) {
