@@ -1,0 +1,2133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Career Progression Wizard - The Apprentice Academy</title>
+    <style>
+        :root {
+            --primary-color: #667eea;
+            --primary-dark: #5a67d8;
+            --success-color: #4ade80;
+            --warning-color: #ffa500;
+            --danger-color: #f87171;
+            --light-gray: #f8f9fa;
+            --medium-gray: #e0e0e0;
+            --dark-blue: #2b3d6d;
+            --text-color: #333;
+            --taa-navy: #1e3a5f;
+            --taa-blue: #2563eb;
+            --taa-teal: #0891b2;
+            --taa-orange: #f97316;
+            --primary-gradient: linear-gradient(135deg, #2b3d6d 0%, #667eea 100%);
+            --secondary-gradient: linear-gradient(135deg, #667eea 0%, #4ade80 100%);
+            --accent-gradient: linear-gradient(135deg, #ffa500 0%, #f87171 100%);
+            --glass-bg: rgba(255, 255, 255, 0.9);
+            --glass-border: rgba(224, 224, 224, 0.3);
+            --dark-overlay: rgba(43, 61, 109, 0.95);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: linear-gradient(135deg, var(--dark-blue) 0%, var(--primary-color) 100%);
+            position: relative;
+            color: var(--text-color);
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Chat Area Styles */
+        .chat-area {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-right: 1px solid var(--glass-border);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .chat-header {
+            padding: 1.5rem 2rem;
+            background: var(--primary-gradient);
+            color: white;
+            position: relative;
+            overflow: hidden;
+            flex-shrink: 0;
+            box-shadow: 0 4px 30px rgba(0,0,0,0.1);
+        }
+
+        .chat-header h1 {
+            font-size: 1.6rem;
+            margin-bottom: 0.3rem;
+            font-weight: 700;
+            position: relative;
+            z-index: 1;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .chat-header p {
+            font-size: 0.95rem;
+            opacity: 0.95;
+            position: relative;
+            z-index: 1;
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1.5rem 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            min-height: 0;
+            scroll-behavior: smooth;
+        }
+
+        .chat-messages::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .chat-messages::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb {
+            background: var(--primary-color);
+            border-radius: 10px;
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-dark);
+        }
+
+        .bot-message, .user-message {
+            max-width: 75%;
+            padding: 0.9rem 1.3rem;
+            border-radius: 1.5rem;
+            word-wrap: break-word;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            position: relative;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .bot-message:hover, .user-message:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
+
+        .bot-message {
+            background: white;
+            align-self: flex-start;
+            border-bottom-left-radius: 0.5rem;
+            border: 2px solid var(--light-gray);
+            color: var(--text-color);
+        }
+
+        .user-message {
+            background: var(--secondary-gradient);
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 0.5rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .quick-replies {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            margin-top: 1rem;
+        }
+
+        .quick-reply-btn {
+            padding: 0.6rem 1.2rem;
+            background: white;
+            border: 2px solid var(--medium-gray);
+            color: var(--primary-color);
+            border-radius: 2rem;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+        }
+
+        .quick-reply-btn:hover {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .quick-reply-btn:active {
+            transform: translateY(-1px) scale(0.98);
+        }
+
+        .chat-input-area {
+            padding: 1.2rem 2rem;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid var(--glass-border);
+            flex-shrink: 0;
+        }
+
+        .chat-input-row {
+            display: flex;
+            gap: 0.8rem;
+            align-items: center;
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 0.9rem 1.2rem;
+            background: rgba(255,255,255,0.9);
+            border: 2px solid transparent;
+            border-radius: 2rem;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.06);
+        }
+
+        .chat-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            background: white;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.15);
+        }
+
+        .send-btn {
+            padding: 0.9rem 1.8rem;
+            background: var(--secondary-gradient);
+            color: white;
+            border: none;
+            border-radius: 2rem;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 600;
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .send-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(8, 145, 178, 0.5);
+        }
+
+        .send-btn:active {
+            transform: translateY(0);
+        }
+
+        /* Modal/Popup Styles */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            overflow-y: auto;
+            padding: 2rem;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 1.5rem;
+            max-width: 800px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+
+        .modal-header {
+            background: var(--primary-gradient);
+            color: white;
+            padding: 2rem;
+            border-radius: 1.5rem 1.5rem 0 0;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .modal-header h2 {
+            margin: 0;
+            font-size: 1.8rem;
+        }
+
+        .modal-header p {
+            margin: 0.5rem 0 0 0;
+            opacity: 0.9;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .modal-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg);
+        }
+
+        .modal-body {
+            padding: 2rem;
+        }
+
+        /* Bridge Questions Styles */
+        .bridge-question {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: #f8f9fa;
+            border-radius: 1rem;
+            border-left: 4px solid #667eea;
+        }
+
+        .bridge-question h3 {
+            margin: 0 0 1rem 0;
+            color: #2b3d6d;
+            font-size: 1.1rem;
+        }
+
+        .bridge-question-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .bridge-option {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0.8rem;
+            background: white;
+            border-radius: 0.5rem;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .bridge-option:hover {
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        .bridge-option input[type="checkbox"],
+        .bridge-option input[type="radio"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: #667eea;
+        }
+
+        .bridge-option label {
+            flex: 1;
+            cursor: pointer;
+            font-size: 0.95rem;
+        }
+
+        /* Likert Scale Styles */
+        .likert-question {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: #f8f9fa;
+            border-radius: 1rem;
+        }
+
+        .likert-question h3 {
+            margin: 0 0 1rem 0;
+            color: #2b3d6d;
+            font-size: 1rem;
+        }
+
+        .likert-scale {
+            display: flex;
+            justify-content: space-between;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .likert-option {
+            flex: 1;
+            text-align: center;
+        }
+
+        .likert-option input[type="radio"] {
+            display: none;
+        }
+
+        .likert-option label {
+            display: block;
+            padding: 0.8rem 0.5rem;
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .likert-option input[type="radio"]:checked + label {
+            background: var(--secondary-gradient);
+            color: white;
+            border-color: #667eea;
+        }
+
+        .likert-option label:hover {
+            border-color: #667eea;
+            transform: translateY(-2px);
+        }
+
+        /* Dashboard Styles */
+        .dashboard {
+            padding: 2rem;
+        }
+
+        .dashboard-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .dashboard-header h2 {
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .compatibility-score {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 2rem 0;
+        }
+
+        .score-circle {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: var(--secondary-gradient);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .score-circle .percentage {
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+
+        .score-circle .label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .dashboard-section {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 1rem;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid #667eea;
+        }
+
+        .dashboard-section h3 {
+            color: #2b3d6d;
+            margin: 0 0 1rem 0;
+            font-size: 1.2rem;
+        }
+
+        .career-option {
+            background: white;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .career-option h4 {
+            color: #667eea;
+            margin: 0 0 0.5rem 0;
+        }
+
+        .salary-range {
+            color: #4ade80;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .skills-needed {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .skill-tag {
+            background: var(--accent-gradient);
+            color: white;
+            padding: 0.4rem 1rem;
+            border-radius: 1.5rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .dashboard-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .dashboard-btn {
+            flex: 1;
+            min-width: 200px;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 0.8rem;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .dashboard-btn.primary {
+            background: var(--secondary-gradient);
+            color: white;
+        }
+
+        .dashboard-btn.secondary {
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+
+        .dashboard-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Contact Form Styles */
+        .contact-form {
+            padding: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #2b3d6d;
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 0.5rem;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        /* Progress Indicator */
+        .progress-steps {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            padding: 0 1rem;
+        }
+
+        .step {
+            flex: 1;
+            text-align: center;
+            position: relative;
+        }
+
+        .step::before {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #e0e0e0;
+            z-index: -1;
+        }
+
+        .step:first-child::before {
+            left: 50%;
+        }
+
+        .step:last-child::before {
+            right: 50%;
+        }
+
+        .step-circle {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #e0e0e0;
+            color: white;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.85rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .step.active .step-circle {
+            background: var(--secondary-gradient);
+        }
+
+        .step.completed .step-circle {
+            background: #4ade80;
+        }
+
+        .step-label {
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        .step.active .step-label {
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        /* Course Selection Grid */
+        .course-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .course-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 0.8rem;
+            border: 2px solid #e0e0e0;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .course-card:hover {
+            border-color: #667eea;
+            transform: translateY(-4px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.2);
+        }
+
+        .course-card.selected {
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        .course-card h4 {
+            color: #2b3d6d;
+            margin: 0;
+            font-size: 1rem;
+        }
+
+        .submit-btn {
+            margin-top: 0.8rem;
+            padding: 0.8rem 1.6rem;
+            background: var(--accent-gradient);
+            color: white;
+            border: none;
+            border-radius: 0.6rem;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 165, 0, 0.4);
+            width: 100%;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 165, 0, 0.5);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        /* Personality Type Display */
+        .personality-type {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        .personality-type h3 {
+            font-size: 2.5rem;
+            margin: 0 0 0.5rem 0;
+            letter-spacing: 0.3rem;
+        }
+
+        .personality-type .type-name {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 1rem;
+        }
+
+        .personality-type .type-description {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            opacity: 0.95;
+        }
+
+        .personality-traits {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .personality-trait {
+            background: rgba(102, 126, 234, 0.1);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            border-left: 3px solid #667eea;
+        }
+
+        .personality-trait h4 {
+            color: #2b3d6d;
+            margin: 0 0 0.5rem 0;
+            font-size: 1rem;
+        }
+
+        .personality-match {
+            background: rgba(74, 222, 128, 0.1);
+            border: 2px solid #4ade80;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin: 1rem 0;
+        }
+
+        .personality-match h4 {
+            color: #22c55e;
+            margin: 0 0 0.5rem 0;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .modal-content {
+                margin: 1rem;
+            }
+
+            .likert-scale {
+                flex-direction: column;
+            }
+
+            .dashboard-actions {
+                flex-direction: column;
+            }
+
+            .dashboard-btn {
+                width: 100%;
+            }
+
+            .personality-traits {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Chat Area Container -->
+    <div class="chat-area">
+        <div class="chat-header">
+            <h1>Career Progression Wizard</h1>
+            <p>Your personalized guide to career development</p>
+        </div>
+
+        <div class="chat-messages" id="chatMessages">
+            <!-- Messages will be inserted here dynamically -->
+        </div>
+
+        <div class="chat-input-area">
+            <div class="chat-input-row">
+                <input type="text" class="chat-input" id="chatInput" placeholder="Type your message...">
+                <button class="send-btn" id="sendBtn">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bridge Questions Modal -->
+    <div class="modal-overlay" id="bridgeQuestionsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="modal-close" onclick="closeBridgeQuestions()">×</button>
+                <h2>Skills Assessment</h2>
+                <p>Help us understand your current skills and experience</p>
+            </div>
+            <div class="modal-body">
+                <div class="progress-steps">
+                    <div class="step active">
+                        <div class="step-circle">1</div>
+                        <div class="step-label">Skills</div>
+                    </div>
+                    <div class="step">
+                        <div class="step-circle">2</div>
+                        <div class="step-label">Personality</div>
+                    </div>
+                    <div class="step">
+                        <div class="step-circle">3</div>
+                        <div class="step-label">Preferences</div>
+                    </div>
+                    <div class="step">
+                        <div class="step-circle">4</div>
+                        <div class="step-label">Results</div>
+                    </div>
+                </div>
+                <div id="bridgeQuestionsContent">
+                    <!-- Bridge questions will be inserted here -->
+                </div>
+                <button class="submit-btn" onclick="submitBridgeQuestions()" style="margin-top: 2rem;">Continue to Personality Assessment</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Personality Assessment Modal -->
+    <div class="modal-overlay" id="personalityModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="modal-close" onclick="closePersonality()">×</button>
+                <h2>Personality Assessment</h2>
+                <p>Discover your work personality type</p>
+            </div>
+            <div class="modal-body">
+                <div class="progress-steps">
+                    <div class="step completed">
+                        <div class="step-circle">✓</div>
+                        <div class="step-label">Skills</div>
+                    </div>
+                    <div class="step active">
+                        <div class="step-circle">2</div>
+                        <div class="step-label">Personality</div>
+                    </div>
+                    <div class="step">
+                        <div class="step-circle">3</div>
+                        <div class="step-label">Preferences</div>
+                    </div>
+                    <div class="step">
+                        <div class="step-circle">4</div>
+                        <div class="step-label">Results</div>
+                    </div>
+                </div>
+                <div id="personalityContent">
+                    <!-- Personality questions will be inserted here -->
+                </div>
+                <button class="submit-btn" onclick="submitPersonality()" style="margin-top: 2rem;">Continue to Work Preferences</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Work Preferences Modal -->
+    <div class="modal-overlay" id="workPreferencesModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="modal-close" onclick="closeWorkPreferences()">×</button>
+                <h2>Work Preferences</h2>
+                <p>Tell us about the kind of work you enjoy</p>
+            </div>
+            <div class="modal-body">
+                <div class="progress-steps">
+                    <div class="step completed">
+                        <div class="step-circle">✓</div>
+                        <div class="step-label">Skills</div>
+                    </div>
+                    <div class="step completed">
+                        <div class="step-circle">✓</div>
+                        <div class="step-label">Personality</div>
+                    </div>
+                    <div class="step active">
+                        <div class="step-circle">3</div>
+                        <div class="step-label">Preferences</div>
+                    </div>
+                    <div class="step">
+                        <div class="step-circle">4</div>
+                        <div class="step-label">Results</div>
+                    </div>
+                </div>
+                <div id="workPreferencesContent">
+                    <!-- Work preference questions will be inserted here -->
+                </div>
+                <button class="submit-btn" onclick="submitWorkPreferences()" style="margin-top: 2rem;">View My Results</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard Modal -->
+    <div class="modal-overlay" id="dashboardModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="modal-close" onclick="closeDashboard()">×</button>
+                <h2>Your Career Progression Dashboard</h2>
+                <p>Based on your skills, personality, and preferences</p>
+            </div>
+            <div class="modal-body">
+                <div class="progress-steps">
+                    <div class="step completed">
+                        <div class="step-circle">✓</div>
+                        <div class="step-label">Skills</div>
+                    </div>
+                    <div class="step completed">
+                        <div class="step-circle">✓</div>
+                        <div class="step-label">Personality</div>
+                    </div>
+                    <div class="step completed">
+                        <div class="step-circle">✓</div>
+                        <div class="step-label">Preferences</div>
+                    </div>
+                    <div class="step active">
+                        <div class="step-circle">4</div>
+                        <div class="step-label">Results</div>
+                    </div>
+                </div>
+                <div id="dashboardContent">
+                    <!-- Dashboard will be inserted here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact Form Modal -->
+    <div class="modal-overlay" id="contactFormModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="modal-close" onclick="closeContactForm()">×</button>
+                <h2>Send to My Coach</h2>
+                <p>Share your career progression plan</p>
+            </div>
+            <div class="modal-body">
+                <div class="contact-form">
+                    <form id="coachContactForm">
+                        <div class="form-group">
+                            <label for="userName">Your Name</label>
+                            <input type="text" id="userName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="userEmail">Your Email</label>
+                            <input type="email" id="userEmail" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="coachEmail">Coach's Email</label>
+                            <input type="email" id="coachEmail" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="additionalMessage">Additional Message (Optional)</label>
+                            <textarea id="additionalMessage" placeholder="Any additional comments or questions..."></textarea>
+                        </div>
+                        <button type="submit" class="submit-btn">Send Career Plan</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Alternative Course Selection Modal -->
+    <div class="modal-overlay" id="alternativeCourseModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="modal-close" onclick="closeAlternativeCourse()">×</button>
+                <h2>Choose a Different Path</h2>
+                <p>Select an alternative career progression route</p>
+            </div>
+            <div class="modal-body">
+                <div id="alternativeCourseContent">
+                    <!-- Alternative course options will be inserted here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Career Progression Chatbot Implementation with MBTI
+        (function() {
+            'use strict';
+
+            // Progression pathway definitions
+            const PROGRESSION_PATHWAYS = {
+                'Accountancy Level 2': {
+                    direct: ['Accountancy Level 3/4', 'Data Technician Level 3', 'Business Admin Level 3'],
+                    core: []
+                },
+                'Accountancy Level 3/4': {
+                    direct: [],
+                    core: ['Team Leader', 'Project Manager', 'Improvement Practitioner', 'Business Analyst']
+                },
+                'Business Admin Level 3': {
+                    direct: ['Accountancy Level 2', 'Procurement Level 3', 'Procurement Level 4', 'Data Technician Level 3'],
+                    core: ['Team Leader', 'Project Manager', 'Improvement Practitioner', 'Business Analyst']
+                },
+                'Procurement Level 3': {
+                    direct: ['Procurement Level 4', 'Data Technician Level 3'],
+                    core: ['Team Leader', 'Project Manager', 'Improvement Practitioner', 'Business Analyst']
+                },
+                'Procurement Level 4': {
+                    direct: ['Data Analyst Level 4', 'CIPS Level 5'],
+                    core: ['Team Leader', 'Project Manager', 'Improvement Practitioner', 'Business Analyst']
+                },
+                'Data Technician Level 3': {
+                    direct: ['Data Engineer Level 5', 'Data Analyst Level 4'],
+                    core: ['Team Leader', 'Project Manager', 'Improvement Practitioner', 'Business Analyst']
+                },
+                'Data Analyst Level 4': {
+                    direct: ['Data Engineer Level 5'],
+                    core: ['Team Leader', 'Project Manager', 'Improvement Practitioner', 'Business Analyst']
+                },
+                'Data Engineer Level 5': {
+                    direct: [],
+                    core: ['Team Leader', 'Project Manager', 'Improvement Practitioner', 'Business Analyst']
+                }
+            };
+
+            // Bridge questions placeholders for each course
+            const BRIDGE_QUESTIONS = {
+                'Accountancy Level 2': [
+                    { id: 'acc2_q1', text: 'I work with financial records (e.g. invoices, statements)', type: 'checkbox' },
+                    { id: 'acc2_q2', text: 'I\'ve found and corrected errors in financial data', type: 'checkbox' },
+                    { id: 'acc2_q3', text: 'I use accounting software (e.g. Sage, Xero)', type: 'checkbox' },
+                    { id: 'acc2_q4', text: 'I check the accuracy of financial data', type: 'checkbox' },
+                    { id: 'acc2_q5', text: 'I work well under time pressure', type: 'checkbox' },
+                    { id: 'acc2_q6', text: 'I explain finance info to non-finance colleagues', type: 'checkbox' }
+                ],
+                'Accountancy Level 3/4': [
+                    { id: 'acc34_q1', text: 'I help with monthly/year-end reports', type: 'checkbox' },
+                    { id: 'acc34_q2', text: 'I compile financial/accounting records', type: 'checkbox' },
+                    { id: 'acc34_q3', text: 'I work on tax returns, audit docs, or reconciliations', type: 'checkbox' },
+                    { id: 'acc34_q4', text: 'I provide financial information to others internally', type: 'checkbox' },
+                    { id: 'acc34_q5', text: 'I find ways to improve efficiency or add value', type: 'checkbox' },
+                    { id: 'acc34_q6', text: 'I analyse data for trends/insights to support decisions', type: 'checkbox' }
+                ],
+                'Business Admin Level 3': [
+                    { id: 'ba3_q1', text: 'I handle phone calls, emails, and data entry', type: 'checkbox' },
+                    { id: 'ba3_q2', text: 'I arrange meetings or plan logistics (e.g. training/events)', type: 'checkbox' },
+                    { id: 'ba3_q3', text: 'I work with both internal and external stakeholders', type: 'checkbox' },
+                    { id: 'ba3_q4', text: 'I use IT systems beyond Outlook/Word/Excel', type: 'checkbox' },
+                    { id: 'ba3_q5', text: 'I prepare reports or documents regularly', type: 'checkbox' },
+                    { id: 'ba3_q6', text: 'I support projects or manage timelines', type: 'checkbox' }
+                ],
+                'Procurement Level 3': [
+                    { id: 'proc3_q1', text: 'I conduct market research to support sourcing decisions', type: 'checkbox' },
+                    { id: 'proc3_q2', text: 'I help with supplier due diligence (e.g. financial checks, policies)', type: 'checkbox' },
+                    { id: 'proc3_q3', text: 'I advise colleagues on procurement procedures', type: 'checkbox' },
+                    { id: 'proc3_q4', text: 'I raise purchase orders for low value/risk contracts', type: 'checkbox' },
+                    { id: 'proc3_q5', text: 'I use e-procurement systems (tendering, evaluations, logging)', type: 'checkbox' },
+                    { id: 'proc3_q6', text: 'I participate in contract negotiations', type: 'checkbox' }
+                ],
+                'Procurement Level 4': [
+                    { id: 'proc4_q1', text: 'I manage suppliers to ensure successful delivery', type: 'checkbox' },
+                    { id: 'proc4_q2', text: 'I negotiate with suppliers or stakeholders', type: 'checkbox' },
+                    { id: 'proc4_q3', text: 'I help agree contract terms and conditions', type: 'checkbox' },
+                    { id: 'proc4_q4', text: 'I contribute to procurement strategy', type: 'checkbox' },
+                    { id: 'proc4_q5', text: 'I carry out tendering activity to ensure value for money', type: 'checkbox' },
+                    { id: 'proc4_q6', text: 'I analyse markets and suppliers', type: 'checkbox' }
+                ],
+                'Data Technician Level 3': [
+                    { id: 'dt3_q1', text: 'I currently use Excel (basic or advanced functions)', type: 'checkbox' },
+                    { id: 'dt3_q2', text: 'I have used databases (e.g. Access, SQL)', type: 'checkbox' },
+                    { id: 'dt3_q3', text: 'I regularly access and use data sources in my role', type: 'checkbox' },
+                    { id: 'dt3_q4', text: 'I understand the variety and complexity of the data I work with', type: 'checkbox' },
+                    { id: 'dt3_q5', text: 'I am comfortable identifying patterns or trends in data', type: 'checkbox' },
+                    { id: 'dt3_q6', text: 'I have used Power BI or another data visualisation tool', type: 'checkbox' }
+                ],
+                'Data Analyst Level 4': [
+                    { id: 'da4_q1', text: 'I have used Power BI, Python, SQL, or advanced Excel', type: 'checkbox' },
+                    { id: 'da4_q2', text: 'I can give an example of how I\'ve used Excel for analysis', type: 'checkbox' },
+                    { id: 'da4_q3', text: 'I understand programming or statistical techniques', type: 'checkbox' },
+                    { id: 'da4_q4', text: 'I work with data that is complex or comes from multiple sources', type: 'checkbox' },
+                    { id: 'da4_q5', text: 'I work with large volumes of data (many records/columns/tables)', type: 'checkbox' },
+                    { id: 'da4_q6', text: 'I am confident in learning more advanced tools (e.g. data modelling)', type: 'checkbox' }
+                ],
+                'Data Engineer Level 5': [
+                    { id: 'de5_q1', text: 'I have experience with cloud services for data storage/processing', type: 'checkbox' },
+                    { id: 'de5_q2', text: 'I can explain how I ensure data consistency in ETL processes', type: 'checkbox' },
+                    { id: 'de5_q3', text: 'I\'ve optimised a complex SQL query', type: 'checkbox' },
+                    { id: 'de5_q4', text: 'I work with data pipelines or data warehousing', type: 'checkbox' },
+                    { id: 'de5_q5', text: 'I have experience with programming languages (Python, Java, etc.)', type: 'checkbox' },
+                    { id: 'de5_q6', text: 'I understand data governance and security principles', type: 'checkbox' }
+                ],
+                'Team Leader': [
+                    { id: 'tl_q1', text: 'I lead or manage a team', type: 'checkbox' },
+                    { id: 'tl_q2', text: 'I manage resources to meet deadlines and budgets', type: 'checkbox' },
+                    { id: 'tl_q3', text: 'I set and monitor team objectives and performance', type: 'checkbox' },
+                    { id: 'tl_q4', text: 'I support the training and development of team members', type: 'checkbox' },
+                    { id: 'tl_q5', text: 'I communicate clearly to improve team and business performance', type: 'checkbox' },
+                    { id: 'tl_q6', text: 'I resolve conflicts and motivate team members', type: 'checkbox' }
+                ],
+                'Project Manager': [
+                    { id: 'pm_q1', text: 'I support project teams across the project lifecycle', type: 'checkbox' },
+                    { id: 'pm_q2', text: 'I review business cases and provide feedback', type: 'checkbox' },
+                    { id: 'pm_q3', text: 'I assist with stakeholder engagement and communication', type: 'checkbox' },
+                    { id: 'pm_q4', text: 'I help write and update project scope documents', type: 'checkbox' },
+                    { id: 'pm_q5', text: 'I identify and manage risks/opportunities', type: 'checkbox' },
+                    { id: 'pm_q6', text: 'I monitor and report on budgets and spending', type: 'checkbox' }
+                ],
+                'Improvement Practitioner': [
+                    { id: 'ip_q1', text: 'I identify opportunities for process improvement', type: 'checkbox' },
+                    { id: 'ip_q2', text: 'I use improvement methodologies (e.g. Lean, Six Sigma)', type: 'checkbox' },
+                    { id: 'ip_q3', text: 'I analyse data to find inefficiencies', type: 'checkbox' },
+                    { id: 'ip_q4', text: 'I facilitate workshops or improvement sessions', type: 'checkbox' },
+                    { id: 'ip_q5', text: 'I measure the impact of improvement initiatives', type: 'checkbox' },
+                    { id: 'ip_q6', text: 'I engage stakeholders in continuous improvement', type: 'checkbox' }
+                ],
+                'Business Analyst': [
+                    { id: 'bsa_q1', text: 'I use tools like Excel, Visio, JIRA, or project frameworks (e.g. Agile)', type: 'checkbox' },
+                    { id: 'bsa_q2', text: 'I gather stakeholder requirements and clarify expectations', type: 'checkbox' },
+                    { id: 'bsa_q3', text: 'I apply structured investigation techniques to identify issues', type: 'checkbox' },
+                    { id: 'bsa_q4', text: 'I help develop recommendations for change', type: 'checkbox' },
+                    { id: 'bsa_q5', text: 'I can model business processes using diagrams or tools', type: 'checkbox' },
+                    { id: 'bsa_q6', text: 'I gather requirements through interviews or workshops', type: 'checkbox' }
+                ],
+                'CIPS Level 5': [
+                    { id: 'cips5_q1', text: 'I have advanced procurement experience', type: 'checkbox' },
+                    { id: 'cips5_q2', text: 'I develop procurement strategies', type: 'checkbox' },
+                    { id: 'cips5_q3', text: 'I manage complex supplier relationships', type: 'checkbox' },
+                    { id: 'cips5_q4', text: 'I lead procurement projects', type: 'checkbox' },
+                    { id: 'cips5_q5', text: 'I understand contract law and commercial agreements', type: 'checkbox' },
+                    { id: 'cips5_q6', text: 'I provide strategic procurement advice', type: 'checkbox' }
+                ]
+            };
+
+            // Myers-Briggs Type Indicator style questions
+            const MBTI_QUESTIONS = [
+                {
+                    id: 'mbti_1',
+                    text: 'At work, I get my energy from:',
+                    dimension: 'EI',
+                    options: [
+                        { text: 'Interacting with colleagues and being part of a team', value: 'E', weight: 2 },
+                        { text: 'Working independently and having quiet time to focus', value: 'I', weight: 2 },
+                        { text: 'A mix of both collaboration and independent work', value: 'N', weight: 0 }
+                    ]
+                },
+                {
+                    id: 'mbti_2',
+                    text: 'When solving work problems, I prefer to:',
+                    dimension: 'EI',
+                    options: [
+                        { text: 'Discuss ideas openly with others and think out loud', value: 'E', weight: 1 },
+                        { text: 'Think things through privately before sharing', value: 'I', weight: 1 },
+                        { text: 'Depends on the situation and problem', value: 'N', weight: 0 }
+                    ]
+                },
+                {
+                    id: 'mbti_3',
+                    text: 'In meetings, I typically:',
+                    dimension: 'EI',
+                    options: [
+                        { text: 'Speak up frequently and enjoy contributing ideas', value: 'E', weight: 1 },
+                        { text: 'Listen more and speak only when I have something important to say', value: 'I', weight: 1 },
+                        { text: 'Varies depending on the topic', value: 'N', weight: 0 }
+                    ]
+                },
+                {
+                    id: 'mbti_4',
+                    text: 'When learning new processes at work, I prefer:',
+                    dimension: 'SN',
+                    options: [
+                        { text: 'Step-by-step instructions with practical examples', value: 'S', weight: 2 },
+                        { text: 'Understanding the big picture and overall concept first', value: 'N', weight: 2 },
+                        { text: 'A combination of both approaches', value: 'X', weight: 0 }
+                    ]
+                },
+                {
+                    id: 'mbti_5',
+                    text: 'I am more interested in:',
+                    dimension: 'SN',
+                    options: [
+                        { text: 'Facts, details, and what is happening now', value: 'S', weight: 1 },
+                        { text: 'Possibilities, patterns, and future potential', value: 'N', weight: 1 },
+                        { text: 'Both present realities and future opportunities', value: 'X', weight: 0 }
+                    ]
+                },
+                {
+                    id: 'mbti_6',
+                    text: 'When working on projects, I focus on:',
+                    dimension: 'SN',
+                    options: [
+                        { text: 'Proven methods and established procedures', value: 'S', weight: 1 },
+                        { text: 'New approaches and innovative solutions', value: 'N', weight: 1 },
+                        { text: 'Both tried-and-tested and innovative methods', value: 'X', weight: 0 }
+                    ]
+                },
+                {
+                    id: 'mbti_7',
+                    text: 'When making decisions at work, I prioritize:',
+                    dimension: 'TF',
+                    options: [
+                        { text: 'Logical analysis and objective criteria', value: 'T', weight: 2 },
+                        { text: 'Impact on people and team harmony', value: 'F', weight: 2 },
+                        { text: 'Balancing logic with people considerations', value: 'X', weight: 0 }
+                    ]
+                },
+                {
+                    id: 'mbti_8',
+                    text: 'I am more comfortable with:',
+                    dimension: 'TF',
+                    options: [
+                        { text: 'Being direct and straightforward, even if it seems blunt', value: 'T', weight: 1 },
+                        { text: 'Being tactful and considering others\' feelings', value: 'F', weight: 1 },
+                        { text: 'Adapting my approach based on the situation', value: 'X', weight: 0 }
+                    ]
+                },
+                {
+                    id: 'mbti_9',
+                    text: 'When giving feedback, I focus on:',
+                    dimension: 'TF',
+                    options: [
+                        { text: 'What needs to be fixed or improved', value: 'T', weight: 1 },
+                        { text: 'How the person might feel and positive encouragement', value: 'F', weight: 1 },
+                        { text: 'Both areas for improvement and emotional support', value: 'X', weight: 0 }
+                    ]
+                },
+                {
+                    id: 'mbti_10',
+                    text: 'I prefer to work in an environment that is:',
+                    dimension: 'JP',
+                    options: [
+                        { text: 'Structured with clear plans and deadlines', value: 'J', weight: 2 },
+                        { text: 'Flexible with room for spontaneity and changes', value: 'P', weight: 2 },
+                        { text: 'A balance of structure and flexibility', value: 'X', weight: 0 }
+                    ]
+                },
+                {
+                    id: 'mbti_11',
+                    text: 'My approach to tasks is typically:',
+                    dimension: 'JP',
+                    options: [
+                        { text: 'Start early and finish ahead of time', value: 'J', weight: 1 },
+                        { text: 'Work better closer to deadlines with time pressure', value: 'P', weight: 1 },
+                        { text: 'Varies depending on the task', value: 'X', weight: 0 }
+                    ]
+                },
+                {
+                    id: 'mbti_12',
+                    text: 'When planning my work week, I prefer to:',
+                    dimension: 'JP',
+                    options: [
+                        { text: 'Have everything scheduled and organized in advance', value: 'J', weight: 1 },
+                        { text: 'Keep my options open and adapt as things come up', value: 'P', weight: 1 },
+                        { text: 'Have a general plan but remain adaptable', value: 'X', weight: 0 }
+                    ]
+                }
+            ];
+
+            // Personality type descriptions
+            const PERSONALITY_TYPES = {
+                'ESTJ': {
+                    name: 'The Supervisor',
+                    description: 'Organized, practical, and results-driven. Natural leaders who excel at implementing systems and managing resources.',
+                    strengths: ['Leadership', 'Organization', 'Practical problem-solving', 'Reliability'],
+                    idealCourses: ['Team Leader', 'Project Manager', 'Procurement Level 4']
+                },
+                'ENTJ': {
+                    name: 'The Commander',
+                    description: 'Strategic, decisive, and ambitious. Natural leaders who excel at long-term planning and organizational improvement.',
+                    strengths: ['Strategic thinking', 'Leadership', 'Efficiency', 'Decision-making'],
+                    idealCourses: ['Project Manager', 'Business Analyst', 'Improvement Practitioner']
+                },
+                'ESFJ': {
+                    name: 'The Provider',
+                    description: 'Warm, organized, and people-focused. Excel at creating harmony and supporting team success.',
+                    strengths: ['Team support', 'Organization', 'Communication', 'Helpfulness'],
+                    idealCourses: ['Team Leader', 'Business Admin Level 3', 'Project Manager']
+                },
+                'ENFJ': {
+                    name: 'The Teacher',
+                    description: 'Charismatic, empathetic, and inspiring. Natural mentors who excel at developing others and leading change.',
+                    strengths: ['Mentoring', 'Communication', 'Motivation', 'Team development'],
+                    idealCourses: ['Team Leader', 'Improvement Practitioner', 'Project Manager']
+                },
+                'ISTJ': {
+                    name: 'The Inspector',
+                    description: 'Detail-oriented, reliable, and systematic. Excel at maintaining standards and ensuring accuracy.',
+                    strengths: ['Accuracy', 'Reliability', 'Attention to detail', 'Process adherence'],
+                    idealCourses: ['Accountancy Level 3/4', 'Data Analyst Level 4', 'Procurement Level 3']
+                },
+                'INTJ': {
+                    name: 'The Architect',
+                    description: 'Strategic, analytical, and innovative. Excel at designing systems and solving complex problems.',
+                    strengths: ['Strategic planning', 'Analysis', 'Innovation', 'Problem-solving'],
+                    idealCourses: ['Business Analyst', 'Data Engineer Level 5', 'Improvement Practitioner']
+                },
+                'ISFJ': {
+                    name: 'The Protector',
+                    description: 'Caring, thorough, and dedicated. Excel at supporting others and maintaining quality standards.',
+                    strengths: ['Supportiveness', 'Thoroughness', 'Loyalty', 'Practical care'],
+                    idealCourses: ['Business Admin Level 3', 'Accountancy Level 3/4', 'Team Leader']
+                },
+                'INFJ': {
+                    name: 'The Counselor',
+                    description: 'Insightful, principled, and creative. Excel at understanding complex situations and guiding improvement.',
+                    strengths: ['Insight', 'Creativity', 'Empathy', 'Strategic vision'],
+                    idealCourses: ['Improvement Practitioner', 'Business Analyst', 'Team Leader']
+                },
+                'ESTP': {
+                    name: 'The Dynamo',
+                    description: 'Energetic, practical, and adaptable. Excel at responding quickly to immediate challenges.',
+                    strengths: ['Adaptability', 'Problem-solving', 'Action-oriented', 'Practical skills'],
+                    idealCourses: ['Procurement Level 3', 'Project Manager', 'Business Admin Level 3']
+                },
+                'ENTP': {
+                    name: 'The Visionary',
+                    description: 'Innovative, strategic, and entrepreneurial. Excel at finding new solutions and challenging the status quo.',
+                    strengths: ['Innovation', 'Strategic thinking', 'Creativity', 'Debate'],
+                    idealCourses: ['Business Analyst', 'Improvement Practitioner', 'Data Analyst Level 4']
+                },
+                'ESFP': {
+                    name: 'The Performer',
+                    description: 'Enthusiastic, spontaneous, and people-oriented. Excel at building relationships and creating positive environments.',
+                    strengths: ['Relationship building', 'Enthusiasm', 'Flexibility', 'Communication'],
+                    idealCourses: ['Business Admin Level 3', 'Team Leader', 'Project Manager']
+                },
+                'ENFP': {
+                    name: 'The Champion',
+                    description: 'Enthusiastic, creative, and people-focused. Excel at inspiring others and exploring new possibilities.',
+                    strengths: ['Creativity', 'Motivation', 'Communication', 'Innovation'],
+                    idealCourses: ['Improvement Practitioner', 'Business Analyst', 'Team Leader']
+                },
+                'ISTP': {
+                    name: 'The Craftsperson',
+                    description: 'Practical, analytical, and hands-on. Excel at understanding how things work and solving technical problems.',
+                    strengths: ['Technical skills', 'Analysis', 'Problem-solving', 'Efficiency'],
+                    idealCourses: ['Data Technician Level 3', 'Data Analyst Level 4', 'Data Engineer Level 5']
+                },
+                'INTP': {
+                    name: 'The Thinker',
+                    description: 'Analytical, theoretical, and logical. Excel at designing systems and solving complex abstract problems.',
+                    strengths: ['Logic', 'Analysis', 'System design', 'Problem-solving'],
+                    idealCourses: ['Data Engineer Level 5', 'Business Analyst', 'Data Analyst Level 4']
+                },
+                'ISFP': {
+                    name: 'The Composer',
+                    description: 'Gentle, caring, and adaptable. Excel at creating supportive environments and maintaining harmony.',
+                    strengths: ['Adaptability', 'Supportiveness', 'Attention to detail', 'Cooperation'],
+                    idealCourses: ['Business Admin Level 3', 'Accountancy Level 3/4', 'Data Technician Level 3']
+                },
+                'INFP': {
+                    name: 'The Healer',
+                    description: 'Idealistic, empathetic, and values-driven. Excel at understanding people and supporting meaningful change.',
+                    strengths: ['Empathy', 'Creativity', 'Values alignment', 'Communication'],
+                    idealCourses: ['Improvement Practitioner', 'Business Analyst', 'Team Leader']
+                }
+            };
+
+            // Work preference questions
+            const WORK_PREFERENCE_QUESTIONS = [
+                { id: 'pref_1', text: 'Working with numbers and financial data' },
+                { id: 'pref_2', text: 'Analysing and interpreting information' },
+                { id: 'pref_3', text: 'Communicating with people' },
+                { id: 'pref_4', text: 'Organising tasks and coordinating work' },
+                { id: 'pref_5', text: 'Solving problems and improving processes' },
+                { id: 'pref_6', text: 'Negotiating or managing suppliers' },
+                { id: 'pref_7', text: 'Planning or managing projects' },
+                { id: 'pref_8', text: 'Supporting and motivating others' },
+                { id: 'pref_9', text: 'Working with data and technology' },
+                { id: 'pref_10', text: 'Leading and making decisions' }
+            ];
+
+            // Career information database
+            const CAREER_INFO = {
+                'Team Leader': {
+                    careers: [
+                        { title: 'Team Leader', salary: '£25,000 - £35,000', responsibilities: ['Leading teams', 'Managing performance', 'Setting objectives'] },
+                        { title: 'Supervisor', salary: '£23,000 - £30,000', responsibilities: ['Day-to-day team management', 'Quality control', 'Staff development'] }
+                    ],
+                    ksb: {
+                        knowledge: ['Leadership principles', 'Performance management', 'Operational planning'],
+                        skills: ['Team motivation', 'Conflict resolution', 'Resource management'],
+                        behaviours: ['Takes responsibility', 'Leads by example', 'Collaborative approach']
+                    }
+                },
+                'Project Manager': {
+                    careers: [
+                        { title: 'Project Manager', salary: '£30,000 - £50,000', responsibilities: ['Managing projects', 'Stakeholder engagement', 'Risk management'] },
+                        { title: 'Project Coordinator', salary: '£25,000 - £35,000', responsibilities: ['Supporting project delivery', 'Documentation', 'Team coordination'] }
+                    ],
+                    ksb: {
+                        knowledge: ['Project methodologies', 'Risk management', 'Stakeholder management'],
+                        skills: ['Planning and scheduling', 'Budget management', 'Communication'],
+                        behaviours: ['Adaptable', 'Solution-focused', 'Organised']
+                    }
+                },
+                'Improvement Practitioner': {
+                    careers: [
+                        { title: 'Improvement Practitioner', salary: '£28,000 - £40,000', responsibilities: ['Process improvement', 'Data analysis', 'Change management'] },
+                        { title: 'Continuous Improvement Officer', salary: '£25,000 - £35,000', responsibilities: ['Lean implementation', 'Efficiency analysis', 'Workshop facilitation'] }
+                    ],
+                    ksb: {
+                        knowledge: ['Lean/Six Sigma', 'Process mapping', 'Change management'],
+                        skills: ['Problem solving', 'Data analysis', 'Facilitation'],
+                        behaviours: ['Analytical', 'Innovative', 'Results-driven']
+                    }
+                },
+                'Business Analyst': {
+                    careers: [
+                        { title: 'Business Analyst', salary: '£30,000 - £45,000', responsibilities: ['Requirements gathering', 'Process analysis', 'Solution design'] },
+                        { title: 'Systems Analyst', salary: '£28,000 - £42,000', responsibilities: ['System requirements', 'Technical documentation', 'User testing'] }
+                    ],
+                    ksb: {
+                        knowledge: ['Business analysis techniques', 'Agile/Waterfall', 'Stakeholder management'],
+                        skills: ['Requirements elicitation', 'Process modelling', 'Data analysis'],
+                        behaviours: ['Curious', 'Detail-oriented', 'Communicative']
+                    }
+                },
+                'Accountancy Level 3/4': {
+                    careers: [
+                        { title: 'Accounts Assistant', salary: '£20,000 - £28,000', responsibilities: ['Financial record keeping', 'Reconciliations', 'Report preparation'] },
+                        { title: 'Management Accountant', salary: '£28,000 - £40,000', responsibilities: ['Financial planning', 'Budgeting', 'Management reporting'] }
+                    ],
+                    ksb: {
+                        knowledge: ['Accounting principles', 'Financial regulations', 'Tax fundamentals'],
+                        skills: ['Bookkeeping', 'Financial analysis', 'Software proficiency'],
+                        behaviours: ['Accurate', 'Ethical', 'Organised']
+                    }
+                },
+                'Procurement Level 3': {
+                    careers: [
+                        { title: 'Procurement Assistant', salary: '£20,000 - £28,000', responsibilities: ['Purchase orders', 'Supplier liaison', 'Contract administration'] },
+                        { title: 'Buyer', salary: '£25,000 - £35,000', responsibilities: ['Sourcing', 'Negotiation', 'Supplier management'] }
+                    ],
+                    ksb: {
+                        knowledge: ['Procurement processes', 'Contract basics', 'Supply chain fundamentals'],
+                        skills: ['Sourcing', 'Negotiation', 'Supplier evaluation'],
+                        behaviours: ['Commercial awareness', 'Relationship builder', 'Ethical']
+                    }
+                },
+                'Procurement Level 4': {
+                    careers: [
+                        { title: 'Procurement Specialist', salary: '£28,000 - £40,000', responsibilities: ['Strategic sourcing', 'Contract management', 'Supplier performance'] },
+                        { title: 'Category Manager', salary: '£32,000 - £45,000', responsibilities: ['Category strategy', 'Spend analysis', 'Supplier relationships'] }
+                    ],
+                    ksb: {
+                        knowledge: ['Procurement strategy', 'Contract law', 'Risk management'],
+                        skills: ['Strategic sourcing', 'Negotiation', 'Data analysis'],
+                        behaviours: ['Strategic thinker', 'Influencer', 'Results-focused']
+                    }
+                },
+                'Data Technician Level 3': {
+                    careers: [
+                        { title: 'Data Technician', salary: '£20,000 - £28,000', responsibilities: ['Data entry', 'Basic analysis', 'Report generation'] },
+                        { title: 'Data Administrator', salary: '£22,000 - £30,000', responsibilities: ['Database maintenance', 'Data quality', 'User support'] }
+                    ],
+                    ksb: {
+                        knowledge: ['Data fundamentals', 'Database basics', 'Excel skills'],
+                        skills: ['Data manipulation', 'Basic analysis', 'Visualisation'],
+                        behaviours: ['Detail-oriented', 'Accurate', 'Curious']
+                    }
+                },
+                'Data Analyst Level 4': {
+                    careers: [
+                        { title: 'Data Analyst', salary: '£28,000 - £40,000', responsibilities: ['Data analysis', 'Reporting', 'Insight generation'] },
+                        { title: 'Business Intelligence Analyst', salary: '£30,000 - £42,000', responsibilities: ['Dashboard creation', 'Trend analysis', 'Stakeholder reporting'] }
+                    ],
+                    ksb: {
+                        knowledge: ['Statistical methods', 'BI tools', 'Data modelling'],
+                        skills: ['Advanced Excel', 'SQL', 'Power BI/Tableau'],
+                        behaviours: ['Analytical', 'Curious', 'Problem-solver']
+                    }
+                },
+                'Data Engineer Level 5': {
+                    careers: [
+                        { title: 'Data Engineer', salary: '£35,000 - £55,000', responsibilities: ['Data pipeline creation', 'ETL processes', 'System optimization'] },
+                        { title: 'Database Developer', salary: '£32,000 - £50,000', responsibilities: ['Database design', 'Query optimization', 'Data architecture'] }
+                    ],
+                    ksb: {
+                        knowledge: ['Data architecture', 'Cloud platforms', 'ETL processes'],
+                        skills: ['Python/Java', 'SQL optimization', 'Cloud services'],
+                        behaviours: ['Technical expertise', 'Problem-solver', 'Continuous learner']
+                    }
+                },
+                'CIPS Level 5': {
+                    careers: [
+                        { title: 'Senior Procurement Manager', salary: '£40,000 - £60,000', responsibilities: ['Strategic procurement', 'Team leadership', 'Stakeholder management'] },
+                        { title: 'Procurement Director', salary: '£50,000 - £80,000', responsibilities: ['Procurement strategy', 'Organizational leadership', 'Board reporting'] }
+                    ],
+                    ksb: {
+                        knowledge: ['Strategic procurement', 'Commercial law', 'Global sourcing'],
+                        skills: ['Strategic planning', 'Leadership', 'Advanced negotiation'],
+                        behaviours: ['Strategic leader', 'Influential', 'Ethical']
+                    }
+                }
+            };
+
+            // Conversation state
+            const state = {
+                stage: 'greeting',
+                userData: {
+                    name: '',
+                    currentCourse: '',
+                    jobTitle: '',
+                    availablePathways: [],
+                    bridgeAnswers: {},
+                    personalityType: '',
+                    personalityScores: {},
+                    workPreferences: {},
+                    recommendedCourse: '',
+                    alternativeChoices: [],
+                    compatibilityScore: 0,
+                    allScores: {}
+                }
+            };
+
+            // DOM elements
+            const chatMessages = document.getElementById('chatMessages');
+            const chatInput = document.getElementById('chatInput');
+            const sendBtn = document.getElementById('sendBtn');
+
+            // Initialize chatbot
+            function init() {
+                sendBtn.addEventListener('click', handleSend);
+                chatInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') handleSend();
+                });
+
+                document.getElementById('coachContactForm').addEventListener('submit', handleContactFormSubmit);
+
+                setTimeout(() => startConversation(), 500);
+            }
+
+            // Add message to chat
+            function addMessage(text, isUser = false, options = null) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = 'message ' + (isUser ? 'user-message' : 'bot-message');
+                messageDiv.innerHTML = text;
+
+                chatMessages.appendChild(messageDiv);
+
+                if (options && options.length > 0) {
+                    const repliesDiv = document.createElement('div');
+                    repliesDiv.className = 'quick-replies';
+
+                    options.forEach(option => {
+                        const btn = document.createElement('button');
+                        btn.className = 'quick-reply-btn';
+                        btn.textContent = option.label || option;
+                        btn.onclick = () => handleQuickReply(option.value || option, option.label || option);
+                        repliesDiv.appendChild(btn);
+                    });
+
+                    chatMessages.appendChild(repliesDiv);
+                }
+
+                scrollToBottom();
+            }
+
+            function scrollToBottom() {
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+
+            function handleSend() {
+                const message = chatInput.value.trim();
+                if (!message) return;
+
+                addMessage(message, true);
+                chatInput.value = '';
+
+                processUserInput(message);
+            }
+
+            function handleQuickReply(value, label) {
+                addMessage(label, true);
+                processUserInput(value);
+            }
+
+            function enableInput() {
+                chatInput.disabled = false;
+                sendBtn.disabled = false;
+                chatInput.focus();
+            }
+
+            function disableInput() {
+                chatInput.disabled = true;
+                sendBtn.disabled = true;
+            }
+
+            function startConversation() {
+                addMessage('👋 Hello! Welcome to The Apprentice Academy Career Progression Wizard!');
+                setTimeout(() => {
+                    addMessage('I\'m here to help you explore your career development opportunities within our organization.');
+                    setTimeout(() => {
+                        addMessage('What is your name?');
+                        enableInput();
+                    }, 1000);
+                }, 1000);
+            }
+
+            function processUserInput(input) {
+                disableInput();
+
+                switch(state.stage) {
+                    case 'greeting':
+                        state.userData.name = input;
+                        state.stage = 'course';
+                        setTimeout(() => askCurrentCourse(), 800);
+                        break;
+
+                    case 'course':
+                        state.userData.currentCourse = input;
+                        state.userData.availablePathways = getAvailablePathways(input);
+                        state.stage = 'jobTitle';
+                        setTimeout(() => askJobTitle(), 800);
+                        break;
+
+                    case 'jobTitle':
+                        state.userData.jobTitle = input;
+                        state.stage = 'assessment';
+                        setTimeout(() => explainAssessment(), 800);
+                        break;
+
+                    case 'assessment':
+                        openBridgeQuestionsModal();
+                        break;
+                }
+            }
+
+            function askCurrentCourse() {
+                addMessage('Great to meet you, ' + state.userData.name + '! 😊');
+                setTimeout(() => {
+                    addMessage('Which apprenticeship course are you currently on?', false, [
+                        { label: 'Accountancy Level 2', value: 'Accountancy Level 2' },
+                        { label: 'Accountancy Level 3/4', value: 'Accountancy Level 3/4' },
+                        { label: 'Business Admin Level 3', value: 'Business Admin Level 3' },
+                        { label: 'Procurement Level 3', value: 'Procurement Level 3' },
+                        { label: 'Procurement Level 4', value: 'Procurement Level 4' },
+                        { label: 'Data Technician Level 3', value: 'Data Technician Level 3' },
+                        { label: 'Data Analyst Level 4', value: 'Data Analyst Level 4' },
+                        { label: 'Data Engineer Level 5', value: 'Data Engineer Level 5' }
+                    ]);
+                }, 600);
+            }
+
+            function askJobTitle() {
+                addMessage('Excellent! You\'re on the ' + state.userData.currentCourse + ' apprenticeship. 📚');
+                setTimeout(() => {
+                    addMessage('What is your current job title?');
+                    enableInput();
+                }, 800);
+            }
+
+            function explainAssessment() {
+                addMessage('Thank you! As a ' + state.userData.jobTitle + ', you have some exciting career progression opportunities ahead! 🚀');
+                
+                setTimeout(() => {
+                    const pathways = state.userData.availablePathways;
+                    let pathwayText = 'Based on your current course, you can progress to:<br><br>';
+                    pathwayText += '<strong>Available pathways:</strong><br>';
+                    pathways.forEach(pathway => {
+                        pathwayText += '• ' + pathway + '<br>';
+                    });
+
+                    addMessage(pathwayText);
+
+                    setTimeout(() => {
+                        addMessage('To help match you with the best progression route, I\'ll ask you some questions about your current skills, work personality, and preferences. This will only take a few minutes! ⏱️');
+                        
+                        setTimeout(() => {
+                            addMessage('Ready to get started?', false, [
+                                { label: '✅ Yes, let\'s begin!', value: 'start' },
+                                { label: '❓ Tell me more first', value: 'info' }
+                            ]);
+                        }, 1000);
+                    }, 1500);
+                }, 1000);
+            }
+
+            function getAvailablePathways(course) {
+                const pathways = PROGRESSION_PATHWAYS[course];
+                if (!pathways) return [];
+                
+                return [...pathways.direct, ...pathways.core];
+            }
+
+            function openBridgeQuestionsModal() {
+                const modal = document.getElementById('bridgeQuestionsModal');
+                const content = document.getElementById('bridgeQuestionsContent');
+                
+                const questions = BRIDGE_QUESTIONS[state.userData.currentCourse] || [];
+                
+                let html = '<h2 style="color: #2b3d6d; margin-bottom: 1.5rem;">Skills Assessment: ' + state.userData.currentCourse + '</h2>';
+                html += '<p style="margin-bottom: 2rem; color: #666;">Please select all statements that apply to you:</p>';
+                
+                questions.forEach(question => {
+                    html += `
+                        <div class="bridge-question">
+                            <div class="bridge-option">
+                                <input type="checkbox" id="${question.id}" name="bridge" value="${question.id}">
+                                <label for="${question.id}">${question.text}</label>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                content.innerHTML = html;
+                modal.classList.add('active');
+            }
+
+            window.closeBridgeQuestions = function() {
+                document.getElementById('bridgeQuestionsModal').classList.remove('active');
+                addMessage('No problem! Feel free to come back when you\'re ready. 👋');
+                enableInput();
+            };
+
+            window.submitBridgeQuestions = function() {
+                const checkboxes = document.querySelectorAll('input[name="bridge"]:checked');
+                const answers = {};
+                
+                checkboxes.forEach(cb => {
+                    answers[cb.value] = true;
+                });
+                
+                state.userData.bridgeAnswers = answers;
+                
+                document.getElementById('bridgeQuestionsModal').classList.remove('active');
+                
+                setTimeout(() => {
+                    openPersonalityModal();
+                }, 500);
+            };
+
+            function openPersonalityModal() {
+                const modal = document.getElementById('personalityModal');
+                const content = document.getElementById('personalityContent');
+                
+                let html = '<h2 style="color: #2b3d6d; margin-bottom: 1.5rem;">Discover Your Work Personality</h2>';
+                html += '<p style="margin-bottom: 2rem; color: #666;">Answer these questions about how you prefer to work. There are no right or wrong answers!</p>';
+                
+                MBTI_QUESTIONS.forEach((question, index) => {
+                    html += `
+                        <div class="likert-question">
+                            <h3>${index + 1}. ${question.text}</h3>
+                            <div class="bridge-question-options" style="margin-top: 1rem;">
+                    `;
+                    
+                    question.options.forEach((option, optIndex) => {
+                        html += `
+                            <div class="bridge-option">
+                                <input type="radio" 
+                                       id="${question.id}_${optIndex}" 
+                                       name="${question.id}" 
+                                       value="${option.value}" 
+                                       data-weight="${option.weight}"
+                                       data-dimension="${question.dimension}">
+                                <label for="${question.id}_${optIndex}">${option.text}</label>
+                            </div>
+                        `;
+                    });
+                    
+                    html += '</div></div>';
+                });
+                
+                content.innerHTML = html;
+                modal.classList.add('active');
+            }
+
+            window.closePersonality = function() {
+                document.getElementById('personalityModal').classList.remove('active');
+                addMessage('No problem! You can restart the assessment anytime. 👋');
+            };
+
+            window.submitPersonality = function() {
+                let allAnswered = true;
+                const scores = {
+                    'E': 0, 'I': 0,
+                    'S': 0, 'N': 0,
+                    'T': 0, 'F': 0,
+                    'J': 0, 'P': 0
+                };
+                
+                MBTI_QUESTIONS.forEach(question => {
+                    const selected = document.querySelector(`input[name="${question.id}"]:checked`);
+                    if (selected) {
+                        const value = selected.value;
+                        const weight = parseInt(selected.getAttribute('data-weight'));
+                        
+                        if (value !== 'N' && value !== 'X') {
+                            scores[value] += weight;
+                        }
+                    } else {
+                        allAnswered = false;
+                    }
+                });
+                
+                if (!allAnswered) {
+                    alert('Please answer all questions before continuing.');
+                    return;
+                }
+                
+                const type = 
+                    (scores['E'] > scores['I'] ? 'E' : 'I') +
+                    (scores['S'] > scores['N'] ? 'S' : 'N') +
+                    (scores['T'] > scores['F'] ? 'T' : 'F') +
+                    (scores['J'] > scores['P'] ? 'J' : 'P');
+                
+                state.userData.personalityType = type;
+                state.userData.personalityScores = scores;
+                
+                document.getElementById('personalityModal').classList.remove('active');
+                
+                setTimeout(() => {
+                    openWorkPreferencesModal();
+                }, 500);
+            };
+
+            function openWorkPreferencesModal() {
+                const modal = document.getElementById('workPreferencesModal');
+                const content = document.getElementById('workPreferencesContent');
+                
+                let html = '<h2 style="color: #2b3d6d; margin-bottom: 1.5rem;">What kind of work do you enjoy?</h2>';
+                html += '<p style="margin-bottom: 2rem; color: #666;">Rate how much you enjoy each type of work:</p>';
+                
+                WORK_PREFERENCE_QUESTIONS.forEach(question => {
+                    html += `
+                        <div class="likert-question">
+                            <h3>${question.text}</h3>
+                            <div class="likert-scale">
+                                <div class="likert-option">
+                                    <input type="radio" id="${question.id}_1" name="${question.id}" value="1">
+                                    <label for="${question.id}_1">Strongly<br>Dislike</label>
+                                </div>
+                                <div class="likert-option">
+                                    <input type="radio" id="${question.id}_2" name="${question.id}" value="2">
+                                    <label for="${question.id}_2">Dislike</label>
+                                </div>
+                                <div class="likert-option">
+                                    <input type="radio" id="${question.id}_3" name="${question.id}" value="3">
+                                    <label for="${question.id}_3">Neutral</label>
+                                </div>
+                                <div class="likert-option">
+                                    <input type="radio" id="${question.id}_4" name="${question.id}" value="4">
+                                    <label for="${question.id}_4">Like</label>
+                                </div>
+                                <div class="likert-option">
+                                    <input type="radio" id="${question.id}_5" name="${question.id}" value="5">
+                                    <label for="${question.id}_5">Strongly<br>Like</label>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                content.innerHTML = html;
+                modal.classList.add('active');
+            }
+
+            window.closeWorkPreferences = function() {
+                document.getElementById('workPreferencesModal').classList.remove('active');
+                addMessage('No problem! You can restart the assessment anytime. 👋');
+            };
+
+            window.submitWorkPreferences = function() {
+                const preferences = {};
+                let allAnswered = true;
+                
+                WORK_PREFERENCE_QUESTIONS.forEach(question => {
+                    const selected = document.querySelector(`input[name="${question.id}"]:checked`);
+                    if (selected) {
+                        preferences[question.id] = parseInt(selected.value);
+                    } else {
+                        allAnswered = false;
+                    }
+                });
+                
+                if (!allAnswered) {
+                    alert('Please answer all questions before continuing.');
+                    return;
+                }
+                
+                state.userData.workPreferences = preferences;
+                
+                calculateRecommendation();
+                
+                document.getElementById('workPreferencesModal').classList.remove('active');
+                
+                setTimeout(() => {
+                    openDashboardModal();
+                }, 500);
+            };
+
+            function calculateRecommendation() {
+                const pathways = state.userData.availablePathways;
+                const bridgeAnswers = Object.keys(state.userData.bridgeAnswers).length;
+                const workPreferences = state.userData.workPreferences;
+                const personalityType = state.userData.personalityType;
+                const personalityInfo = PERSONALITY_TYPES[personalityType];
+                
+                const scores = {};
+                
+                pathways.forEach(pathway => {
+                    const totalQuestions = BRIDGE_QUESTIONS[state.userData.currentCourse]?.length || 6;
+                    const bridgeScore = (bridgeAnswers / totalQuestions) * 40;
+                    
+                    let prefScore = 0;
+                    Object.values(workPreferences).forEach(val => prefScore += val);
+                    const maxPrefScore = WORK_PREFERENCE_QUESTIONS.length * 5;
+                    const preferenceScore = (prefScore / maxPrefScore) * 30;
+                    
+                    let personalityScore = 0;
+                    if (personalityInfo && personalityInfo.idealCourses.includes(pathway)) {
+                        personalityScore = 30;
+                    } else {
+                        personalityScore = 15;
+                    }
+                    
+                    scores[pathway] = Math.round(bridgeScore + preferenceScore + personalityScore);
+                });
+                
+                let maxScore = 0;
+                let recommended = pathways[0];
+                
+                for (const [pathway, score] of Object.entries(scores)) {
+                    if (score > maxScore) {
+                        maxScore = score;
+                        recommended = pathway;
+                    }
+                }
+                
+                state.userData.recommendedCourse = recommended;
+                state.userData.compatibilityScore = scores[recommended];
+                state.userData.allScores = scores;
+            }
+
+            function openDashboardModal(selectedCourse = null) {
+                const modal = document.getElementById('dashboardModal');
+                const content = document.getElementById('dashboardContent');
+                
+                const course = selectedCourse || state.userData.recommendedCourse;
+                const score = selectedCourse ? state.userData.allScores[selectedCourse] : state.userData.compatibilityScore;
+                const careerInfo = CAREER_INFO[course] || { careers: [], ksb: { knowledge: [], skills: [], behaviours: [] } };
+                const personalityType = state.userData.personalityType;
+                const personalityInfo = PERSONALITY_TYPES[personalityType];
+                
+                let html = '<div class="dashboard">';
+                
+                html += '<div class="dashboard-header">';
+                html += '<h2>' + (selectedCourse ? 'Alternative Path: ' : 'Recommended Path: ') + course + '</h2>';
+                if (!selectedCourse) {
+                    html += '<p>Based on your skills, personality, and preferences</p>';
+                }
+                html += '</div>';
+                
+                html += '<div class="personality-type">';
+                html += '<h3>' + personalityType + '</h3>';
+                html += '<div class="type-name">' + personalityInfo.name + '</div>';
+                html += '<div class="type-description">' + personalityInfo.description + '</div>';
+                html += '</div>';
+                
+                html += '<div class="dashboard-section">';
+                html += '<h3>🌟 Your Personality Strengths</h3>';
+                html += '<div class="personality-traits">';
+                personalityInfo.strengths.forEach(strength => {
+                    html += '<div class="personality-trait">';
+                    html += '<h4>✓ ' + strength + '</h4>';
+                    html += '</div>';
+                });
+                html += '</div>';
+                
+                if (personalityInfo.idealCourses.includes(course)) {
+                    html += '<div class="personality-match">';
+                    html += '<h4>🎯 Perfect Personality Match!</h4>';
+                    html += '<p>Your ' + personalityType + ' personality type aligns exceptionally well with this career path.</p>';
+                    html += '</div>';
+                }
+                html += '</div>';
+                
+                html += '<div class="compatibility-score">';
+                html += '<div class="score-circle">';
+                html += '<div class="percentage">' + score + '%</div>';
+                html += '<div class="label">Overall Match</div>';
+                html += '</div>';
+                html += '</div>';
+                
+                html += '<div class="dashboard-section">';
+                html += '<h3>💼 Career Opportunities</h3>';
+                careerInfo.careers.forEach(career => {
+                    html += '<div class="career-option">';
+                    html += '<h4>' + career.title + '</h4>';
+                    html += '<p class="salary-range">' + career.salary + '</p>';
+                    html += '<p><strong>Key Responsibilities:</strong></p>';
+                    html += '<ul>';
+                    career.responsibilities.forEach(resp => {
+                        html += '<li>' + resp + '</li>';
+                    });
+                    html += '</ul>';
+                    html += '</div>';
+                });
+                html += '</div>';
+                
+                html += '<div class="dashboard-section">';
+                html += '<h3>📚 What You\'ll Need to Develop</h3>';
+                
+                html += '<p><strong>Knowledge:</strong></p>';
+                html += '<div class="skills-needed">';
+                careerInfo.ksb.knowledge.forEach(k => {
+                    html += '<span class="skill-tag">' + k + '</span>';
+                });
+                html += '</div>';
+                
+                html += '<p style="margin-top: 1rem;"><strong>Skills:</strong></p>';
+                html += '<div class="skills-needed">';
+                careerInfo.ksb.skills.forEach(s => {
+                    html += '<span class="skill-tag">' + s + '</span>';
+                });
+                html += '</div>';
+                
+                html += '<p style="margin-top: 1rem;"><strong>Behaviours:</strong></p>';
+                html += '<div class="skills-needed">';
+                careerInfo.ksb.behaviours.forEach(b => {
+                    html += '<span class="skill-tag">' + b + '</span>';
+                });
+                html += '</div>';
+                html += '</div>';
+                
+                html += '<div class="dashboard-actions">';
+                html += '<button class="dashboard-btn primary" onclick="openContactFormModal()">📧 Send to My Coach</button>';
+                html += '<button class="dashboard-btn secondary" onclick="openAlternativeCourseModal()">🔄 Pick Something Else</button>';
+                html += '</div>';
+                
+                html += '</div>';
+                
+                content.innerHTML = html;
+                modal.classList.add('active');
+            }
+
+            window.closeDashboard = function() {
+                document.getElementById('dashboardModal').classList.remove('active');
+            };
+
+            window.openContactFormModal = function() {
+                document.getElementById('userName').value = state.userData.name;
+                document.getElementById('contactFormModal').classList.add('active');
+            };
+
+            window.closeContactForm = function() {
+                document.getElementById('contactFormModal').classList.remove('active');
+            };
+
+            function handleContactFormSubmit(e) {
+                e.preventDefault();
+                
+                const userName = document.getElementById('userName').value;
+                const userEmail = document.getElementById('userEmail').value;
+                const coachEmail = document.getElementById('coachEmail').value;
+                const message = document.getElementById('additionalMessage').value;
+                
+                alert('Your career progression plan has been sent to ' + coachEmail + '!\n\nYour coach will be in touch soon to discuss your next steps.');
+                
+                closeContactForm();
+                closeDashboard();
+                
+                addMessage('✅ Great! Your career plan has been sent to your coach. They\'ll be in touch soon to discuss your next steps!');
+                addMessage('Good luck on your career journey, ' + state.userData.name + '! 🎉');
+            }
+
+            window.openAlternativeCourseModal = function() {
+                const modal = document.getElementById('alternativeCourseModal');
+                const content = document.getElementById('alternativeCourseContent');
+                
+                const pathways = state.userData.availablePathways;
+                
+                let html = '<h2 style="color: #2b3d6d; margin: 0 0 1.5rem 0;">Choose Your Path</h2>';
+                html += '<p style="color: #666; margin-bottom: 2rem;">Select an alternative career progression route:</p>';
+                
+                html += '<div class="course-grid">';
+                pathways.forEach(pathway => {
+                    const score = state.userData.allScores[pathway] || 0;
+                    html += `
+                        <div class="course-card" onclick="selectAlternativeCourse('${pathway}')">
+                            <h4>${pathway}</h4>
+                            <p style="color: #667eea; font-weight: 600; margin-top: 0.5rem;">${score}% Match</p>
+                        </div>
+                    `;
+                });
+                html += '</div>';
+                
+                content.innerHTML = html;
+                modal.classList.add('active');
+            };
+
+            window.closeAlternativeCourse = function() {
+                document.getElementById('alternativeCourseModal').classList.remove('active');
+            };
+
+            window.selectAlternativeCourse = function(course) {
+                closeAlternativeCourse();
+                closeDashboard();
+                
+                setTimeout(() => {
+                    openDashboardModal(course);
+                }, 300);
+            };
+
+            init();
+        })();
+    </script>
+</body>
+</html>
