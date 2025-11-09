@@ -3087,10 +3087,38 @@ body {
         </div>
     </div>
 
+    <!-- EmailJS Library -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
     <script>
         // Career Progression Chatbot Implementation with MBTI
         (function() {
             'use strict';
+
+            // ==========================================
+            // EmailJS Configuration
+            // ==========================================
+            // TO SET UP EMAILJS:
+            // 1. Sign up at https://www.emailjs.com/
+            // 2. Create an email service (Gmail, Outlook, etc.)
+            // 3. Create an email template with these variables:
+            //    - {{user_name}}
+            //    - {{user_email}}
+            //    - {{coach_email}}
+            //    - {{message}}
+            //    - {{career_path}}
+            //    - {{match_score}}
+            //    - {{skills}}
+            //    - {{personality_type}}
+            //    - {{work_preferences}}
+            // 4. Get your Public Key from Account > API Keys
+            // 5. Replace the values below with your credentials
+
+            const EMAILJS_CONFIG = {
+                publicKey: '0DJZPQNmM-IJwdxKs',  // EmailJS public key
+                serviceId: 'service_o25s4bc',     // EmailJS service ID
+                templateId: 'template_csotng6'    // EmailJS template ID
+            };
 
             // Progression pathway definitions
             const PROGRESSION_PATHWAYS = {
@@ -4215,19 +4243,82 @@ body {
 
             function handleContactFormSubmit(e) {
                 e.preventDefault();
-                
+
+                // Get form data
                 const userName = document.getElementById('userName').value;
                 const userEmail = document.getElementById('userEmail').value;
                 const coachEmail = document.getElementById('coachEmail').value;
                 const message = document.getElementById('additionalMessage').value;
-                
-                alert('Your career progression plan has been sent to ' + coachEmail + '!\n\nYour coach will be in touch soon to discuss your next steps.');
-                
-                closeContactForm();
-                closeDashboard();
-                
-                addMessage('✅ Great! Your career plan has been sent to your coach. They\'ll be in touch soon to discuss your next steps!');
-                addMessage('Good luck on your career journey, ' + state.userData.name + '! 🎉');
+
+                // Check if EmailJS is configured
+                if (!EMAILJS_CONFIG.publicKey || EMAILJS_CONFIG.publicKey === 'YOUR_PUBLIC_KEY_HERE') {
+                    alert('⚠️ EmailJS is not configured yet!\n\nPlease set up your EmailJS credentials in the script.\n\nSee the configuration section at the top of the script for instructions.');
+                    console.error('EmailJS not configured. Please update EMAILJS_CONFIG with your credentials.');
+                    return;
+                }
+
+                // Initialize EmailJS
+                emailjs.init(EMAILJS_CONFIG.publicKey);
+
+                // Prepare email template parameters with career progression data
+                const templateParams = {
+                    user_name: userName,
+                    user_email: userEmail,
+                    coach_email: coachEmail,
+                    message: message || 'No additional message provided.',
+                    career_path: state.userData.recommendedPath || 'Not specified',
+                    match_score: state.userData.topScore || 'N/A',
+                    skills: formatSkillsForEmail(),
+                    personality_type: state.userData.personalityType || 'Not assessed',
+                    work_preferences: formatWorkPreferencesForEmail()
+                };
+
+                // Show loading state
+                const submitBtn = e.target.querySelector('button[type="submit"]');
+                const originalBtnText = submitBtn.textContent;
+                submitBtn.textContent = 'Sending...';
+                submitBtn.disabled = true;
+
+                // Send email via EmailJS
+                emailjs.send(EMAILJS_CONFIG.serviceId, EMAILJS_CONFIG.templateId, templateParams)
+                    .then(function(response) {
+                        console.log('Email sent successfully!', response.status, response.text);
+
+                        // Success! Close form and show confirmation
+                        closeContactForm();
+                        closeDashboard();
+
+                        addMessage('✅ Great! Your career plan has been sent to ' + coachEmail + '. Your coach will be in touch soon!');
+                        addMessage('Good luck on your career journey, ' + state.userData.name + '! 🎉');
+
+                        // Reset form
+                        document.getElementById('coachContactForm').reset();
+                    }, function(error) {
+                        console.error('Email sending failed:', error);
+
+                        // Show error message
+                        alert('❌ Failed to send email. Please try again or contact support.\n\nError: ' + (error.text || 'Unknown error'));
+
+                        // Re-enable button
+                        submitBtn.textContent = originalBtnText;
+                        submitBtn.disabled = false;
+                    });
+            }
+
+            // Helper function to format skills for email
+            function formatSkillsForEmail() {
+                if (!state.userData.skills || state.userData.skills.length === 0) {
+                    return 'No skills assessed';
+                }
+                return state.userData.skills.join(', ');
+            }
+
+            // Helper function to format work preferences for email
+            function formatWorkPreferencesForEmail() {
+                if (!state.userData.workPreferences || state.userData.workPreferences.length === 0) {
+                    return 'No preferences specified';
+                }
+                return state.userData.workPreferences.join(', ');
             }
 
             window.openAlternativeCourseModal = function() {
