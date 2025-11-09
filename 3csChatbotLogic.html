@@ -1673,7 +1673,11 @@
                         break;
 
                     case 'assessment':
-                        openBridgeQuestionsModal();
+                        if (input === 'info') {
+                            setTimeout(() => explainWizardDetails(), 800);
+                        } else if (input === 'start') {
+                            openBridgeQuestionsModal();
+                        }
                         break;
                 }
             }
@@ -1728,10 +1732,49 @@
                 }, 1000);
             }
 
+            function explainWizardDetails() {
+                addMessage('Great question! Let me explain how this career progression wizard works and why it\'s valuable for your professional development. 📚');
+
+                setTimeout(() => {
+                    addMessage('<strong>🎯 What You\'ll Be Asked:</strong><br><br>' +
+                        'The wizard consists of three quick assessments:<br><br>' +
+                        '1️⃣ <strong>Skills Assessment</strong> - Questions about your current technical abilities and experience in your field<br>' +
+                        '2️⃣ <strong>Work Personality</strong> - Understanding your work style, preferences, and how you approach tasks<br>' +
+                        '3️⃣ <strong>Work Preferences</strong> - Your career goals, learning preferences, and work environment choices');
+
+                    setTimeout(() => {
+                        addMessage('<strong>🤔 How Decisions Are Made:</strong><br><br>' +
+                            'The wizard analyzes your responses to:<br><br>' +
+                            '• Match your current skills with the requirements of potential progression paths<br>' +
+                            '• Consider your personality traits and work style preferences<br>' +
+                            '• Align recommendations with your stated career goals and interests<br>' +
+                            '• Provide a personalized pathway that best fits YOUR unique profile<br><br>' +
+                            'This ensures you get recommendations tailored specifically to you, not just generic suggestions!');
+
+                        setTimeout(() => {
+                            addMessage('<strong>🚀 Why Upskilling Matters:</strong><br><br>' +
+                                'In today\'s rapidly evolving workplace, continuous upskilling is essential:<br><br>' +
+                                '• <strong>Career Advancement</strong> - Opens doors to higher-level roles and increased earning potential<br>' +
+                                '• <strong>Job Security</strong> - Makes you more valuable and adaptable in changing markets<br>' +
+                                '• <strong>Personal Growth</strong> - Builds confidence and expands your professional capabilities<br>' +
+                                '• <strong>Future-Proofing</strong> - Keeps you relevant as industries and technologies evolve<br>' +
+                                '• <strong>Competitive Edge</strong> - Distinguishes you from peers in your field<br><br>' +
+                                'By taking time to plan your progression now, you\'re investing in a stronger, more fulfilling career future! 💪');
+
+                            setTimeout(() => {
+                                addMessage('The assessment takes just a few minutes but provides personalized insights that can shape your career trajectory. Ready to begin?', false, [
+                                    { label: '✅ Yes, let\'s start the assessment!', value: 'start' }
+                                ]);
+                            }, 2000);
+                        }, 2000);
+                    }, 2000);
+                }, 1000);
+            }
+
             function getAvailablePathways(course) {
                 const pathways = PROGRESSION_PATHWAYS[course];
                 if (!pathways) return [];
-                
+
                 return [...pathways.direct, ...pathways.core];
             }
 
