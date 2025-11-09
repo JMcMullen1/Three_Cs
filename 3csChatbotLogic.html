@@ -2165,7 +2165,7 @@
 
             // Helper function to format skills for email
             function formatSkillsForEmail() {
-                if (!state.userData.skills || state.userData.skills.length === 0) {
+                if (!state.userData.skills || !Array.isArray(state.userData.skills) || state.userData.skills.length === 0) {
                     return 'No skills assessed';
                 }
                 return state.userData.skills.join(', ');
@@ -2173,7 +2173,7 @@
 
             // Helper function to format work preferences for email
             function formatWorkPreferencesForEmail() {
-                if (!state.userData.workPreferences || state.userData.workPreferences.length === 0) {
+                if (!state.userData.workPreferences || !Array.isArray(state.userData.workPreferences) || state.userData.workPreferences.length === 0) {
                     return 'No preferences specified';
                 }
                 return state.userData.workPreferences.join(', ');
