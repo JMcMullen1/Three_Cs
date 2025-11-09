@@ -2173,10 +2173,28 @@
 
             // Helper function to format work preferences for email
             function formatWorkPreferencesForEmail() {
-                if (!state.userData.workPreferences || state.userData.workPreferences.length === 0) {
+                if (!state.userData.workPreferences || Object.keys(state.userData.workPreferences).length === 0) {
                     return 'No preferences specified';
                 }
-                return state.userData.workPreferences.join(', ');
+
+                // Map preference IDs to their question text and ratings
+                const ratingLabels = {
+                    1: 'Strongly Dislike',
+                    2: 'Dislike',
+                    3: 'Neutral',
+                    4: 'Like',
+                    5: 'Strongly Like'
+                };
+
+                const preferencesText = WORK_PREFERENCE_QUESTIONS.map(question => {
+                    const rating = state.userData.workPreferences[question.id];
+                    if (rating !== undefined) {
+                        return `${question.text}: ${ratingLabels[rating]}`;
+                    }
+                    return null;
+                }).filter(Boolean).join('; ');
+
+                return preferencesText || 'No preferences specified';
             }
 
             window.openAlternativeCourseModal = function() {
