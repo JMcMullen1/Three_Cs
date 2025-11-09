@@ -1572,12 +1572,30 @@
 
             // Initialize chatbot
             function init() {
+                // Initialize EmailJS
+                if (EMAILJS_CONFIG.publicKey && EMAILJS_CONFIG.publicKey !== 'YOUR_PUBLIC_KEY_HERE') {
+                    try {
+                        emailjs.init(EMAILJS_CONFIG.publicKey);
+                        console.log('EmailJS initialized successfully');
+                    } catch (error) {
+                        console.error('Failed to initialize EmailJS:', error);
+                    }
+                } else {
+                    console.warn('EmailJS not configured - email sending will not work');
+                }
+
                 sendBtn.addEventListener('click', handleSend);
                 chatInput.addEventListener('keypress', (e) => {
                     if (e.key === 'Enter') handleSend();
                 });
 
-                document.getElementById('coachContactForm').addEventListener('submit', handleContactFormSubmit);
+                const coachForm = document.getElementById('coachContactForm');
+                if (coachForm) {
+                    coachForm.addEventListener('submit', handleContactFormSubmit);
+                    console.log('Contact form event listener attached');
+                } else {
+                    console.error('Contact form not found!');
+                }
 
                 setTimeout(() => startConversation(), 500);
             }
@@ -2101,12 +2119,15 @@
 
             function handleContactFormSubmit(e) {
                 e.preventDefault();
+                console.log('Form submitted - handleContactFormSubmit called');
 
                 // Get form data
                 const userName = document.getElementById('userName').value;
                 const userEmail = document.getElementById('userEmail').value;
                 const coachEmail = document.getElementById('coachEmail').value;
                 const message = document.getElementById('additionalMessage').value;
+
+                console.log('Form data:', { userName, userEmail, coachEmail, message });
 
                 // Check if EmailJS is configured
                 if (!EMAILJS_CONFIG.publicKey || EMAILJS_CONFIG.publicKey === 'YOUR_PUBLIC_KEY_HERE') {
@@ -2115,8 +2136,12 @@
                     return;
                 }
 
-                // Initialize EmailJS
-                emailjs.init(EMAILJS_CONFIG.publicKey);
+                // Check if emailjs library is loaded
+                if (typeof emailjs === 'undefined') {
+                    alert('⚠️ EmailJS library failed to load. Please check your internet connection and refresh the page.');
+                    console.error('EmailJS library not loaded');
+                    return;
+                }
 
                 // Prepare email template parameters with career progression data
                 const templateParams = {
@@ -2131,16 +2156,20 @@
                     work_preferences: formatWorkPreferencesForEmail()
                 };
 
+                console.log('Template parameters:', templateParams);
+
                 // Show loading state
                 const submitBtn = e.target.querySelector('button[type="submit"]');
                 const originalBtnText = submitBtn.textContent;
                 submitBtn.textContent = 'Sending...';
                 submitBtn.disabled = true;
 
+                console.log('Sending email via EmailJS...');
+
                 // Send email via EmailJS
                 emailjs.send(EMAILJS_CONFIG.serviceId, EMAILJS_CONFIG.templateId, templateParams)
                     .then(function(response) {
-                        console.log('Email sent successfully!', response.status, response.text);
+                        console.log('✅ Email sent successfully!', response.status, response.text);
 
                         // Success! Close form and show confirmation
                         closeContactForm();
@@ -2149,13 +2178,16 @@
                         addMessage('✅ Great! Your career plan has been sent to ' + coachEmail + '. Your coach will be in touch soon!');
                         addMessage('Good luck on your career journey, ' + state.userData.name + '! 🎉');
 
-                        // Reset form
+                        // Reset form and button
                         document.getElementById('coachContactForm').reset();
-                    }, function(error) {
-                        console.error('Email sending failed:', error);
+                        submitBtn.textContent = originalBtnText;
+                        submitBtn.disabled = false;
+                    })
+                    .catch(function(error) {
+                        console.error('❌ Email sending failed:', error);
 
                         // Show error message
-                        alert('❌ Failed to send email. Please try again or contact support.\n\nError: ' + (error.text || 'Unknown error'));
+                        alert('❌ Failed to send email. Please try again or contact support.\n\nError: ' + (error.text || error.message || 'Unknown error'));
 
                         // Re-enable button
                         submitBtn.textContent = originalBtnText;
