@@ -3661,6 +3661,9 @@ body {
                 const coachForm = document.getElementById('coachContactForm');
                 if (coachForm) {
                     coachForm.addEventListener('submit', handleContactFormSubmit);
+                    console.log('✓ Email form handler attached successfully');
+                } else {
+                    console.error('✗ Could not find coach contact form');
                 }
 
                 setTimeout(() => startConversation(), 500);
@@ -4243,12 +4246,15 @@ body {
 
             function handleContactFormSubmit(e) {
                 e.preventDefault();
+                console.log('📧 Form submitted - attempting to send email via EmailJS');
 
                 // Get form data
                 const userName = document.getElementById('userName').value;
                 const userEmail = document.getElementById('userEmail').value;
                 const coachEmail = document.getElementById('coachEmail').value;
                 const message = document.getElementById('additionalMessage').value;
+
+                console.log('Form data:', { userName, userEmail, coachEmail });
 
                 // Check if EmailJS is configured
                 if (!EMAILJS_CONFIG.publicKey || EMAILJS_CONFIG.publicKey === 'YOUR_PUBLIC_KEY_HERE') {
@@ -4259,6 +4265,7 @@ body {
 
                 // Initialize EmailJS
                 emailjs.init(EMAILJS_CONFIG.publicKey);
+                console.log('✓ EmailJS initialized with public key');
 
                 // Prepare email template parameters with career progression data
                 const templateParams = {
@@ -4272,6 +4279,8 @@ body {
                     personality_type: state.userData.personalityType || 'Not assessed',
                     work_preferences: formatWorkPreferencesForEmail()
                 };
+
+                console.log('📤 Sending email with template params:', templateParams);
 
                 // Show loading state
                 const submitBtn = e.target.querySelector('button[type="submit"]');
@@ -4367,7 +4376,13 @@ body {
                 }, 300);
             };
 
-            init();
+            // Ensure DOM is fully loaded before initializing
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', init);
+            } else {
+                // DOM is already ready
+                init();
+            }
         })();
     </script>
 
