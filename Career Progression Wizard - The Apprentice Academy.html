@@ -4273,8 +4273,8 @@ body {
                     user_email: userEmail,
                     coach_email: coachEmail,
                     message: message || 'No additional message provided.',
-                    career_path: state.userData.recommendedPath || 'Not specified',
-                    match_score: state.userData.topScore || 'N/A',
+                    career_path: state.userData.recommendedCourse || 'Not specified',
+                    match_score: state.userData.compatibilityScore || 'N/A',
                     skills: formatSkillsForEmail(),
                     personality_type: state.userData.personalityType || 'Not assessed',
                     work_preferences: formatWorkPreferencesForEmail()
